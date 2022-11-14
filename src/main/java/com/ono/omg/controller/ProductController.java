@@ -3,6 +3,7 @@ package com.ono.omg.controller;
 
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.common.ProductReqDto;
+import com.ono.omg.dto.common.ProductResDto;
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
@@ -39,7 +40,7 @@ public class ProductController {
 
     //상품조회
     @GetMapping("/products/{productId}")
-    public ResponseEntity<ResponseDto<String>> searchProduct(@PathVariable Long productId) {
-        return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId, userDetails.getAccount())), HttpStatus.CREATED);
+    public ResponseEntity<ResponseDto<ProductResDto>> searchProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId)), HttpStatus.CREATED);
     }
 }

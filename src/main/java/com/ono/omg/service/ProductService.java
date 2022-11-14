@@ -3,6 +3,7 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.common.ProductReqDto;
+import com.ono.omg.dto.common.ProductResDto;
 import com.ono.omg.repository.AccountRepository;
 import com.ono.omg.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,5 +58,13 @@ public class ProductService {
 
         productRepository.delete(product);
             return "상품삭제 완료";
+    }
+
+    public ProductResDto searchProduct(Long productId) {
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
+
+        return new ProductResDto(product);
+
     }
 }

@@ -23,7 +23,7 @@ public class ReviewController {
     @PostMapping("/{productId}/reviews")
     public ReviewResponseDto registerReview(@PathVariable Long productId,
                                             @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            ReviewRequestDto requestDto) {
+                                            @RequestBody ReviewRequestDto requestDto) {
         return reviewService.registerReview(productId, userDetails, requestDto);
     }
 

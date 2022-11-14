@@ -8,6 +8,7 @@ import com.ono.omg.repository.AccountRepository;
 import com.ono.omg.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class ProductService {
     private final AccountRepository accountRepository;
 
     // 상품등록
+    @Transactional
     public String createProduct(ProductReqDto productReqDto, Account account) {
 
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
@@ -29,6 +31,7 @@ public class ProductService {
     }
 
     // 상품수정
+    @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
 
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
@@ -46,6 +49,7 @@ public class ProductService {
         
         
     //상품삭제
+    @Transactional
     public String deleteProduct(Long productId, Account account) {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
@@ -61,6 +65,7 @@ public class ProductService {
     }
 
     //상품조회
+    @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));

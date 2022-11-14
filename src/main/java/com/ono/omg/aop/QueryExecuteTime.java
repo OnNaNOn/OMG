@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class QueryExecuteTime {
 
-    @Around("execution(* com.example..*(..))")
+//    @Around("execution(* com.*(..))")
     public Object execute(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         System.out.println("START: " + joinPoint.toString());

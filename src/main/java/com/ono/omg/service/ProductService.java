@@ -2,21 +2,38 @@ package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.common.ProductReqDto;
-import com.ono.omg.dto.common.ProductResDto;
-import com.ono.omg.repository.AccountRepository;
-import com.ono.omg.repository.ProductRepository;
+import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.dto.response.ProductResDto;
+import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.repository.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductInfoResponseDto;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
 
     private final AccountRepository accountRepository;
+
+    public List<AllProductInfoResponseDto> findAllSavedProducts() {
+        List<Product> products = productRepository.findAll();
+        List<AllProductInfoResponseDto> responseDto = new ArrayList<>();
+
+        for (Product product : products) {
+            responseDto.add(new AllProductInfoResponseDto(product));
+        }
+        return responseDto;
+    }
 
     // 상품등록
     @Transactional
@@ -46,8 +63,8 @@ public class ProductService {
         product.updateProduct(productReqDto, account);
             return "상품수정 완료";
         }
-        
-        
+
+
     //상품삭제
     @Transactional
     public String deleteProduct(Long productId, Account account) {

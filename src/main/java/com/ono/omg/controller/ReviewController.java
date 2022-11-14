@@ -1,7 +1,7 @@
 package com.ono.omg.controller;
 
-import com.ono.omg.dto.common.ReviewRequestDto;
-import com.ono.omg.dto.common.ReviewResponseDto;
+import com.ono.omg.dto.request.ReviewRequestDto;
+import com.ono.omg.dto.response.ReviewResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ReviewService;
 import lombok.RequiredArgsConstructor;

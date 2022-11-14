@@ -2,7 +2,7 @@ package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Cart;
-import com.ono.omg.repository.CartRepository;
+import com.ono.omg.repository.cart.CartRepository;
 import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

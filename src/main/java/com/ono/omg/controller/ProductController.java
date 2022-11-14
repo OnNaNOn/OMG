@@ -1,9 +1,8 @@
 package com.ono.omg.controller;
 
-
-import com.ono.omg.domain.Product;
-import com.ono.omg.dto.common.ProductReqDto;
-import com.ono.omg.dto.common.ProductResDto;
+import com.ono.omg.dto.response.ProductResponseDto;
+import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.dto.response.ProductResDto;
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
@@ -13,12 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProductController {
 
     private final ProductService productService;
+
+    @GetMapping("/omg")
+    public ResponseDto<List<ProductResponseDto.AllProductInfoResponseDto>> findAllProducts() {
+        return ResponseDto.success(productService.findAllSavedProducts());
+    }
 
     // 상품등록
     @PostMapping("/products")

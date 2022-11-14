@@ -1,4 +1,4 @@
-package com.ono.omg.dto;
+package com.ono.omg.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

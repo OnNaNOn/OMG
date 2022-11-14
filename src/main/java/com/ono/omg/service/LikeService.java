@@ -3,9 +3,9 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Like;
 import com.ono.omg.domain.Product;
-import com.ono.omg.repository.AccountRepository;
-import com.ono.omg.repository.LikeRepository;
-import com.ono.omg.repository.ProductRepository;
+import com.ono.omg.repository.account.AccountRepository;
+import com.ono.omg.repository.like.LikeRepository;
+import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,9 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-
     private final ProductRepository productRepository;
-
     private final AccountRepository accountRepository;
 
     //상품 좋아요

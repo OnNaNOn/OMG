@@ -1,13 +1,12 @@
 package com.ono.omg.service;
 
-import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.domain.Review;
-import com.ono.omg.dto.common.ReviewRequestDto;
-import com.ono.omg.dto.common.ReviewResponseDto;
-import com.ono.omg.repository.AccountRepository;
-import com.ono.omg.repository.ProductRepository;
-import com.ono.omg.repository.ReviewRepository;
+import com.ono.omg.dto.request.ReviewRequestDto;
+import com.ono.omg.dto.response.ReviewResponseDto;
+import com.ono.omg.repository.account.AccountRepository;
+import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.repository.review.ReviewRepository;
 import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,9 +21,7 @@ import java.util.List;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
-
     private final ProductRepository productRepository;
-
     private final AccountRepository accountRepository;
 
     /**
@@ -119,6 +116,4 @@ public class ReviewService {
             throw new IllegalArgumentException("NOT_WRITER");
         }
     }
-
-
 }

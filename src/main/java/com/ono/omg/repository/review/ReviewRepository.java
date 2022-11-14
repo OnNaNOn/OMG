@@ -1,4 +1,4 @@
-package com.ono.omg.repository;
+package com.ono.omg.repository.review;
 
 import com.ono.omg.domain.Review;
 import org.springframework.data.jpa.repository.JpaRepository;

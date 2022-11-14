@@ -1,4 +1,4 @@
-package com.ono.omg.repository;
+package com.ono.omg.repository.cart;
 
 import com.ono.omg.domain.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;

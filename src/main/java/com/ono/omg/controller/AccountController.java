@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import static com.ono.omg.dto.AccountRequestDto.AccountLoginRequestDto;
-import static com.ono.omg.dto.AccountRequestDto.AccountRegisterRequestDto;
-import static com.ono.omg.dto.AccountResponseDto.AccountLoginResponseDto;
-import static com.ono.omg.dto.AccountResponseDto.AccountRegisterResponseDto;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountLoginRequestDto;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
+import static com.ono.omg.dto.response.AccountResponseDto.AccountLoginResponseDto;
+import static com.ono.omg.dto.response.AccountResponseDto.AccountRegisterResponseDto;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/accounts")
 public class AccountController {
 
     private final AccountService accountService;

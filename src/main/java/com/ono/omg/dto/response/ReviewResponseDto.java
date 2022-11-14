@@ -1,4 +1,4 @@
-package com.ono.omg.dto.common;
+package com.ono.omg.dto.response;
 
 import lombok.Builder;
 import lombok.Data;

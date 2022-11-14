@@ -1,4 +1,4 @@
-package com.ono.omg.dto;
+package com.ono.omg.dto.response;
 
 import com.ono.omg.domain.Account;
 import lombok.AllArgsConstructor;

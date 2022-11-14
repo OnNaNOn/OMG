@@ -1,7 +1,6 @@
 package com.ono.omg.domain;
 
-import com.ono.omg.dto.common.ProductReqDto;
-import com.ono.omg.repository.ProductRepository;
+import com.ono.omg.dto.request.ProductReqDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +21,7 @@ public class Product {
     private String title;
 
     @Column(nullable = false)
-    private int price ;
+    private int price;
 
     @Column(nullable = false)
     private int stock;
@@ -45,7 +44,6 @@ public class Product {
         this.delivery = delivery;
         this.userid = userid;
     }
-
     public Product(ProductReqDto productReqDto, Account account) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();

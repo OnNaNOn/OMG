@@ -1,7 +1,7 @@
 package com.ono.omg.security.user;
 
 import com.ono.omg.domain.Account;
-import com.ono.omg.repository.AccountRepository;
+import com.ono.omg.repository.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

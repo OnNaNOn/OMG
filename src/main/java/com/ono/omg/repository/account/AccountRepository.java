@@ -1,4 +1,4 @@
-package com.ono.omg.repository;
+package com.ono.omg.repository.account;
 
 import com.ono.omg.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;

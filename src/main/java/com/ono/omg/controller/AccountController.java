@@ -18,7 +18,7 @@ import static com.ono.omg.dto.AccountResponseDto.AccountRegisterResponseDto;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/accounts")
 public class AccountController {
 
     private final AccountService accountService;

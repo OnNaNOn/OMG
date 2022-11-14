@@ -4,7 +4,7 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.RefreshToken;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
-import com.ono.omg.repository.AccountRepository;
+import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.RefreshTokenRepository;
 import com.ono.omg.security.jwt.JwtUtil;
 import com.ono.omg.security.jwt.TokenDto;

@@ -15,19 +15,21 @@
 #    password: 1207
 
 #전성영
-spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: 1234
 
   # h2 database
   #    url: jdbc:h2:mem:testdb
-  #    url: jdbc:h2:tcp://localhost/~/auctiondb
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/ono
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   h2:
     console:

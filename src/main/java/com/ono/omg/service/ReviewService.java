@@ -1,0 +1,124 @@
+package com.ono.omg.service;
+
+import com.ono.omg.domain.Account;
+import com.ono.omg.domain.Product;
+import com.ono.omg.domain.Review;
+import com.ono.omg.dto.common.ReviewRequestDto;
+import com.ono.omg.dto.common.ReviewResponseDto;
+import com.ono.omg.repository.AccountRepository;
+import com.ono.omg.repository.ProductRepository;
+import com.ono.omg.repository.ReviewRepository;
+import com.ono.omg.security.user.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
+public class ReviewService {
+
+    private final ReviewRepository reviewRepository;
+
+    private final ProductRepository productRepository;
+
+    private final AccountRepository accountRepository;
+
+    /**
+     * 리뷰 등록
+     */
+    public ReviewResponseDto registerReview(Long productId, UserDetailsImpl userDetails, ReviewRequestDto requestDto) {
+        String username = userDetails.getAccount().getUsername();
+        Long userId = userDetails.getAccount().getId();
+        String reviewContent = requestDto.getReviewContent();
+
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new IllegalArgumentException("NOT_FOUND_PRODUCT")
+        );
+
+        Review review = new Review(product, reviewContent, userId);
+        reviewRepository.save(review);
+
+        return ReviewResponseDto.builder()
+                .productId(productId)
+                .name(username)
+                .reviewContent(reviewContent)
+                .createdAt(review.getCreatedAt())
+                .modifiedAt(review.getModifiedAt())
+                .build();
+    }
+
+
+    /**
+     * 리뷰 수정
+     */
+    public Long updateReview(Long reviewId, UserDetailsImpl userDetails, ReviewRequestDto requestDto) {
+        Review foundReview = findReview(reviewId);
+        Long accountId = userDetails.getAccount().getId();
+
+        //작성자 체크
+        idCheck(accountId, foundReview.getId());
+
+        foundReview.setReviewContent(requestDto.getReviewContent());
+        return foundReview.getId();
+    }
+
+
+    /**
+     * 리뷰 삭제
+     */
+    public Long deleteReview(Long reviewId, UserDetailsImpl userDetails) {
+        Review foundReview = findReview(reviewId);
+        Long accountId = userDetails.getAccount().getId();
+
+        //작성자 체크
+        idCheck(accountId, foundReview.getId());
+
+        reviewRepository.deleteById(foundReview.getId());
+        return foundReview.getId();
+    }
+
+    /**
+     * 리뷰 조회
+     */
+    @Transactional
+    public List<ReviewResponseDto> getReviewList(Long productId) {
+        List<ReviewResponseDto> dtoList = new ArrayList<>();
+        List<Review> allReview = reviewRepository.findAllByProductId(productId);
+
+        for (Review review : allReview) {
+            String reviewContent = review.getReviewContent();
+            Long userId = review.getUserId();
+            String username = accountRepository.findUsernameByAccountId(userId);
+
+            ReviewResponseDto responseDto = ReviewResponseDto.builder()
+                    .productId(productId)
+                    .reviewContent(reviewContent)
+                    .name(username)
+                    .createdAt(review.getCreatedAt())
+                    .modifiedAt(review.getModifiedAt())
+                    .build();
+
+            dtoList.add(responseDto);
+        }
+        return dtoList;
+    }
+
+
+    private Review findReview(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(
+                () -> new IllegalArgumentException("NOT_FOUND_REVIEW")
+        );
+    }
+
+    private void idCheck(Long userId, Long currentId) {
+        if (!userId.equals(currentId)) {
+            throw new IllegalArgumentException("NOT_WRITER");
+        }
+    }
+
+
+}

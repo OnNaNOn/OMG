@@ -51,5 +51,8 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
+        productRepository.delete(product);
+
+        return "상품삭제 완료";
     }
 }

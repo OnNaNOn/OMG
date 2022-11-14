@@ -1,5 +1,6 @@
 package com.ono.omg.domain;
 
+import com.ono.omg.domain.base.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Entity
 @NoArgsConstructor
-public class RefreshToken {
+public class RefreshToken extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

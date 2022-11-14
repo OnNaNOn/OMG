@@ -1,5 +1,6 @@
 package com.ono.omg.controller;
 
+import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.ReviewRequestDto;
 import com.ono.omg.dto.response.ReviewResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
@@ -21,29 +22,29 @@ public class ReviewController {
      * 리뷰 등록
      */
     @PostMapping("/{productId}/reviews")
-    public ReviewResponseDto registerReview(@PathVariable Long productId,
-                                            @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                            ReviewRequestDto requestDto) {
-        return reviewService.registerReview(productId, userDetails, requestDto);
+    public ResponseDto<ReviewResponseDto> registerReview(@PathVariable Long productId,
+                                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                         @RequestBody ReviewRequestDto requestDto) {
+        return ResponseDto.success(reviewService.registerReview(productId, userDetails, requestDto));
     }
 
     /**
      * 리뷰 수정
      */
     @PatchMapping("/reviews/{reviewId}")
-    public Long updateReview(@PathVariable Long reviewId,
+    public ResponseDto<Long> updateReview(@PathVariable Long reviewId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
-                                          ReviewRequestDto requestDto) {
-        return reviewService.updateReview(reviewId, userDetails, requestDto);
+                                          @RequestBody ReviewRequestDto requestDto) {
+        return ResponseDto.success(reviewService.updateReview(reviewId, userDetails, requestDto));
     }
 
     /**
      * 리뷰 삭제
      */
     @DeleteMapping("/reviews/{reviewId}")
-    public Long deleteReview(@PathVariable Long reviewId,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return reviewService.deleteReview(reviewId, userDetails);
+    public ResponseDto<Long> deleteReview(@PathVariable Long reviewId,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails));
     }
 
     /**
@@ -51,6 +52,6 @@ public class ReviewController {
      */
     @GetMapping("/{productId}/reviews")
     public List<ReviewResponseDto> getReviewList(@PathVariable Long productId) {
-        return reviewService.getReviewList(productId);
+        return (List<ReviewResponseDto>) ResponseDto.success(reviewService.getReviewList(productId));
     }
 }

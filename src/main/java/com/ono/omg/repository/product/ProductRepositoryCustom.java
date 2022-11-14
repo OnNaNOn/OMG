@@ -2,7 +2,7 @@ package com.ono.omg.repository.product;
 
 import java.util.List;
 
-import static com.ono.omg.dto.ProductResponseDto.AllProductInfoResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductInfoResponseDto;
 
 public interface ProductRepositoryCustom {
 

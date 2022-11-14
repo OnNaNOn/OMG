@@ -1,4 +1,4 @@
-package com.ono.omg.repository;
+package com.ono.omg.repository.token;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.RefreshToken;

@@ -2,7 +2,7 @@ package com.ono.omg.security.jwt;
 
 
 import com.ono.omg.domain.RefreshToken;
-import com.ono.omg.repository.RefreshTokenRepository;
+import com.ono.omg.repository.token.RefreshTokenRepository;
 import com.ono.omg.security.user.UserDetailsServiceImpl;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

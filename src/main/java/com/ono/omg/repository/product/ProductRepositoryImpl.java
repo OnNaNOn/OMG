@@ -1,11 +1,10 @@
 package com.ono.omg.repository.product;
 
-import com.ono.omg.domain.Product;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import java.util.List;
 
-import static com.ono.omg.dto.ProductResponseDto.AllProductInfoResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductInfoResponseDto;
 
 public class ProductRepositoryImpl implements ProductRepositoryCustom{
 

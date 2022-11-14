@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.ono.omg.dto.AccountRequestDto.AccountRegisterRequestDto;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 
 @Entity
 @Getter

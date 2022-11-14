@@ -5,7 +5,7 @@ import com.ono.omg.domain.RefreshToken;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
-import com.ono.omg.repository.RefreshTokenRepository;
+import com.ono.omg.repository.token.RefreshTokenRepository;
 import com.ono.omg.security.jwt.JwtUtil;
 import com.ono.omg.security.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.Optional;
 
-import static com.ono.omg.dto.AccountRequestDto.*;
-import static com.ono.omg.dto.AccountResponseDto.*;
+import static com.ono.omg.dto.request.AccountRequestDto.*;
+import static com.ono.omg.dto.response.AccountResponseDto.*;
 
 @Service
 @Slf4j

@@ -1,8 +1,8 @@
 package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
-import com.ono.omg.repository.OrderRepository;
-import com.ono.omg.repository.ProductRepository;
+import com.ono.omg.repository.order.OrderRepository;
+import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,5 @@ public class OrderService {
 //        productRepository.findById(productId).orElseThrow(
 //                () -> new CustomCommonException(ErrorCode.)
 //        )
-
-
     }
 }

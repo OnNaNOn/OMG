@@ -23,6 +23,7 @@ public enum ErrorCode {
     // 404 NOT_FOUND 존재하지 않음
     USER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
     ROOM_NOT_FOUND(404, HttpStatus.NOT_FOUND, "존재하지 않는 방입니다."),
+    NOT_FOUND_PRODUCT(404, HttpStatus.NOT_FOUND, "상품이 존재하지 않습니다."),
     EMAIL_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 이메일은 존재하지 않습니다."),
 
     //500 INTERNAL SERVER ERROR

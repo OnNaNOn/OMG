@@ -21,10 +21,10 @@ public class Like {
     private Product product;
 
     @Column(nullable = false)
-    private int user_id;
+    private Long userid;
 
-    public Like(Product product, int user_id) {
+    public Like(Product product, Long userid) {
         this.product = product;
-        this.user_id = user_id;
+        this.userid = userid;
     }
 }

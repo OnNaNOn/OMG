@@ -6,8 +6,8 @@
 #    username: root
 #    password: 1234
 
-
 <<<<<<< HEAD
+
 ##성재님
 #spring:
 #  datasource:
@@ -15,6 +15,7 @@
 #    url: jdbc:mysql://localhost:3306/recur?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #    username: root
 #    password: 1207
+<<<<<<< HEAD
 
 
 #전성영
@@ -24,13 +25,18 @@ spring:
     url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1234
+=======
+>>>>>>> 16c72dfd618488530e8324f872bda34f83dab71b
 
 # h2 database
 #    url: jdbc:h2:mem:testdb
-#    url: jdbc:h2:tcp://localhost/~/auctiondb
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/ono
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
   h2:
     console:

@@ -1,4 +1,4 @@
-##이승우
+#이승우
 #spring:
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
@@ -6,7 +6,6 @@
 #    username: root
 #    password: 1234
 
-<<<<<<< HEAD
 
 ##성재님
 #spring:
@@ -15,7 +14,6 @@
 #    url: jdbc:mysql://localhost:3306/recur?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #    username: root
 #    password: 1207
-<<<<<<< HEAD
 
 
 #전성영
@@ -25,18 +23,13 @@ spring:
     url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: 1234
-=======
->>>>>>> 16c72dfd618488530e8324f872bda34f83dab71b
 
-# h2 database
-#    url: jdbc:h2:mem:testdb
-
-spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/ono
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  # h2 database
+  #    url: jdbc:h2:mem:testdb
+  #    url: jdbc:h2:tcp://localhost/~/auctiondb
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
 
   h2:
     console:
@@ -48,7 +41,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-#      ddl-auto: update
+    #      ddl-auto: update
     properties:
       hibernate:
         show_sql: true

@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static com.ono.omg.dto.AccountRequestDto.AccountRegisterRequestDto;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,4 +23,10 @@ public class Account extends BaseEntity {
 
     private String username;
     private String password;
+
+    public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
+        this.grade = "ROLE_USER";
+        this.username = accountRegisterRequestDto.getUsername();
+        this.password = accountRegisterRequestDto.getPassword();
+    }
 }

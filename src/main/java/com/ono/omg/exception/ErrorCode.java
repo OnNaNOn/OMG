@@ -13,6 +13,7 @@ public enum ErrorCode {
     DUPLICATE_USERNAME(400, HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다."),
     NOT_EQUAL_PASSWORD(400, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
+    DUPLICATE_PRODUCT(400, HttpStatus.BAD_REQUEST, "중복된 상품이 존재합니다."),
     // 401 UNAUTHORIZED 권한 없음
     UNAUTHORIZED_USER(401, HttpStatus.UNAUTHORIZED, "권한이 필요합니다."),
 

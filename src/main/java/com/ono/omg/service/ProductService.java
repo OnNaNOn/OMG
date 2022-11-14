@@ -60,11 +60,11 @@ public class ProductService {
             return "상품삭제 완료";
     }
 
+    //상품조회
     public ProductResDto searchProduct(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
         return new ProductResDto(product);
-
     }
 }

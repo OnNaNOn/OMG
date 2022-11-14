@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -20,9 +22,16 @@ public class CartService {
      */
     public Long inputProduct(Long productId, UserDetailsImpl userDetails) {
         Account account = userDetails.getAccount();
-        Cart cart = new Cart(account, productId);
 
-        cartRepository.save(cart);
-        return cart.getId();
+        Optional<Cart> found = cartRepository.findByProductIdAndAccountId(productId, account.getId());
+
+        if(found.isEmpty()){
+            Cart cart = new Cart(account, productId);
+            cartRepository.save(cart);
+            return cart.getId();
+        } else{
+            throw new IllegalArgumentException("해당 상품은 장바구니에 담겨져 있습니다.");
+        }
+
     }
 }

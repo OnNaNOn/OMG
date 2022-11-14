@@ -1,5 +1,6 @@
 package com.ono.omg.controller;
 
+import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.CartService;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,9 @@ public class CartController {
      * 상품 장바구니 담기
      */
     @PostMapping("/{productId}/cart")
-    public Long inputProduct(@PathVariable Long productId,
-                             @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return cartService.inputProduct(productId, userDetails);
+    public ResponseDto<Long> inputProduct(@PathVariable Long productId,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(cartService.inputProduct(productId, userDetails));
     }
 
 }

@@ -4,9 +4,7 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.common.ProductReqDto;
 import com.ono.omg.repository.AccountRepository;
-import com.ono.omg.repository.OrdersRepository;
 import com.ono.omg.repository.ProductRepository;
-import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +22,7 @@ public class ProductService {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
 
-        Product product = new Product(productReqDto);
+        Product product = new Product(productReqDto, account);
         productRepository.save(product);
         return "상품등록 완료";
     }
@@ -35,24 +33,29 @@ public class ProductService {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
 
+        productRepository.findByUserId(account.getId()).orElseThrow(
+                () -> new IllegalArgumentException("수정 권한이 없는 사용자입니다"));
+
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        product.updateProduct(productReqDto);
-
-        return "상품수정 완료";
-    }
-
-
+        product.updateProduct(productReqDto, account);
+            return "상품수정 완료";
+        }
+        
+        
+    //상품삭제
     public String deleteProduct(Long productId, Account account) {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
+
+        productRepository.findByUserId(account.getId()).orElseThrow(
+                () -> new IllegalArgumentException("삭제 권한이 없는 사용자입니다"));
 
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
         productRepository.delete(product);
-
-        return "상품삭제 완료";
+            return "상품삭제 완료";
     }
 }

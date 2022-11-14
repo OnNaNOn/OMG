@@ -22,21 +22,24 @@ public class ProductController {
     // 상품등록
     @PostMapping("/products")
     public ResponseEntity<ResponseDto<String>> createProduct(@RequestBody ProductReqDto productReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(ResponseDto.success(productService.createProduct(productReqDto, userDetails.getAccount())),HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseDto.success(productService.createProduct(productReqDto, userDetails.getAccount())), HttpStatus.CREATED);
     }
 
     // 상품수정
     @PatchMapping("/products/{productId}")
-    public ResponseEntity<ResponseDto<String>> updateProduct(@PathVariable Long productId, @RequestBody ProductReqDto productReqDto,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto<String>> updateProduct(@PathVariable Long productId, @RequestBody ProductReqDto productReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.updateProduct(productId, productReqDto, userDetails.getAccount())), HttpStatus.CREATED);
     }
 
     //상품삭제
     @DeleteMapping("/products/{productId}")
-    public ResponseEntity<ResponseDto<String>> deleteProduct(@PathVariable Long productId,@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto<String>> deleteProduct(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.deleteProduct(productId, userDetails.getAccount())), HttpStatus.CREATED);
     }
 
     //상품조회
-
+    @GetMapping("/products/{productId}")
+    public ResponseEntity<ResponseDto<String>> searchProduct(@PathVariable Long productId) {
+        return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId, userDetails.getAccount())), HttpStatus.CREATED);
+    }
 }

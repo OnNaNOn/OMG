@@ -19,4 +19,12 @@ public class Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Column(nullable = false)
+    private int user_id;
+
+    public Like(Product product, int user_id) {
+        this.product = product;
+        this.user_id = user_id;
+    }
 }

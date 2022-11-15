@@ -51,7 +51,7 @@ public class ReviewController {
      * 리뷰 조회
      */
     @GetMapping("/{productId}/reviews")
-    public List<ReviewResponseDto> getReviewList(@PathVariable Long productId) {
-        return (List<ReviewResponseDto>) ResponseDto.success(reviewService.getReviewList(productId));
+    public ResponseDto<List<ReviewResponseDto>> getReviewList(@PathVariable Long productId) {
+        return ResponseDto.success(reviewService.getReviewList(productId));
     }
 }

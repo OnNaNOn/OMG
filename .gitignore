@@ -27,7 +27,7 @@ out/
 !**/src/test/**/out/
 logs/**
 **/resources/application-**
-**/resources/jwt.yml
+#**/resources/jwt.yml
 
 ### NetBeans ###
 /nbproject/private/

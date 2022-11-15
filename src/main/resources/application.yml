@@ -24,8 +24,12 @@ spring:
 #    url: jdbc:h2:tcp://localhost/~/ono
 #    username: sa
 #    password:
-
 #    driver-class-name: org.h2.Driver
+
+  redis:
+    host: localhost
+    port: 6379
+
 
   jpa:
     hibernate:
@@ -46,7 +50,6 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
 
 logging:
   level:

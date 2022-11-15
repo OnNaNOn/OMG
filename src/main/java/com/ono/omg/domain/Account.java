@@ -24,7 +24,6 @@ public class Account extends BaseEntity {
     private String username;
     private String password;
 
-
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
         this.grade = "ROLE_USER";
         this.username = accountRegisterRequestDto.getUsername();

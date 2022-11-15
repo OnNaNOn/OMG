@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class LikeService {
@@ -27,12 +30,15 @@ public class LikeService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        if (likeRepository.findByProductAndUserid(product, account.getId()) == null) {
+        Optional<Like> likes = likeRepository.findByProductAndUserid(product, account.getId());
+
+        if (likes.isEmpty()) {
             Like like = new Like(product, account.getId());
             likeRepository.save(like);
             return "좋아요 완료";
         } else {
-            return "이미 좋아요가 완료되었습니다";
+            likeRepository.deleteById(likes.get().getUserid());
+            return "좋아요가 취소되었습니다";
         }
     }
 }

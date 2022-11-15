@@ -21,6 +21,6 @@ public class LikesController {
 
     @PostMapping("/{productId}/like")
     public ResponseEntity<ResponseDto<String>> addLikes(@PathVariable long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(ResponseDto.success(likeService.addLikes(productId, userDetails.getAccount())), HttpStatus.CREATED);
+        return new ResponseEntity<>(ResponseDto.success(likeService.addLikes(productId, userDetails.getAccount())), HttpStatus.OK);
     }
 }

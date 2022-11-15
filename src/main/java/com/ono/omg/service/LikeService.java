@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,9 +20,11 @@ public class LikeService {
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
 
+
     //상품 좋아요
     @Transactional
     public String addLikes(long productId, Account account) {
+
         accountRepository.findById(account.getId()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
 

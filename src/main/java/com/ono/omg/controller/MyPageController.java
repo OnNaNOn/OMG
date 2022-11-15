@@ -6,26 +6,24 @@ import com.ono.omg.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api")
-public class OrderController {
-    // 주문하기
-    // 특정 사용자의 주문 목록 조회
+@RequestMapping("/api/mypage")
+public class MyPageController {
 
     private final OrderService orderService;
 
-    @PostMapping("/{productId}/confirm")
-    public ResponseDto<CreatedOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
-                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(orderService.productOrder(productId, userDetails.getAccount()));
+    @GetMapping("/orders")
+    public ResponseDto<List<CreatedOrdersResponseDto>> findAllOrdersParticularAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(orderService.findAllOrders(userDetails.getAccount()));
     }
 }

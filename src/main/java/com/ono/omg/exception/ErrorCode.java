@@ -13,6 +13,7 @@ public enum ErrorCode {
     DUPLICATE_USERNAME(400, HttpStatus.BAD_REQUEST, "중복된 닉네임이 존재합니다."),
     NOT_EQUAL_PASSWORD(400, HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
 
+    DUPLICATE_PRODUCT(400, HttpStatus.BAD_REQUEST, "중복된 상품이 존재합니다."),
     // 401 UNAUTHORIZED 권한 없음
     UNAUTHORIZED_USER(401, HttpStatus.UNAUTHORIZED, "권한이 필요합니다."),
 
@@ -23,6 +24,7 @@ public enum ErrorCode {
     // 404 NOT_FOUND 존재하지 않음
     USER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "존재하지 않는 사용자입니다."),
     ROOM_NOT_FOUND(404, HttpStatus.NOT_FOUND, "존재하지 않는 방입니다."),
+    NOT_FOUND_PRODUCT(404, HttpStatus.NOT_FOUND, "상품이 존재하지 않습니다."),
     EMAIL_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 이메일은 존재하지 않습니다."),
 
     //500 INTERNAL SERVER ERROR

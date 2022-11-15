@@ -25,7 +25,9 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
-/logs/**
+logs/**
+**/resources/application-**
+#**/resources/jwt.yml
 
 ### NetBeans ###
 /nbproject/private/

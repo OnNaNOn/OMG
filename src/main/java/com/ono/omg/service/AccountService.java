@@ -53,6 +53,7 @@ public class AccountService {
         return new AccountRegisterResponseDto(account);
     }
 
+    @Transactional
     public AccountLoginResponseDto login(AccountLoginRequestDto accountLoginRequestDto, HttpServletResponse response) {
         Account findAccount = accountRepository.findByUsername(accountLoginRequestDto.getUsername()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.DUPLICATE_USERNAME)

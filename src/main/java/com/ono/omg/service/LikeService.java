@@ -27,12 +27,12 @@ public class LikeService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        if(likeRepository.findByProductAndUserid(product, account.getId()) == null) {
+        if (likeRepository.findByProductAndUserid(product, account.getId()) == null) {
             Like like = new Like(product, account.getId());
             likeRepository.save(like);
             return "좋아요 완료";
-        }else{
+        } else {
             return "이미 좋아요가 완료되었습니다";
-            }
         }
     }
+}

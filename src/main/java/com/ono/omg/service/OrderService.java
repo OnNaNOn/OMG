@@ -10,6 +10,8 @@ import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
+
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 주문하기
@@ -43,6 +47,10 @@ public class OrderService {
 
         // 상품에 대한 주문은 여러개도 발생할 수 있다..?
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
+
+        // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
+        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
+
         orderRepository.save(savedOrder);
 
         CreatedOrdersResponseDto createdOrderDto = new CreatedOrdersResponseDto(savedOrder.getId(),

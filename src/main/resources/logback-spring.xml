@@ -31,13 +31,15 @@
     <!-- INFO 인 경우 파일에 로그 처리 -->
     <appender name="INFO_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <!-- 파일 경로 설정 -->
-<!--        <file>./logs/local/local_log_%d{yyyy-MM-dd}-%i.log</file>-->
-
         <!-- 출력 패턴 설정-->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- 해당 패턴 네이밍으로 현재 로그가 기록됨 -->
+            <!-- [2021-08-07 20:03:12:3093][main] DEBUG org.hibernate.SQL - drop table if exists user CASCADE-->
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
+
+        <!-- 파일 경로 설정 -->
+        <!-- <file>./logs/local/info_log_%d{yyyy-MM-dd}-%i.log</file> -->
 
         <!-- Rolling 정책 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -53,7 +55,10 @@
 
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>INFO</level>
+            <!-- 해당 레벨만 기록한다. -->
             <onMatch>ACCEPT</onMatch>
+            <!-- 다른 수준의 레벨은 기록하지 않는다.(상위 레벨도 기록 안함),
+            상위 수준의 레벨에 대한 기록을 원하면 ACCEPT 로 하면 기록된다. -->
             <onMismatch>DENY</onMismatch>
 
         </filter>
@@ -63,15 +68,16 @@
     <!-- WARN 인 경우 파일에 로그 처리 -->
     <appender name="WARN_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <!-- 파일 경로 설정 -->
-        <!-- <file>./logs/local/warn_log_%d{yyyy-MM-dd}-%i.log</file> -->
-
         <!-- 출력 패턴 설정-->
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>${LOG_PATTERN}</pattern>
         </encoder>
 
-        <!-- 에러의 경우 파일에 로그 처리 -->
+        <!-- 파일 경로 설정 -->
+        <!-- <file>./logs/local/warn_log_%d{yyyy-MM-dd}-%i.log</file> -->
+
+
+       <!-- 에러의 경우 파일에 로그 처리 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>WARN</level>
             <onMatch>ACCEPT</onMatch>
@@ -90,18 +96,59 @@
         </rollingPolicy>
     </appender>
 
+    <!-- ERROR 인 경우 파일에 로그 처리 -->
+    <appender name="ERR_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 출력 패턴 설정-->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+
+        <!-- 파일 경로 설정 -->
+        <!-- <file>./logs/local/err_log_%d{yyyy-MM-dd}-%i.log</file> -->
+
+
+        <!-- 에러의 경우 파일에 로그 처리 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+
+        <!-- Rolling 정책 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>./logs/local/err_log_%d{yyyy-MM-dd}-%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 파일당 최고 용량 kb, mb, gb -->
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 일자별 로그 파일 최대 보관 주기(~일), 해당 설정일 이상된 파일은 자동으로 제거-->
+            <maxHistory>180</maxHistory>
+        </rollingPolicy>
+    </appender>.
+
+
+
     <!-- root레벨 설정 -->
+    <!-- Info 레벨의 로그를 콘솔에 출력 -->
+    <!-- 실제 로깅을 수행하는 객체로 root는 최대 하나를 가질 수 있고 logger는 여러개를 가질 수 있으며 root를 상속받는다. -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="WARN_LOG" />
         <appender-ref ref="INFO_LOG" />
+        <appender-ref ref="WARN_LOG" />
+        <appender-ref ref="ERR_LOG" />
     </root>
 
     <!-- 특정패키지 로깅레벨 설정 -->
+    <!-- 로거가 발생될 때, 설정해둔 대상을 파일에 기록한다. -->
+    <!-- 콘솔에 출력된 LogController 에 대해서 아래 작업을 실행한다. -->
+    <!-- DEBUG 레벨 이상에서만 실행한다. -->
+    <!-- Debug 이상의 레벨에 대해서 각각 <appender-ref ref="INFO_LOG" /> 와 <appender-ref ref="WARN_LOG" /> 의 변수에 할당해둔 명령이 실행된다. -->
     <logger name="com.ono.omg.controller" additivity="false">
-        <level value = "DEBUG" />
+    <level value = "DEBUG" />
         <appender-ref ref="INFO_LOG" />
-<!--        <appender-ref ref="WARN_LOG" />-->
+        <appender-ref ref="WARN_LOG" />
+        <appender-ref ref="ERR_LOG" />
     </logger>
 
     <logger name="org.hibernate.SQL" additivity="false">

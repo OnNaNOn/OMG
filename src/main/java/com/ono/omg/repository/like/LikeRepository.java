@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
     Optional<Like> findByProductAndUserid(Product product, Long id);
+
+    void deleteByUserid(Long userid);
 }

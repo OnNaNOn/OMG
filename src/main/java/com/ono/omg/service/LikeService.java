@@ -38,7 +38,7 @@ public class LikeService {
             likeRepository.save(like);
             return "좋아요 완료";
         } else {
-            likeRepository.deleteById(likes.get().getUserid());
+            likeRepository.deleteByUserid(likes.get().getUserid());
             return "좋아요가 취소되었습니다";
         }
     }

@@ -32,7 +32,7 @@ public class Product {
     @Column(nullable = false)
     private String delivery;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "seller")
     private Long userid;
 
 

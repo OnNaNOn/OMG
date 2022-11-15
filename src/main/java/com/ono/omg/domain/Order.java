@@ -1,5 +1,6 @@
 package com.ono.omg.domain;
 
+import com.ono.omg.domain.base.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +11,11 @@ import javax.persistence.*;
 @Getter
 @Table(name = "orders")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "orders_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

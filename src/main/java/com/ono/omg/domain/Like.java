@@ -21,7 +21,7 @@ public class Like {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name ="user_id")
     private Long userid;
 
     public Like(Product product, Long userid) {

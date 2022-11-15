@@ -39,6 +39,12 @@ spring:
       settings:
         web-allow-others: true
 
+  redis:
+    host: localhost
+    port: 6379
+
+
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -74,6 +80,8 @@ server:
 #        coyote:
 #          http11:
 #            debug
+
+
 
 jwt:
   secret:

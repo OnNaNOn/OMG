@@ -1,10 +1,7 @@
 package com.ono.omg.controller.view;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.security.user.UserDetailsImpl;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.*;
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.RegistedProductResponseDto;
 
 @Controller
 public class UIController {

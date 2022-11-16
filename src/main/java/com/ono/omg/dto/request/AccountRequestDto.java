@@ -13,13 +13,13 @@ public class AccountRequestDto {
     @ToString
     public static class AccountRegisterRequestDto {
 
-        @NotEmpty
+        @NotEmpty(message = "username을 입력해주세요.")
         private String username;
 
-        @NotEmpty
+        @NotEmpty(message = "password를 입력해주세요.")
         private String password;
 
-        @NotEmpty
+        @NotEmpty(message = "password를 입력해주세요.")
         private String passwordConfirm;
 
         public void passwordEncode(String encodedPassword) {
@@ -32,11 +32,13 @@ public class AccountRequestDto {
     @AllArgsConstructor
     public static class AccountLoginRequestDto {
 
-        @NotEmpty
+        @NotEmpty(message = "username을 입력해주세요.")
         private String username;
 
-        @NotEmpty
+        @NotEmpty(message = "password를 입력해주세요.")
         private String password;
+
+        String adminSecretKey = "";
     }
 
 }

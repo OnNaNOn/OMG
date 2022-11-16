@@ -10,9 +10,11 @@ import com.ono.omg.security.jwt.JwtUtil;
 import com.ono.omg.security.jwt.TokenDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -33,6 +35,8 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    @Value(value = "${admin.secret.key}")
+    private String ADMIN_SECRET_KEY;
 
     @Transactional
     public AccountRegisterResponseDto signup(AccountRegisterRequestDto accountRegisterRequestDto) {
@@ -55,12 +59,21 @@ public class AccountService {
 
     @Transactional
     public AccountLoginResponseDto login(AccountLoginRequestDto accountLoginRequestDto, HttpServletResponse response) {
+        System.out.println("ADMIN_SECRET_KEY = " + ADMIN_SECRET_KEY);
         Account findAccount = accountRepository.findByUsername(accountLoginRequestDto.getUsername()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.DUPLICATE_USERNAME)
         );
 
         if(!passwordEncoder.matches(accountLoginRequestDto.getPassword(), findAccount.getPassword())){
             throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
+        }
+
+        /**
+         * 관리자 번호와 일치할 시 관리자 등급으로 변경
+         */
+        String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
+        if (hasAdminAuthroized(adminSecretKey)) {
+            findAccount.upgradeAdmin();
         }
 
         TokenDto tokenDto = jwtUtil.createAllToken(accountLoginRequestDto.getUsername());
@@ -77,9 +90,16 @@ public class AccountService {
         return new AccountLoginResponseDto(findAccount);
     }
 
+    private boolean hasAdminAuthroized(String adminSecretKey) {
+        return hasAdminSecretKey(adminSecretKey) && adminSecretKey.equals(ADMIN_SECRET_KEY);
+    }
+
+    private boolean hasAdminSecretKey(String adminSecretKey) {
+        return StringUtils.hasText(adminSecretKey);
+    }
+
     private void addTokenHeader(HttpServletResponse response, TokenDto tokenDto) {
         response.addHeader(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
         response.addHeader(JwtUtil.REFRESH_TOKEN, tokenDto.getRefreshToken());
     }
-
 }

@@ -34,11 +34,11 @@ public class LikeService {
         Optional<Like> likes = likeRepository.findByProductIdAndAccountId(productId, account);
 
         if (likes.isEmpty()) {
-            Like like = new Like(product, account.getId());
+            Like like = new Like(productId, account);
             likeRepository.save(like);
             return "좋아요 완료";
         } else {
-            likeRepository.deleteByUserid(likes.get().getUserid());
+            likeRepository.deleteByProductId(likes.get().getProductId());
             return "좋아요가 취소되었습니다";
         }
     }

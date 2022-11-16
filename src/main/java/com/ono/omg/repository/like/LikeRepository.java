@@ -13,5 +13,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     Optional<Like> findByProductIdAndAccountId(Long id, Account account);
 
-    void deleteByUserid(Long userid);
+    void deleteByProductId(Long productId);
 }

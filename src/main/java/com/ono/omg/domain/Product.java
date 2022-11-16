@@ -60,6 +60,7 @@ public class Product {
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
         this.sellerId = account.getId();
+        this.isDeleted = "N";
     }
 
     public void updateProduct(ProductReqDto productReqDto) {

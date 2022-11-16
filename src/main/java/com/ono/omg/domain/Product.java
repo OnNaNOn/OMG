@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Random;
 
 @Entity
 @Getter
@@ -72,8 +73,18 @@ public class Product extends BaseEntity {
         this.stock = stock;
         this.sellerId = sellerId;
         this.isDeleted = "N";
-        this.imgUrl = "http://spartacodingclub.shop/static/images/rtans/SpartaIcon11.png";
+        this.imgUrl = "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon" + numRandom() + ".png";
     }
+
+    private String numRandom() {
+        String rand = String.valueOf((int) (Math.random() * 12) + 1);
+
+        if (rand.length() == 1) {
+            rand = "0" + rand;
+        }
+        return rand;
+    }
+
 
     public void updateProduct(ProductReqDto productReqDto) {
         this.title = productReqDto.getTitle();

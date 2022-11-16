@@ -63,6 +63,18 @@ public class Product extends BaseEntity {
         this.isDeleted = "N";
     }
 
+
+    public Product(String title, int price, String category, String delivery, int stock, Long sellerId) {
+        this.title = title;
+        this.price = price;
+        this.category = category;
+        this.delivery = delivery;
+        this.stock = stock;
+        this.sellerId = sellerId;
+        this.isDeleted = "N";
+        this.imgUrl = "http://spartacodingclub.shop/static/images/rtans/SpartaIcon11.png";
+    }
+
     public void updateProduct(ProductReqDto productReqDto) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();

@@ -30,6 +30,23 @@ public class ProductResponseDto {
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
         }
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AllProductManagementResponseDto {
+        private Long productId;
+        private String title;
+        private int price;
+        private int stock;
+        private String isNowEvent;
 
+        public AllProductManagementResponseDto(Product product) {
+            this.productId = product.getId();
+            this.title = product.getTitle();
+            this.price = product.getPrice();
+            this.stock = product.getStock();
+            this.isNowEvent = "N";
+        }
     }
 }

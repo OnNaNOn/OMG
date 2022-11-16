@@ -53,12 +53,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <th scope="row">0</th>
-            <td>명품</td>
-            <td>10000</td>
-            <td>10</td>
-            <td>N</td>
+        <tr th:each="product: ${products}">
+            <td th:text="${product.productId}">회원Id</td>
+            <td th:text="${product.title}">상품명</td>
+            <td th:text="${product.price}">상품가격</td>
+            <td th:text="${product.stock}">상품재고</td>
+            <td th:text="${product.isNowEvent}">이벤트 상품</td>
         </tr>
         </tbody>
     </table>

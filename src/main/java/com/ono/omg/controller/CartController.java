@@ -1,14 +1,14 @@
 package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
+import com.ono.omg.dto.response.CartResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,8 +21,19 @@ public class CartController {
      */
     @PostMapping("/{productId}/cart")
     public ResponseDto<Long> inputProduct(@PathVariable Long productId,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails
+                                          ) {
         return ResponseDto.success(cartService.inputProduct(productId, userDetails));
     }
+
+    /**
+     * 장바구니 조회
+     * */
+    @GetMapping("/cart")
+    public ResponseDto<List<CartResponseDto>> getCartList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ResponseDto.success(cartService.getCartList(userDetails));
+    }
+
+
 
 }

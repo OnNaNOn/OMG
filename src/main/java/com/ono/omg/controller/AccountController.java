@@ -36,6 +36,7 @@ public class AccountController {
 //        logger.info("INFO Level 테스트");
 //        logger.warn("Warn Level 테스트");
 //        log.info("AccountController.registerAccount");
+        System.out.println("accountRequestDto = " + accountRequestDto);
         return ResponseDto.success(accountService.signup(accountRequestDto));
     }
 

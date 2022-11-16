@@ -32,7 +32,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                         product.title,
                         product.category,
                         product.delivery,
-                        product.userid
+                        product.sellerId
                 ))
                 .from(order)
                 .join(order.product, product)

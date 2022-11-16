@@ -1,17 +1,16 @@
 package com.ono.omg.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 
 public class AccountRequestDto {
 
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class AccountRegisterRequestDto {
 
         @NotEmpty

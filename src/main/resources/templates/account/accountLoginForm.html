@@ -1,0 +1,72 @@
+<!doctype html>
+<html xmlns: th=”http://www.thymeleaf.org”>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+
+        .loginBtn {
+            margin-top: 5px;
+        }
+    </style>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        function accountLogin() {
+            var data = {
+                "username": $("#username").val(),
+                "password": $("#password").val(),
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/accounts/login",
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("로그인이 완료되었습니다.");
+                    window.location.href = '/api/omg';
+                },
+                error : function(xhr, status, error) {
+                    let response = JSON.parse(xhr.responseText);
+                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                    alert(response.error.message);
+                }
+            });
+        }
+
+    </script>
+    <title>Document</title>
+</head>
+<body>
+
+<div class="container">
+    <div align="center">
+        <h1>사용자 로그인</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="mb-3">
+        <label for="username" class="form-label">사용자 닉네임</label>
+        <input type="text" class="form-control" id="username" placeholder="number1ono">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">패스워드</label>
+        <input type="password" class="form-control" id="password">
+    </div>
+    <button type="button" onclick="accountLogin()" class="loginBtn btn btn-primary form-control" style="height: 50px">사용자 로그인</button>
+
+    <button type="button" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control" style="height: 50px">관리자 로그인</button>
+    <button type="submit" onclick="location.href='/accounts/signup'" class="loginBtn btn btn-success form-control" style="height: 50px">회원가입</button>
+
+</div>
+</body>
+</html>

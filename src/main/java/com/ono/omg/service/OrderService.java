@@ -31,7 +31,6 @@ public class OrderService {
 
     /**
      * 주문하기
-     *
      * @param productId
      * @param account
      * @return
@@ -59,7 +58,7 @@ public class OrderService {
                 findProduct.getTitle(),
                 findProduct.getCategory(),
                 findProduct.getDelivery(),
-                findProduct.getUserid());
+                findProduct.getSellerId());
         return createdOrderDto;
     }
 

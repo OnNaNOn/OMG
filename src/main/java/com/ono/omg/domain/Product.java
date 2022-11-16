@@ -1,5 +1,6 @@
 package com.ono.omg.domain;
 
+import com.ono.omg.domain.base.BaseEntity;
 import com.ono.omg.dto.request.ProductReqDto;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Product {
+public class Product extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +25,13 @@ public class Product {
     private int price;
 
     @Column(nullable = false)
-    private int stock;
-
-    @Column(nullable = false)
     private String category;
 
     @Column(nullable = false)
     private String delivery;
+
+    @Column(nullable = false)
+    private int stock;
 
     @Column(nullable = false, name = "seller")
     private Long sellerId;
@@ -40,7 +41,6 @@ public class Product {
 
     @Column(nullable = false)
     private String imgUrl;
-
 
     public Product(String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
         this.title = title;

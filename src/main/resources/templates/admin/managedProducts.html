@@ -1,0 +1,79 @@
+<!doctype html>
+<html xmlns: th=”http://www.thymeleaf.org”>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+        .container {
+            max-width: 560px;
+            margin-top: 50px;
+        }
+
+        ul {
+            justify-content: center;
+        }
+
+        .btn-group {
+            top: 50%;
+            left: 15%;
+        }
+
+
+    </style>
+
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
+        <button type="button" class="btn btn-primary">로그인</button>
+        <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
+        <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
+    </div>
+<div class="container">
+
+<div class="container">
+    <div align="center">
+        <h1>재고 관리</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">상품 번호</th>
+            <th scope="col">상품명</th>
+            <th scope="col">상품 가격</th>
+            <th scope="col">상품 재고</th>
+            <th scope="col">이벤트 상품</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row">0</th>
+            <td>명품</td>
+            <td>10000</td>
+            <td>10</td>
+            <td>N</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">5</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+        </ul>
+    </nav>
+</div> <!-- /container -->
+</body>
+</html>

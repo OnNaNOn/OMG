@@ -54,7 +54,7 @@ public class ProductService {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
 
-        productRepository.findByUserid(account.getId()).orElseThrow(
+        productRepository.findBySellerId(account.getId()).orElseThrow(
                 () -> new IllegalArgumentException("수정 권한이 없는 사용자입니다"));
 
         Product product = productRepository.findById(productId).orElseThrow(
@@ -71,7 +71,7 @@ public class ProductService {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
 
-        productRepository.findByUserid(account.getId()).orElseThrow(
+        productRepository.findBySellerId(account.getId()).orElseThrow(
                 () -> new IllegalArgumentException("삭제 권한이 없는 사용자입니다"));
 
         Product product = productRepository.findById(productId).orElseThrow(

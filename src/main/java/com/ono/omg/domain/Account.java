@@ -24,9 +24,16 @@ public class Account extends BaseEntity {
     private String username;
     private String password;
 
+    private String isDeleted;
+
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
         this.grade = "ROLE_USER";
         this.username = accountRegisterRequestDto.getUsername();
         this.password = accountRegisterRequestDto.getPassword();
+        this.isDeleted = "N";
+    }
+
+    public void deleteAccount() {
+        isDeleted = "Y";
     }
 }

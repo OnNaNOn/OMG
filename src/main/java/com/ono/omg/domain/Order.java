@@ -29,9 +29,13 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
+    private String isDeleted;
+
+
     public Order(Account account, Product product, Integer totalPrice) {
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
+        isDeleted = "N";
     }
 }

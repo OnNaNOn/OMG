@@ -76,7 +76,10 @@ public class ReviewService {
         //작성자 체크
         idCheck(accountId, foundReview.getId());
 
-        reviewRepository.deleteById(foundReview.getId());
+        //reviewRepository.deleteById(foundReview.getId());
+
+        //N -> Y
+        foundReview.deleteReview();
         return foundReview.getId();
     }
 

@@ -15,7 +15,10 @@ public class ProductResDto {
     private int stock;
     private String category;
     private String delivery;
-    private Long userid;
+    private Long sellerId;
+    private String isDeleted;
+    private String imgUrl;
+
 
 
     public ProductResDto(Product product) {
@@ -24,6 +27,8 @@ public class ProductResDto {
         this.stock = product.getStock();
         this.category = product.getCategory();
         this.delivery = product.getDelivery();
-        this.userid = product.getUserid();
+        this.sellerId = product.getSellerId();
+        this.isDeleted = product.getIsDeleted();
+        this.imgUrl = product.getImgUrl();
     }
 }

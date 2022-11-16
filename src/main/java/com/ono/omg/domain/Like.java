@@ -18,14 +18,14 @@ public class Like {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @JoinColumn(name = "account_id")
+    private Account accountId;
 
-    @Column(nullable = false, name ="user_id")
-    private Long userid;
+    @Column(nullable = false, name ="productId")
+    private Long productId;
 
-    public Like(Product product, Long userid) {
-        this.product = product;
-        this.userid = userid;
+    public Like(Long productId, Account account) {
+        this.productId = productId;
+        this.accountId = account;
     }
 }

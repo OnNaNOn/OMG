@@ -31,7 +31,7 @@ public class LikeService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        Optional<Like> likes = likeRepository.findByProductAndUserid(product, account.getId());
+        Optional<Like> likes = likeRepository.findByProductIdAndAccountId(productId, account);
 
         if (likes.isEmpty()) {
             Like like = new Like(product, account.getId());

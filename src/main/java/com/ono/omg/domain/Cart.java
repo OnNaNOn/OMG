@@ -21,11 +21,22 @@ public class Cart extends BaseEntity {
     @JoinColumn(name = "account_id")
     private Account account;
 
-    @Column(name = "product_id")
+    @Column(nullable = false, name = "product_id")
     private Long productId;
+
+    @Column(nullable = false)
+    private String isDeleted;
 
     public Cart(Account account, Long productId) {
         this.account = account;
         this.productId = productId;
+        this.isDeleted = "N";
+    }
+
+    /**
+     *비즈니스 로직
+     */
+    public void deleteCart() {
+        this.isDeleted = "Y";
     }
 }

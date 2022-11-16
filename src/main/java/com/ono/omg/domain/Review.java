@@ -21,16 +21,20 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @Column(name = "review_content")
+    @Column(nullable = false, name = "review_content")
     private String reviewContent;
 
-    @Column
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
+    private String isDeleted;
 
     public Review(Product product, String reviewContent, Long userId) {
         this.product = product;
         this.reviewContent = reviewContent;
         this.userId = userId;
+        this.isDeleted = "N";
     }
 
 
@@ -39,5 +43,9 @@ public class Review extends BaseEntity {
      */
     public void setReviewContent(String reviewContent){
         this.reviewContent = reviewContent;
+    }
+
+    public void deleteReview() {
+        this.isDeleted = "Y";
     }
 }

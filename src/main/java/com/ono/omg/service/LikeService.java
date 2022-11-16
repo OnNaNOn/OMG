@@ -31,14 +31,14 @@ public class LikeService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        Optional<Like> likes = likeRepository.findByProductAndUserid(product, account.getId());
+        Optional<Like> likes = likeRepository.findByProductIdAndAccountId(productId, account);
 
         if (likes.isEmpty()) {
-            Like like = new Like(product, account.getId());
+            Like like = new Like(productId, account);
             likeRepository.save(like);
             return "좋아요 완료";
         } else {
-            likeRepository.deleteById(likes.get().getUserid());
+            likeRepository.deleteByProductId(likes.get().getProductId());
             return "좋아요가 취소되었습니다";
         }
     }

@@ -33,32 +33,45 @@ public class Product {
     private String delivery;
 
     @Column(nullable = false, name = "seller")
-    private Long userid;
+    private Long sellerId;
+
+    @Column(nullable = false)
+    private String isDeleted;
+
+    @Column(nullable = false)
+    private String imgUrl;
 
 
-    public Product(String title, int price, int stock, String category, String delivery, Long userid) {
+    public Product(String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
         this.title = title;
         this.price = price;
         this.stock = stock;
         this.category = category;
         this.delivery = delivery;
-        this.userid = userid;
+        this.sellerId = sellerId;
+        this.isDeleted = isDeleted;
+        this.imgUrl = imgUrl;
     }
+
     public Product(ProductReqDto productReqDto, Account account) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();
         this.stock = productReqDto.getStock();
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
-        this.userid = account.getId();
+        this.sellerId = account.getId();
+        this.isDeleted = "N";
     }
 
-    public void updateProduct(ProductReqDto productReqDto, Account account) {
+    public void updateProduct(ProductReqDto productReqDto) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();
         this.stock = productReqDto.getStock();
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
-        this.userid = account.getId();
+    }
+
+    public void isDeleted() {
+        this.isDeleted = "Y";
     }
 }

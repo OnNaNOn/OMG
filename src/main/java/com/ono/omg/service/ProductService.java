@@ -60,7 +60,7 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        product.updateProduct(productReqDto, account);
+        product.updateProduct(productReqDto);
             return "상품수정 완료";
         }
 
@@ -77,7 +77,7 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
-        productRepository.delete(product);
+        product.isDeleted();
             return "상품삭제 완료";
     }
 

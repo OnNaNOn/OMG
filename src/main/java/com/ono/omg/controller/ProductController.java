@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     //상품삭제
-    @PatchMapping("/products/{productId}")
+    @DeleteMapping("/products/{productId}")
     public ResponseEntity<ResponseDto<String>> deleteProduct(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.deleteProduct(productId, userDetails.getAccount())), HttpStatus.OK);
     }

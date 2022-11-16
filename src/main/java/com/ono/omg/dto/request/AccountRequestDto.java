@@ -30,6 +30,7 @@ public class AccountRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    @ToString
     public static class AccountLoginRequestDto {
 
         @NotEmpty(message = "username을 입력해주세요.")

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 import java.util.Optional;
@@ -59,7 +60,6 @@ public class AccountService {
 
     @Transactional
     public AccountLoginResponseDto login(AccountLoginRequestDto accountLoginRequestDto, HttpServletResponse response) {
-        System.out.println("ADMIN_SECRET_KEY = " + ADMIN_SECRET_KEY);
         Account findAccount = accountRepository.findByUsername(accountLoginRequestDto.getUsername()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.DUPLICATE_USERNAME)
         );
@@ -74,6 +74,7 @@ public class AccountService {
         String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
         if (hasAdminAuthroized(adminSecretKey)) {
             findAccount.upgradeAdmin();
+            accountRepository.save(findAccount);
         }
 
         TokenDto tokenDto = jwtUtil.createAllToken(accountLoginRequestDto.getUsername());
@@ -85,9 +86,18 @@ public class AccountService {
             RefreshToken newRefreshToken = new RefreshToken(tokenDto.getRefreshToken(), findAccount.getUsername());
             refreshTokenRepository.save(newRefreshToken);
         }
+        System.out.println("tokenDto = " + tokenDto.getAccessToken());
         addTokenHeader(response, tokenDto);
+//        addTokenCookie(response, tokenDto);
 
         return new AccountLoginResponseDto(findAccount);
+    }
+
+    private void addTokenCookie(HttpServletResponse response, TokenDto tokenDto) {
+        Cookie cookie = new Cookie(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
+        cookie.setMaxAge((int) JwtUtil.ACCESS_TIME);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
     }
 
     private boolean hasAdminAuthroized(String adminSecretKey) {

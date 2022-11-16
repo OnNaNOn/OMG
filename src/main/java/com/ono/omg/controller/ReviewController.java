@@ -41,7 +41,7 @@ public class ReviewController {
     /**
      * 리뷰 삭제
      */
-    @PatchMapping("/reviews/{reviewId}")
+    @DeleteMapping("/reviews/{reviewId}")
     public ResponseDto<Long> deleteReview(@PathVariable Long reviewId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails));

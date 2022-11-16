@@ -19,7 +19,7 @@
 
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        function accountLogin() {
+        function adminLogin() {
             var data = {
                 "username": $("#username").val(),
                 "password": $("#password").val(),
@@ -27,12 +27,12 @@
 
             $.ajax({
                 type: "POST",
-                url: "/accounts/admin/login", // API 추가되어야 함
+                url: "/accounts/login", // /accounts/admin/login API 추가되어야 함
                 headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(data),
                 success: function (response) {
                     alert("관리자 로그인이 완료되었습니다.");
-                    window.location.href = '/api/omg';
+                    window.location.href = '/admin/management';
                 },
                 error : function(xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
@@ -68,7 +68,7 @@
         <label for="password" class="form-label">패스워드</label>
         <input type="password" class="form-control" id="password">
     </div>
-    <button type="submit" onclick="location.href='/admin/login'" class="loginBtn btn btn-warning form-control" style="height: 50px">관리자 로그인</button>
+    <button type="submit" onclick="adminLogin()" class="loginBtn btn btn-warning form-control" style="height: 50px">관리자 로그인</button>
 
     <button type="button" onclick="location.href='/accounts/login'" class="loginBtn btn btn-primary form-control" style="height: 50px">사용자 로그인</button>
     <button type="button" onclick="location.href='/accounts/signup'" class="loginBtn btn btn-success form-control" style="height: 50px">회원가입</button>

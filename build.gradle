@@ -48,7 +48,7 @@ dependencies {
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
 	// redisson
-	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+//	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"

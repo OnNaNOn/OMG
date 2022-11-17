@@ -72,6 +72,29 @@ public class ProductResponseDto {
         }
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class detailProductResponseDto {
+        private Long productId;
+        private String imgUrl;
+        private String title;
+        private int price;
+        private String category;
+        private String delivery;
+        private int stock;
+
+        public detailProductResponseDto(Product product) {
+            this.productId = product.getId();
+            this.imgUrl = product.getImgUrl();
+            this.title = product.getTitle();
+            this.price = product.getPrice();
+            this.category = product.getCategory();
+            this.delivery = product.getDelivery();
+            this.stock = product.getStock();
+        }
+    }
+
     @ToString
     public static class RegistedProductResponseDto {
         private String title;

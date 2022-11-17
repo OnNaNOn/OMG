@@ -1,8 +1,13 @@
 spring:
   profiles:
     default: local
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/melocal?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #    username: root
 #    password: 1234
@@ -14,20 +19,20 @@ spring:
 
   #전성영
 #  spring:
-    datasource:
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-  #    username: root
-  #    password: 1234
-
-  # h2 database
-  # In-Memory
-      url: jdbc:h2:mem:testdb
-  # Server
-  #    url: jdbc:h2:tcp://localhost/~/ono
-      username: sa
-      password:
-      driver-class-name: org.h2.Driver
+#    datasource:
+#  #    driver-class-name: com.mysql.cj.jdbc.Driver
+#  #    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#  #    username: root
+#  #    password: 1234
+#
+#  # h2 database
+#  # In-Memory
+#      url: jdbc:h2:mem:testdb
+#  # Server
+#  #    url: jdbc:h2:tcp://localhost/~/ono
+#      username: sa
+#      password:
+#      driver-class-name: org.h2.Driver
 
   #  redis:
   #    host: localhost

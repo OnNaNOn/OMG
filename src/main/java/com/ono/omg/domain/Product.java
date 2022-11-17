@@ -43,7 +43,8 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String imgUrl;
 
-    public Product(String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+    public Product(Long id, String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+        this.id = id;
         this.title = title;
         this.price = price;
         this.stock = stock;
@@ -52,6 +53,11 @@ public class Product extends BaseEntity {
         this.sellerId = sellerId;
         this.isDeleted = isDeleted;
         this.imgUrl = imgUrl;
+    }
+
+    public Product(Long id, int stock) {
+        this.id = id;
+        this.stock = stock;
     }
 
     public Product(ProductReqDto productReqDto, Account account) {
@@ -63,7 +69,6 @@ public class Product extends BaseEntity {
         this.sellerId = account.getId();
         this.isDeleted = "N";
     }
-
 
     public Product(String title, int price, String category, String delivery, int stock, Long sellerId) {
         this.title = title;
@@ -96,5 +101,13 @@ public class Product extends BaseEntity {
 
     public void isDeleted() {
         this.isDeleted = "Y";
+    }
+
+    public void decrease() {
+        if (this.stock - 1 < 0) {
+            throw new RuntimeException("재고부족으로 인해 주문이 불가합니다");
+        }
+        this.stock -= 1;
+
     }
 }

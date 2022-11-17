@@ -21,11 +21,33 @@
             display: flex;
         }
 
-        .productCol {
-            text-align: center;
+        .search {
+            display: flex;
+            background: yellow;
+            float: right;
         }
     </style>
 <body>
+
+<!--<script>-->
+<!--    function searchProduct() {-->
+
+<!--        $.ajax({-->
+<!--            type: "POST",-->
+<!--            url: "",-->
+<!--            headers: {'Content-Type': 'application/json'},-->
+<!--            data: JSON.stringify(data),-->
+<!--            success: function (response) {-->
+
+<!--            },-->
+<!--            error : function(xhr, status, error) {-->
+<!--                let response = JSON.parse(xhr.responseText);-->
+<!--                alert(response.error.message);-->
+<!--            }-->
+<!--        });-->
+<!--    }-->
+<!--</script>-->
+
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
@@ -34,6 +56,12 @@
         <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
     </div>
     <div class="container">
+
+
+        <div class = "search">
+            <input type="text" class="form-control" id="searchText">
+            <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
+        </div>
 
         <div class="container2">
             <div>

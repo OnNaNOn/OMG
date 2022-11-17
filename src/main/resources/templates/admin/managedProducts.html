@@ -45,7 +45,7 @@
 
         <ul class="list-group list-group-horizontal">
             <li class="list-group-item">전체 페이지 수</li>
-            <li class="list-group-item" th:text="${maxPage}">0</li>
+            <li class="list-group-item" th:text="${max}">0</li>
             <li class="list-group-item">전체 상품수</li>
             <li class="list-group-item" th:text="${productsSize}">100</li>
         </ul>
@@ -75,18 +75,44 @@
 
         <nav aria-label="Page navigation example">
             <ul class="pagination">
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item"><a class="page-link" href="#">6</a></li>
-                <li class="page-item"><a class="page-link" href="#">7</a></li>
-                <li class="page-item"><a class="page-link" href="#">8</a></li>
-                <li class="page-item"><a class="page-link" href="#">9</a></li>
-                <li class="page-item"><a class="page-link" href="#">10</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+<!--                th:with="start=${(products.number / maxPage) * maxPage + 1},-->
+<!--                                            end=(${(products.totalPages == 0) ? 1 : (start + (maxPage - 1) < products.totalPages ? start + (maxPage - 1) : products.totalPages)})">-->
+
+                <li class="page-item" th:each="page:${#numbers.sequence(startPage,endPage)}">
+                    <a class="page-link" th:if="${page != nowPage}" th:href="@{/admin/management(page=${page-1})}" th:text="${page}">0</a>
+                    <b><a class="page-link" th:if="${page==nowPage}" th:text="${page}"></a></b>
+                </li>
+
+                <!--                <li class="page-item" th:if="${start > 1}">-->
+<!--                    <a class="page-link" th:href="@{/admin/management(page=0)}" th:text="'<<'"> << </a>-->
+<!--                </li>-->
+<!--                <li class="page-item" th:if="${start > 1}">-->
+<!--                    <a class="page-link" th:href="@{/admin/management(page=${start - maxPage})}" th:text="'<'"> < </a>-->
+<!--                </li>-->
+
+<!--                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}">-->
+<!--                    <a class="page-link" th:text="${page}" th:href="@{/admin/management(page=${page - 1}, size=${pageOffset})}">0</a>-->
+<!--                </li>-->
+
+<!--                <li class="page-item" th:if="${end < products.totalPages}">-->
+<!--                    <a class="page-link" th:href="@{/admin/management(page=${start + maxPage})}" th:text="'>'"> > </a>-->
+<!--                </li>-->
+<!--                <li class="page-item" th:if="${end < products.totalPages}">-->
+<!--                    <a class="page-link" th:href="@{/admin/management(page=${products.totalPages - 1})}" th:text="'>>'"> >> </a>-->
+<!--                </li>-->
+
+<!--                <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">4</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">5</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">6</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">7</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">8</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">9</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">10</a></li>-->
+<!--                <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
             </ul>
         </nav>
     </div> <!-- /container -->

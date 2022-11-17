@@ -35,8 +35,7 @@ public class Account extends BaseEntity {
         this.password = accountRegisterRequestDto.getPassword();
     }
 
-    public Account(Long id, AccountType accountType, String username, String password, DeletedType deletedType) {
-        this.id = id;
+    public Account(AccountType accountType, String username, String password, DeletedType deletedType) {
         this.accountType = accountType;
         this.username = username;
         this.password = password;

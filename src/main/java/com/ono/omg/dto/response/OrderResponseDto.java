@@ -17,6 +17,7 @@ public class OrderResponseDto {
         // order
         private Long orderId;
         private Integer orderTotalPrice;
+//        private String orderStatus;
 
         // account
         private String username;
@@ -26,6 +27,7 @@ public class OrderResponseDto {
         private String category;
         private String delivery;
         private Long seller;
+
 
         @QueryProjection
         public CreatedOrdersResponseDto(Long orderId, Integer orderTotalPrice, String username, String title, String category, String delivery, Long seller) {
@@ -47,5 +49,18 @@ public class OrderResponseDto {
             this.delivery = product.getDelivery();
             this.seller = product.getSellerId();
         }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class cancelOrderResponseDto {
+        /**
+         * 다중 상품인 경우 아래 두 필드는 List에 별도의 Dto로 담김
+         */
+        private Long productId;
+        private String productName;
+
+        private String orderStatus;
     }
 }

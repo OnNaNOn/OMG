@@ -1,6 +1,8 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,8 +35,7 @@ public class Order extends BaseEntity {
      * isDeleted >> OrderType
      */
     @Enumerated(EnumType.STRING)
-    private String orderType = OrderType.ORDER_OK.getStatus();
-
+    private OrderType orderType = OrderType.ORDER_OK;
 
     public Order(Account account, Product product, Integer totalPrice) {
         decrease(product);
@@ -43,14 +44,21 @@ public class Order extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
+    /**
+     * 재고 부족 테스트 완료
+     */
     public void decrease(Product product) {
         int productStock = product.getStock();
         if (productStock - 1 < 0) {
-            /**
-             * CustomException 처리로 변경
-             */
-            throw new RuntimeException("재고부족으로 인해 주문이 불가합니다");
+            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
         }
         product.decreaseStock(productStock);
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void orderCancel() {
+        this.orderType = OrderType.ORDER_CANCEL;
     }
 }

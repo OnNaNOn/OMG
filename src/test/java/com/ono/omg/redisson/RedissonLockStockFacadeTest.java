@@ -40,7 +40,7 @@ class RedissonLockStockFacadeTest {
     @BeforeEach
     public void insert() {
         productRepository.saveAndFlush(new Product("피카츄", 1000, "포켓몬", "초고속 배송", 1000, 1L));
-        accountRepository.saveAndFlush(new Account(1L, AccountType.ROLE_ADMIN, "이승우", "1234", DeletedType.DELETE_NO));
+//        accountRepository.saveAndFlush(new Account(AccountType.ROLE_ADMIN, "이승우", "1234", DeletedType.DELETE_NO));
 //        productRepository.saveAndFlush(new Product(101L, "라이츄", 1000, 1000, "포켓몬", "초고속 배송", 1L, "N", "king"));
 
 // =================================================== #
@@ -92,7 +92,7 @@ class RedissonLockStockFacadeTest {
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    orderController.CreatedOrder(1L, accountRepository.findByUsername("이승우").get());
+//                    orderController.CreatedOrder(1L, accountRepository.findByUsername("이승우").get());
                 } finally {
                     latch.countDown();
                 }

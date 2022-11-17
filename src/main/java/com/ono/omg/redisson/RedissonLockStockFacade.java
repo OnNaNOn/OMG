@@ -19,12 +19,10 @@ public class RedissonLockStockFacade {
 
     public void decrease(Long key, Account account) {
         RLock lock = redissonClient.getLock(key.toString());
-
         try {
             boolean available = lock.tryLock(20, 1, TimeUnit.SECONDS);
 
             if (!available) {
-                System.out.println("lock 획득 실패");
                 return;
             }
             orderService.testDecrease(key, account);

@@ -33,37 +33,20 @@ class RedissonLockStockFacadeTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    Account account1;
-
-    @BeforeEach
-    public void insert() {
-        Product product = new Product(25L,"이승우",20000,100,"카테고리","배달",25L,"N","imgUrl");
-
-        productRepository.saveAndFlush(product);
-
-        account1 = new Account(1L, AccountType.ROLE_ADMIN, "이승우", "1234", DeletedType.DELETE_NO);
-
-        accountRepository.saveAndFlush(account1);
-
-    }
-
-    @AfterEach
-    public void delete() {
-        productRepository.deleteAll();
-        accountRepository.deleteAll();
-    }
-
 
     @Test
     public void 동시에_100개의요청() throws InterruptedException {
-        int threadCount = 100;
+        int threadCount = 990;
         ExecutorService executorService = Executors.newFixedThreadPool(32);
         CountDownLatch latch = new CountDownLatch(threadCount);
+
+        System.out.println("========== 1 =========");
 
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
                 try {
-                    redissonLockStockFacade.decrease(25L, account1);
+                    System.out.println("========== 2 =========");
+                    redissonLockStockFacade.decrease(101L, accountRepository.findByUsername("이승우").get());
                 } finally {
                     latch.countDown();
                 }
@@ -72,9 +55,23 @@ class RedissonLockStockFacadeTest {
 
         latch.await();
 
-        Product product = productRepository.findById(25L).orElseThrow();
+        Product product = productRepository.findById(101L).orElseThrow();
 
+        System.out.println("product.getStock() = " + product.getStock());
         // 1000 - (1000 * 1) = 0
-        assertEquals(0, product.getStock());
+//        assertEquals(10, product.getStock());
     }
+
+    @BeforeEach
+    public void insert() {
+//        productRepository.saveAndFlush(new Product("피카츄", 1000, "포켓몬", "초고속 배송", 1000, 1L));
+        accountRepository.saveAndFlush(new Account(1L, AccountType.ROLE_ADMIN, "이승우", "1234", DeletedType.DELETE_NO));
+        productRepository.saveAndFlush(new Product(202L, "라이츄", 1000, 1000, "포켓몬", "초고속 배송", 1L, "N", "king"));
+    }
+
+//    @AfterEach
+//    public void delete() {
+//        productRepository.deleteAll();
+//        accountRepository.deleteAll();
+//    }
 }

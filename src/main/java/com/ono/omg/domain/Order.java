@@ -29,7 +29,11 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    private String isDeleted = "N";
+    /**
+     * isDeleted >> OrderType
+     */
+    @Enumerated(EnumType.STRING)
+    private String orderType = OrderType.ORDER_OK.getStatus();
 
 
     public Order(Account account, Product product, Integer totalPrice) {
@@ -37,7 +41,6 @@ public class Order extends BaseEntity {
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
-
     }
 
     public void decrease(Product product) {

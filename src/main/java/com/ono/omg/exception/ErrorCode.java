@@ -28,7 +28,8 @@ public enum ErrorCode {
     EMAIL_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 이메일은 존재하지 않습니다."),
 
     //500 INTERNAL SERVER ERROR
-    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다.");
+    INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),
+    NO_CONSISTENCY_STOCK(500, HttpStatus.INTERNAL_SERVER_ERROR, "재고 수량이 마이너스(-)입니다. 확인이 필요합니다.");
 
     private final int status;
     private final HttpStatus httpStatus;

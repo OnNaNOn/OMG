@@ -19,21 +19,27 @@ public class Account extends BaseEntity {
     private Long id;
 
     // enum 으로 변경
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
 
     private String username;
     private String password;
 
-    private String isDeleted;
+    @Enumerated(EnumType.STRING)
+    private DeletedType deletedType;
 
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
-        this.grade = "ROLE_USER";
+        this.accountType = AccountType.ROLE_STANDARD;
         this.username = accountRegisterRequestDto.getUsername();
         this.password = accountRegisterRequestDto.getPassword();
-        this.isDeleted = "N";
+        this.deletedType = DeletedType.DELETE_NO;
+    }
+
+    public void upgradeAdmin() {
+        this.accountType = AccountType.ROLE_ADMIN;
     }
 
     public void deleteAccount() {
-        isDeleted = "Y";
+        deletedType = DeletedType.DELETE_YES;
     }
 }

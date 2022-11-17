@@ -46,7 +46,8 @@ public class WebSecurityConfig {
                                         "/configuration/security",
                                         "/swagger-ui.html",
                                         "/webjars/**",
-                                        "/swagger/**");
+                                        "/swagger/**",
+                                        "/favicon.ico");
     }
 
     @Bean
@@ -76,12 +77,12 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers( "/api/login").permitAll()
-                .antMatchers("/api/logout").permitAll()
-                .antMatchers("/api/account/duplication/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/accounts/signup").permitAll()
+                .antMatchers( "/accounts/login").permitAll()
+                .antMatchers("/admin/login").permitAll()
+//                .antMatchers("/").permitAll()
+//                .antMatchers("/**").permitAll()
+                .antMatchers("/admin/management").hasRole("ADMIN")
 
 //                .antMatchers(HttpMethod.GET, "/product/**").permitAll()
 //                .antMatchers(HttpMethod.GET, "/product/{productId}/comment/**").permitAll()

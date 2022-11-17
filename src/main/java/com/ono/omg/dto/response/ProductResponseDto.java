@@ -4,6 +4,7 @@ import com.ono.omg.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 public class ProductResponseDto {
 
@@ -68,6 +69,17 @@ public class ProductResponseDto {
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
             this.stock = product.getStock();
+        }
+    }
+
+    @ToString
+    public static class RegistedProductResponseDto {
+        private String title;
+        private String imgUrl;
+
+        public RegistedProductResponseDto(Product product) {
+            this.title = product.getTitle();
+            this.imgUrl = product.getImgUrl();
         }
     }
 

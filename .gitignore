@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 logs/**
 **/resources/application-**
+**/resources/admin-number.yml
 #**/resources/jwt.yml
 
 ### NetBeans ###

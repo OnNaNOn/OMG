@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Random;
 
 @Entity
 @Getter
@@ -101,15 +100,11 @@ public class Product extends BaseEntity {
         this.delivery = productReqDto.getDelivery();
     }
 
-    public void isDeleted() {
-        this.isDeleted = "Y";
+    public void decreaseStock(int productStock) {
+        this.stock = productStock - 1;
     }
 
-    public void decrease() {
-        if (this.stock - 1 < 0) {
-            throw new RuntimeException("재고부족으로 인해 주문이 불가합니다");
-        }
-        this.stock -= 1;
-
+    public void isDeleted() {
+        this.isDeleted = "Y";
     }
 }

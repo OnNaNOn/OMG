@@ -25,7 +25,7 @@ public class RedissonLockStockFacade {
             if (!available) {
                 return;
             }
-            orderService.testDecrease(key, account);
+            orderService.productOrder(key, account);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {

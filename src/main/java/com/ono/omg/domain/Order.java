@@ -29,13 +29,25 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    private String isDeleted;
+    private String isDeleted = "N";
 
 
     public Order(Account account, Product product, Integer totalPrice) {
+        decrease(product);
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
-        isDeleted = "N";
+
+    }
+
+    public void decrease(Product product) {
+        int productStock = product.getStock();
+        if (productStock - 1 < 0) {
+            /**
+             * CustomException 처리로 변경
+             */
+            throw new RuntimeException("재고부족으로 인해 주문이 불가합니다");
+        }
+        product.decreaseStock(productStock);
     }
 }

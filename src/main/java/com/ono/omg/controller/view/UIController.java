@@ -48,5 +48,19 @@ public class UIController {
         return "admin/managedProducts";
     }
 
+    @GetMapping("/api/products")
+    public String mainPage(Model model){
+        List<Product>products = productRepository.findAll();
+        List<MainPageResponseDto> responseDto = new ArrayList<>();
+
+        for(Product product : products){
+            responseDto.add(new MainPageResponseDto(product));
+        }
+        model.addAttribute("products", responseDto);
+
+        return "main/mainPage";
+    }
+
+
 }
 

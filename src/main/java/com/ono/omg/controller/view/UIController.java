@@ -3,10 +3,12 @@ package com.ono.omg.controller.view;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
+import com.ono.omg.dto.response.ProductResponseDto.detailProductResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public class UIController {
     }
 
 
+    //메인페이지
     @GetMapping("/api/products")
     public String mainPage(Model model){
         List<Product>products = productRepository.findAll();
@@ -65,6 +68,15 @@ public class UIController {
         return "main/mainPage";
     }
 
+    //상세페이지
+    @GetMapping("/api/products/detail/{productId}")
+    public String detailProductPage(Model model, @PathVariable Long productId){
+        Product product = productRepository.detailProduct(productId);
+        detailProductResponseDto responseDto = new detailProductResponseDto(product);
+        model.addAttribute("product", responseDto);
+
+        return "product/detailProduct";
+    }
 
 
     // 마이 페이지

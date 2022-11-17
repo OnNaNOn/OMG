@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .container {
+            max-width: 850px;
+            margin-top: 50px;
+        }
+
+        ul {
+            justify-content: center;
+        }
+
+        .btn-group {
+            display: flex;
+        }
+
+    </style>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        function orderProduct() {
+            var data = {
+                "username": $("#username").val(),
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/api/{productId}/confirm",
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("주문을 완료했습니다.");
+                },
+                error : function(xhr, status, error) {
+                    let response = JSON.parse(xhr.responseText);
+                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                    alert(response.error.message);
+                }
+            });
+        }
+
+    </script>
+
+
+
+<body>
+<div class="container">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
+        <button type="button" class="btn btn-primary">로그인</button>
+        <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
+        <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
+    </div>
+
+    <div align="center">
+        <h1>ONO.com</h1>
+    </div>
+
+    <div class="mb-3">
+        <label>이미지</label>
+            <img src="${product.imgUrl}" alt="이미지" />
+    </div>
+    <div class="mb-3">
+        <label>카테고리</label>
+        <tbody>
+            <tr>
+                <td th:text="${product.category}"></td>
+            </tr>
+        </tbody>
+
+    </div>
+    <div class="mb-3">
+        <label>상품명</label>
+        <tbody>
+        <tr>
+            <td th:text="${product.title}"></td>
+        </tr>
+        </tbody>
+    </div>
+    <div class="mb-3">
+        <label>가격</label>
+        <tbody>
+        <tr>
+            <td th:text="${product.price}"></td>
+        </tr>
+        </tbody>
+    </div>
+    <div class="mb-3">
+        <label>재고수량</label>
+        <tbody>
+        <tr>
+            <td th:text="${product.stock}"></td>
+        </tr>
+        </tbody>
+    </div>
+    <div class="mb-3">
+        <label>배달상태</label>
+        <tbody>
+        <tr>
+            <td th:text="${product.delivery}"></td>
+        </tr>
+        </tbody>
+    </div>
+
+    <div class="mb-3">
+        <button type="button" onclick="orderProduct()" style="width: 100px; height: 40px">주문하기</button>
+    </div>
+
+</div>
+</body>
+</html>

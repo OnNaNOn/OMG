@@ -59,7 +59,7 @@ public class ProductController {
     @PostConstruct
     public void init() {
         for (int i = 0; i < 100; i++) {
-            productRepository.save(new Product("피카츄" + i, 1000 + i, "포켓몬", "초고속 배송", 10 + i, 1L));
+            productRepository.save(new Product("피카츄" + i, 1000 + i, "포켓몬", "초고속 배송", 15 + i, 1L));
         }
     }
 }

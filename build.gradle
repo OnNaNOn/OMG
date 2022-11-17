@@ -44,12 +44,11 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
-	// redisson
-//	implementation 'org.redisson:redisson-spring-boot-starter:3.16.3'
-
-
 	// swagger
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+
+	// redisson
+	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 
 	// querydsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"

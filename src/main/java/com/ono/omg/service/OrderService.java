@@ -35,20 +35,25 @@ public class OrderService {
      * @param account
      * @return
      */
-    public CreatedOrdersResponseDto productOrder(Long productId, Account account) {
+    public CreatedOrdersResponseDto productOrder(Long productId) {
+        log.info("productId" + productId);
+
         Product findProduct = productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
 
-        Account findAccount = accountRepository.findByUsername(account.getUsername()).orElseThrow(
+        Account findAccount = accountRepository.findByUsername("1").orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
         );
+
+        log.info("findProduct" + findProduct);
+        log.info("findAccount" + findAccount);
 
         // 상품에 대한 주문은 여러개도 발생할 수 있다..?
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
 
         // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
-        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
+        logger.info("u_id: "+ 1L + ", p_id: "+ productId);
 
         orderRepository.save(savedOrder);
 

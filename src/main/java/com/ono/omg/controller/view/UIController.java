@@ -77,5 +77,8 @@ public class UIController {
         return "mypage/accountPrivatePage";
     }
 
+
+
+
 }
 

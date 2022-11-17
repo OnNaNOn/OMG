@@ -24,17 +24,19 @@
 
     </style>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
-        function orderProduct() {
-            var data = {
-                "username": $("#username").val(),
-            }
 
+    <script>
+        function orderProduct(id) {
+            // var data = {
+            //     "username": $("#username").val(),
+            // }
+            let pid = id;
+            alert(pid);
             $.ajax({
                 type: "POST",
-                url: "/api/{productId}/confirm",
+                url: "/api/" + pid + "/confirm",
                 headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(data),
+                // data: JSON.stringify(data),
                 success: function (response) {
                     alert("주문을 완료했습니다.");
                 },
@@ -64,8 +66,15 @@
     </div>
 
     <div class="mb-3">
-        <label>이미지</label>
-            <img src="${product.imgUrl}" alt="이미지" />
+            <img th:src="${product.imgUrl}" alt="이미지" />
+    </div>
+    <div class="mb-3">
+        <label>번호</label>
+        <tbody>
+        <tr>
+            <td th:text="${product.productId}"></td>
+        </tr>
+        </tbody>
     </div>
     <div class="mb-3">
         <label>카테고리</label>
@@ -74,7 +83,6 @@
                 <td th:text="${product.category}"></td>
             </tr>
         </tbody>
-
     </div>
     <div class="mb-3">
         <label>상품명</label>
@@ -110,8 +118,10 @@
     </div>
 
     <div class="mb-3">
-        <button type="button" onclick="orderProduct()" style="width: 100px; height: 40px">주문하기</button>
+        <button type="button" th:onclick="'javascript:orderProduct('+ ${product.productId} + ');'" style="width: 100px; height: 40px">주문하기</button>
     </div>
+
+
 
 </div>
 </body>

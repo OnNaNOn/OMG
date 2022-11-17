@@ -24,8 +24,9 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/{productId}/confirm")
-    public ResponseDto<CreatedOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
-                                                              @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(orderService.productOrder(productId, userDetails.getAccount()));
+    public ResponseDto<CreatedOrdersResponseDto> CreatedOrder(@PathVariable Long productId) {
+        log.info("productId" +productId);
+
+        return ResponseDto.success(orderService.productOrder(productId));
     }
 }

@@ -80,7 +80,7 @@ public class WebSecurityConfig {
                 .antMatchers("/accounts/signup").permitAll()
                 .antMatchers( "/accounts/login").permitAll()
                 .antMatchers("/admin/login").permitAll()
-                .antMatchers("/").permitAll()
+//                .antMatchers("/").permitAll()
                 .antMatchers("/**").permitAll()
                 .antMatchers("/admin/management").hasRole("ADMIN")
 

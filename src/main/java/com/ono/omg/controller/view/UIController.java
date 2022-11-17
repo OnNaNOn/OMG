@@ -1,7 +1,6 @@
 package com.ono.omg.controller.view;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 import com.ono.omg.dto.response.ProductResponseDto.detailProductResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
@@ -13,11 +12,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 import static com.ono.omg.dto.response.ProductResponseDto.RegistedProductResponseDto;
 
 @Controller
 public class UIController {
+    // 계층형 아키텍처에 맞게 재고관리와 메인 페이지는
+    // Controller > Service > Repository로 변경할 필요 있음
     private ProductRepository productRepository;
 
     public UIController(ProductRepository productRepository) {
@@ -38,21 +38,6 @@ public class UIController {
     public String adminLoginForm() {
         return "accounts/adminLoginForm";
     }
-
-    // 재고 관리 페이지
-    @GetMapping("/admin/management")
-    public String managedPage(Model model) {
-        List<Product> products = productRepository.findAll();
-        List<AllProductManagementResponseDto> responseDto = new ArrayList<>();
-
-        for (Product product : products) {
-            responseDto.add(new AllProductManagementResponseDto(product));
-        }
-        model.addAttribute("products", responseDto);
-
-        return "admin/managedProducts";
-    }
-
 
     //메인페이지
     @GetMapping("/api/products")
@@ -77,7 +62,6 @@ public class UIController {
 
         return "product/detailProduct";
     }
-
 
     // 마이 페이지
     @GetMapping("/accounts/mypage")

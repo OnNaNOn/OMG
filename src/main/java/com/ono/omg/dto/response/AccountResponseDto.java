@@ -38,11 +38,14 @@ public class AccountResponseDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
+//        private String token;
+
         public AccountLoginResponseDto(Account account) {
             this.username = account.getUsername();
             this.accountType = account.getAccountType();
             this.createdAt = account.getCreatedAt();
             this.modifiedAt = account.getModifiedAt();
+//            this.token = accessToken;
         }
     }
 }

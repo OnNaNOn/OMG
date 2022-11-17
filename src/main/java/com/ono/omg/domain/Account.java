@@ -18,7 +18,6 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
-    // enum 으로 변경
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
@@ -26,19 +25,24 @@ public class Account extends BaseEntity {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private DeletedType deletedType;
+    private DeletedType deletedType = DeletedType.DELETE_NO;
 
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
         this.accountType = AccountType.ROLE_STANDARD;
         this.username = accountRegisterRequestDto.getUsername();
         this.password = accountRegisterRequestDto.getPassword();
-        this.deletedType = DeletedType.DELETE_NO;
     }
 
+    /**
+     * 관리자 번호로 로그인 시 admin으로 등급업
+     */
     public void upgradeAdmin() {
         this.accountType = AccountType.ROLE_ADMIN;
     }
 
+    /**
+     * 회원 탈퇴
+     */
     public void deleteAccount() {
         deletedType = DeletedType.DELETE_YES;
     }

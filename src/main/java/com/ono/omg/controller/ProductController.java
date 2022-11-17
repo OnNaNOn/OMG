@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+import static com.ono.omg.dto.response.ProductResponseDto.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -26,7 +28,7 @@ public class ProductController {
     private final ProductRepository productRepository;
 
     @GetMapping("/omg")
-    public ResponseDto<List<ProductResponseDto.AllProductInfoResponseDto>> findAllProducts() {
+    public ResponseDto<List<MainPageResponseDto>> findAllProducts() {
         return ResponseDto.success(productService.findAllSavedProducts());
     }
 

@@ -75,6 +75,29 @@ public class ProductResponseDto {
      * ===== 테스트용 =====
      * 등록된 모든 상품에 대한 상품명, 이미지를 읽어오는 DTO
      */
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class detailProductResponseDto {
+        private Long productId;
+        private String imgUrl;
+        private String title;
+        private int price;
+        private String category;
+        private String delivery;
+        private int stock;
+
+        public detailProductResponseDto(Product product) {
+            this.productId = product.getId();
+            this.imgUrl = product.getImgUrl();
+            this.title = product.getTitle();
+            this.price = product.getPrice();
+            this.category = product.getCategory();
+            this.delivery = product.getDelivery();
+            this.stock = product.getStock();
+        }
+    }
+
     @ToString
     @Getter
     @NoArgsConstructor

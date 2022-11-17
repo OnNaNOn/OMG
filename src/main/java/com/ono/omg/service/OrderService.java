@@ -106,10 +106,6 @@ public class OrderService {
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
         orderRepository.save(savedOrder);
 
-        // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
-//        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
-
-
 //        CreatedOrdersResponseDto createdOrderDto = new CreatedOrdersResponseDto(savedOrder.getId(),
 //                savedOrder.getTotalPrice(),
 //                findAccount.getUsername(),

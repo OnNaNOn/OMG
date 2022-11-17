@@ -30,6 +30,8 @@
                 "username": $("#username").val(),
             }
 
+            const token = authorization.split("=")[1];
+
             $.ajax({
                 type: "POST",
                 url: "/api/{productId}/confirm",

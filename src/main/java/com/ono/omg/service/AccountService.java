@@ -89,7 +89,6 @@ public class AccountService {
         System.out.println("tokenDto = " + tokenDto.getAccessToken());
         addTokenHeader(response, tokenDto);
 //        addTokenCookie(response, tokenDto);
-
         return new AccountLoginResponseDto(findAccount);
     }
 

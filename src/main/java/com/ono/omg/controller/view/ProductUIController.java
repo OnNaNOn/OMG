@@ -1,11 +1,16 @@
 package com.ono.omg.controller.view;
 
 import com.ono.omg.dto.response.ProductResponseDto;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
+import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +22,7 @@ import static com.ono.omg.dto.response.ProductResponseDto.*;
 public class ProductUIController {
 
     private ProductRepository productRepository;
+    private AccountRepository accountRepository;
 
     public ProductUIController(ProductRepository productRepository) {
         this.productRepository = productRepository;
@@ -35,7 +41,6 @@ public class ProductUIController {
         //-1값이 들어가는 것을 막기 위해서 max값으로 두 개의 값을 넣고 더 큰 값을 넣어주게 된다.
         int startPage =  Math.max(nowPage - 2, 1);
         int endPage = Math.min(nowPage+2, productStock.getTotalPages());
-
 
         model.addAttribute("products", productStock);
         model.addAttribute("nowPage",nowPage);

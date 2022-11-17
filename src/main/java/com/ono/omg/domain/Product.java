@@ -5,6 +5,7 @@ import com.ono.omg.dto.request.ProductReqDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.Random;
@@ -12,6 +13,7 @@ import java.util.Random;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Product extends BaseEntity {
 
     @Id

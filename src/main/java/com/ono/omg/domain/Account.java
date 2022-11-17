@@ -4,6 +4,7 @@ import com.ono.omg.domain.base.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,6 +13,7 @@ import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDt
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Account extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

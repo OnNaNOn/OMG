@@ -21,7 +21,8 @@
     <script>
         function accountLogin() {
             var data = {
-                "username": $("#username").val()
+                "username": $("#username").val(),
+                "password": $("#password").val()
             }
 
             $.ajax({
@@ -29,9 +30,11 @@
                 url: "/accounts/login",
                 headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(data),
-                success: function (response) {
+                success: function (response, dd, xhr) {
                     alert("로그인이 완료되었습니다.");
-                    window.location.href = '/api/omg';
+                    let token = xhr.getResponseHeader("authorization");
+                    localStorage.setItem("Authorization", token)
+                    window.location.href = '/api/products';
                 },
                 error : function(xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);

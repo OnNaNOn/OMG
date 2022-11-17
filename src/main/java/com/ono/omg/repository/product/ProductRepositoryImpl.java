@@ -1,5 +1,6 @@
 package com.ono.omg.repository.product;
 
+import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.response.QProductResponseDto_AllProductManagementResponseDto;
 import com.querydsl.jpa.impl.JPAQuery;

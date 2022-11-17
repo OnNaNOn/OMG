@@ -33,7 +33,7 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
 
-    private RedissonClient redissonClient;
+    private final RedissonClient redissonClient;
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -48,7 +48,7 @@ public class OrderService {
         RLock lock = redissonClient.getLock(productId.toString());
 
         try {
-            boolean available = lock.tryLock(10, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
 
             if (!available) {
                 System.out.println("lock 획득 실패");
@@ -61,6 +61,9 @@ public class OrderService {
             Account findAccount = accountRepository.findByUsername(account.getUsername()).orElseThrow(
                     () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
             );
+
+            findProduct.decrease();
+            productRepository.saveAndFlush(findProduct);
 
             // 상품에 대한 주문은 여러개도 발생할 수 있다..?
             Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
@@ -77,9 +80,6 @@ public class OrderService {
                     findProduct.getCategory(),
                     findProduct.getDelivery(),
                     findProduct.getSellerId());
-
-            findProduct.decrease();
-            productRepository.saveAndFlush(findProduct);
 
             return createdOrderDto;
 
@@ -100,8 +100,11 @@ public class OrderService {
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
         );
 
-        // 상품에 대한 주문은 여러개도 발생할 수 있다..?
-        Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
+        findProduct.decrease();
+        productRepository.saveAndFlush(findProduct);
+
+////         상품에 대한 주문은 여러개도 발생할 수 있다..?
+//        Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
 //
 //        // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
 //        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
@@ -115,9 +118,6 @@ public class OrderService {
 //                findProduct.getCategory(),
 //                findProduct.getDelivery(),
 //                findProduct.getSellerId());
-
-        findProduct.decrease();
-        productRepository.saveAndFlush(findProduct);
     }
 
     private Integer getTotalOrderPrice(int price) {

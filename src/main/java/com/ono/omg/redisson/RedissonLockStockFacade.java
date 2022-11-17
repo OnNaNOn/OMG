@@ -21,7 +21,7 @@ public class RedissonLockStockFacade {
         RLock lock = redissonClient.getLock(key.toString());
 
         try {
-            boolean available = lock.tryLock(20, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
 
             if (!available) {
                 System.out.println("lock 획득 실패");

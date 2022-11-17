@@ -1,11 +1,11 @@
 package com.ono.omg.redisson;
 
-import com.ono.omg.domain.*;
-import com.ono.omg.dto.request.AccountRequestDto;
+import com.ono.omg.domain.Account;
+import com.ono.omg.domain.AccountType;
+import com.ono.omg.domain.DeletedType;
+import com.ono.omg.domain.Product;
 import com.ono.omg.repository.account.AccountRepository;
-import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.service.OrderService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,13 +16,10 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class RedissonLockStockFacadeTest {
-
-    @Autowired
-    private OrderService orderService;
 
     @Autowired
     private RedissonLockStockFacade redissonLockStockFacade;

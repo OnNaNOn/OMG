@@ -102,19 +102,19 @@ public class OrderService {
 
         // 상품에 대한 주문은 여러개도 발생할 수 있다..?
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
-
-        // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
-        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
-
-        orderRepository.save(savedOrder);
-
-        CreatedOrdersResponseDto createdOrderDto = new CreatedOrdersResponseDto(savedOrder.getId(),
-                savedOrder.getTotalPrice(),
-                findAccount.getUsername(),
-                findProduct.getTitle(),
-                findProduct.getCategory(),
-                findProduct.getDelivery(),
-                findProduct.getSellerId());
+//
+//        // 별도의 public method 로 만들고 controller 에서 호출하는 것이 바람직한지?
+//        logger.info("u_id: "+ account.getId() + ", p_id: "+ productId);
+//
+//        orderRepository.save(savedOrder);
+//
+//        CreatedOrdersResponseDto createdOrderDto = new CreatedOrdersResponseDto(savedOrder.getId(),
+//                savedOrder.getTotalPrice(),
+//                findAccount.getUsername(),
+//                findProduct.getTitle(),
+//                findProduct.getCategory(),
+//                findProduct.getDelivery(),
+//                findProduct.getSellerId());
 
         findProduct.decrease();
         productRepository.saveAndFlush(findProduct);

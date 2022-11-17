@@ -1,6 +1,8 @@
 package com.ono.omg.controller.view;
 
 import com.ono.omg.domain.Product;
+import com.ono.omg.dto.response.ProductResponseDto;
+import com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,6 +51,22 @@ public class UIController {
         return "admin/managedProducts";
     }
 
+
+    @GetMapping("/api/products")
+    public String mainPage(Model model){
+        List<Product>products = productRepository.findAll();
+        List<MainPageResponseDto> responseDto = new ArrayList<>();
+
+        for(Product product : products){
+            responseDto.add(new MainPageResponseDto(product));
+        }
+        model.addAttribute("products", responseDto);
+
+        return "main/mainPage";
+    }
+
+
+
     // 마이 페이지
     @GetMapping("/accounts/mypage")
     public String accountMyPage(Model model) {
@@ -62,5 +80,6 @@ public class UIController {
 
         return "mypage/accountPrivatePage";
     }
+
 }
 

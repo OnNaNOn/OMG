@@ -43,13 +43,21 @@
             <h1>재고 관리</h1>
         </div>
 
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">전체 페이지 수</li>
+            <li class="list-group-item" th:text="${maxPage}">0</li>
+            <li class="list-group-item">전체 상품수</li>
+            <li class="list-group-item" th:text="${productsSize}">100</li>
+        </ul>
+
         <table class="table productCol">
             <thead>
             <tr>
                 <th scope="col">상품 번호</th>
                 <th scope="col">상품명</th>
                 <th scope="col">상품 가격</th>
-                <th scope="col">상품 재고</th>
+                <th scope="col">재고 현황</th>
+                <th scope="col">판매 유무</th>
                 <th scope="col">이벤트 상품</th>
             </tr>
             </thead>
@@ -58,7 +66,8 @@
                 <td th:text="${product.productId}">회원Id</td>
                 <td th:text="${product.title}">상품명</td>
                 <td th:text="${product.price}">상품가격</td>
-                <td th:text="${product.stock}">상품재고</td>
+                <td th:text="${product.stock}">재고현황</td>
+                <td th:text="${product.isSale}">판매 유무</td>
                 <td th:text="${product.isNowEvent}">이벤트 상품</td>
             </tr>
             </tbody>

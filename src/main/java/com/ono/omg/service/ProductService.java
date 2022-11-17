@@ -4,8 +4,8 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.dto.response.ProductResDto;
-import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.account.AccountRepository;
+import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.AllProductInfoResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 
 @Service
 @Slf4j
@@ -25,12 +25,12 @@ public class ProductService {
 
     private final AccountRepository accountRepository;
 
-    public List<AllProductInfoResponseDto> findAllSavedProducts() {
+    public List<MainPageResponseDto> findAllSavedProducts() {
         List<Product> products = productRepository.findAll();
-        List<AllProductInfoResponseDto> responseDto = new ArrayList<>();
+        List<MainPageResponseDto> responseDto = new ArrayList<>();
 
         for (Product product : products) {
-            responseDto.add(new AllProductInfoResponseDto(product));
+            responseDto.add(new MainPageResponseDto(product));
         }
         return responseDto;
     }

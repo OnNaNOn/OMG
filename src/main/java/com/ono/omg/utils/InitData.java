@@ -5,7 +5,6 @@ import com.ono.omg.domain.AccountType;
 import com.ono.omg.domain.DeletedType;
 import com.ono.omg.domain.Product;
 import com.ono.omg.repository.account.AccountRepository;
-import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

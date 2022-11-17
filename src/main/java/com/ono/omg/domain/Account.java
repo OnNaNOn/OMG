@@ -1,7 +1,6 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

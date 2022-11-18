@@ -4,7 +4,6 @@ import lombok.*;
 
 
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 public class CartResponseDto {
     public Long productId;

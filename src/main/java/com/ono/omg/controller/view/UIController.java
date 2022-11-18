@@ -2,6 +2,7 @@ package com.ono.omg.controller.view;
 
 import com.ono.omg.domain.Product;
 import com.ono.omg.domain.Review;
+import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 import com.ono.omg.dto.response.ProductResponseDto.detailProductResponseDto;
 import com.ono.omg.dto.response.ReviewResponseDto;
@@ -78,6 +79,31 @@ public class UIController {
         return "main/mainPage";
     }
 
+    /**
+     * 관리자 재고 관리 페이지
+     */
+    @GetMapping("/admin/management")
+    public String managedPage(@PageableDefault(size = 10) Pageable pageable, Model model) {
+        Page<ProductResponseDto.AllProductManagementResponseDto> productStock = productRepository.findAllProductStock(pageable);
+
+        //페이지블럭 처리
+        //1을 더해주는 이유는 pageable은 0부터라 1을 처리하려면 1을 더해서 시작해주어야 한다.
+        int nowPage = productStock.getPageable().getPageNumber() + 1;
+        //-1값이 들어가는 것을 막기 위해서 max값으로 두 개의 값을 넣고 더 큰 값을 넣어주게 된다.
+        int startPage =  Math.max(nowPage - 2, 1);
+        int endPage = Math.min(nowPage+2, productStock.getTotalPages());
+
+        model.addAttribute("products", productStock);
+        model.addAttribute("nowPage",nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        model.addAttribute("max", productStock.getTotalPages());
+        model.addAttribute("productsSize", productStock.getTotalElements());
+
+        return "admin/managedProducts";
+    }
+
     //상세페이지
     @GetMapping("/products/detail/{productId}")
     public String detailProductPage(Model model, @PathVariable Long productId){
@@ -130,8 +156,5 @@ public class UIController {
 //
 //        return "product/detailProduct";
 //    }
-
-
-
 }
 

@@ -28,6 +28,23 @@
             width: 800px;
         }
 
+        .list-group-horizontal {
+            max-width: 400px;
+            justify-content: left;
+        }
+
+        .title {
+            margin-bottom: 30px;
+        }
+
+        .list-group-horizontal>.list-group-item+.list-group-item {
+            width: 300px;
+        }
+
+        .rounded-start {
+            height: 300px;
+        }
+
     </style>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
@@ -37,17 +54,19 @@
             // var data = {
             //     "username": $("#username").val(),
             // }
-            let pid = id;
-            alert(pid);
+            // let pid = id;
+            // alert(pid);
             $.ajax({
                 type: "POST",
                 url: "/api/" + pid + "/confirm",
                 headers: {'Content-Type': 'application/json'},
+                    // , 'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2oiLCJleHAiOjE2Njg3OTI2ODcsImlhdCI6MTY2ODc4NTQ4N30.vXhjUpLBZU1sNpLn9a6AnNuIvcjtkPMmIISvG7GLmG4.eyJzdWIiOiJkcyIsImV4cCI6MTY2ODc5MjE4NCwiaWF0IjoxNjY4Nzg0OTg0fQ.gD9l5OOH9Wu8LgmFA1jNuqDxgKMuwTIjUlHSgD2Vu9w"},
                 // data: JSON.stringify(data),
                 success: function (response) {
                     alert("주문을 완료했습니다.");
+                    location.reload();
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
                     // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
                     alert(response.error.message);
@@ -61,7 +80,7 @@
             var data = {
                 "reviewContent": $("#review").val(),
             }
-            alert("pid   " + pid + "reviewContent   " +  $("#review").val());
+            // alert("pid   " + pid + "reviewContent   " + $("#review").val());
 
             $.ajax({
                 type: "POST",
@@ -72,7 +91,7 @@
                     alert("리뷰를 작성하였습니다.");
                     location.reload();
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
                     // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
                     alert(response.error.message);
@@ -97,7 +116,7 @@
                     alert("리뷰를 수정하였습니다.");
                     location.reload();
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
                     // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
                     alert(response.error.message);
@@ -118,7 +137,7 @@
                     alert("리뷰를 삭제하였습니다.");
                     location.reload();
                 },
-                error : function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
                     // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
                     alert(response.error.message);
@@ -132,106 +151,96 @@
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
+        <button type="button" onclick="location.href='/omg'" class="btn btn-primary"
+                style="margin-right: 30px">HOME
+        </button>
         <button type="button" class="btn btn-primary">로그인</button>
         <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
         <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
     </div>
 
-    <div align="center">
-        <h1>ONO.com</h1>
+    <div class="container">
+        <div align="center">
+            <h1 class="title">ONO.COM</h1>
+        </div>
     </div>
 
-    <div class="mb-3">
-            <img th:src="${product.imgUrl}" alt="이미지" />
-    </div>
-    <div class="mb-3">
-        <label>번호</label>
-        <tbody>
-        <tr>
-            <td th:text="${product.productId}"></td>
-        </tr>
-        </tbody>
-    </div>
-    <div class="mb-3">
-        <label>카테고리</label>
-        <tbody>
-            <tr>
-                <td th:text="${product.category}"></td>
-            </tr>
-        </tbody>
-    </div>
-    <div class="mb-3">
-        <label>상품명</label>
-        <tbody>
-        <tr>
-            <td th:text="${product.title}"></td>
-        </tr>
-        </tbody>
-    </div>
-    <div class="mb-3">
-        <label>가격</label>
-        <tbody>
-        <tr>
-            <td th:text="${product.price}"></td>
-        </tr>
-        </tbody>
-    </div>
-    <div class="mb-3">
-        <label>재고수량</label>
-        <tbody>
-        <tr>
-            <td th:text="${product.stock}"></td>
-        </tr>
-        </tbody>
-    </div>
-    <div class="mb-3">
-        <label>배달상태</label>
-        <tbody>
-        <tr>
-            <td th:text="${product.delivery}"></td>
-        </tr>
-        </tbody>
-    </div>
+    <div>
+        <div class="card" style="width: 18rem; float: left" align="center">
+            <img th:src="${product.imgUrl}" alt="image" class="img-fluid rounded-start">
+        </div>
 
-    <div class="mb-3">
-        <button type="button" th:onclick="'javascript:orderProduct('+ ${product.productId} + ');'" style="width: 100px; height: 40px">주문하기</button>
-    </div>
-</div>
-
-<div class = "container">
-    <div class="review-group">
-        <input type="text" class="form-control" id="review">
-        <button type="button" th:onclick="'javascript:createReview('+ ${product.productId} + ');'" style="width: 100px; height: 40px">리뷰 작성</button>
+        <div>
+            <div align="center">
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">번호</li>
+                    <li class="list-group-item" th:text="${product.productId}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">상품명</li>
+                    <li class="list-group-item" th:text="${product.title}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">카테고리</li>
+                    <li class="list-group-item" th:text="${product.category}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">상품 가격</li>
+                    <li class="list-group-item" th:text="${product.price}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">재고 수량</li>
+                    <li class="list-group-item" th:text="${product.stock}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item" style="width: 110px">배송 상태</li>
+                    <li class="list-group-item" th:text="${product.delivery}">A second item</li>
+                </ul>
+                <ul class="list-group list-group-horizontal" style="margin-top: 5px">
+                    <button class="btn btn-primary" type="button" th:onclick="'javascript:orderProduct('+ ${product.productId} + ');'" style="width: 400px;">주문하기</button>
+                </ul>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="container">
+    <div class="review-group">
+        <input type="text" class="form-control" id="review">
+        <button type="button" th:onclick="'javascript:createReview('+ ${product.productId} + ');'" class="btn btn-dark" style="width: 150px; margin-left: 5px">리뷰 작성</button>
+    </div>
+</div>
+
+<div class="container">
+
+
+
+
+
     <table class="table table-striped">
         <thead>
-        <tr>
+        <tr align="center">
             <th>작성자</th>
             <th>내용</th>
-            <th></th>
+            <th width="100px"></th>
         </tr>
         </thead>
         <tbody>
 
-        <tr th:each="review : ${reviews}">
-            <td th:text="${review.name}"></td>
+        <tr th:each="review : ${reviews}" style="text-align: center">
+            <td th:text="${review.name}" width="120px"></td>
             <td th:text="${review.reviewContent}"></td>
-<!--            <td>-->
-<!--                <button type="submit" th:onclick="'javascript:updateReview('+ ${review.reviewId} + ');'" class="update_btn">수정</button>-->
-<!--            </td>-->
-            <td>
-                <button type="submit" th:onclick="'javascript:deleteReview('+ ${review.reviewId} + ');'" class="update_btn">삭제</button>
-            </td>
+            <!--            <td>-->
+            <!--                <button type="submit" th:onclick="'javascript:updateReview('+ ${review.reviewId} + ');'" class="update_btn">수정</button>-->
+            <!--            </td>-->
+            <td width="80px"><button type="submit" th:onclick="'javascript:deleteReview('+ ${review.reviewId} + ');'" class="btn btn-dark">삭제</button></td>
         </tr>
 
         </tbody>
     </table>
 </div>
 
-
+</div>
 </body>
 </html>

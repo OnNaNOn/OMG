@@ -78,6 +78,7 @@ public class ProductResponseDto {
      */
     @Getter
     @NoArgsConstructor
+    @ToString
     @AllArgsConstructor
     public static class MainPageResponseDto {
         private Long productId;

@@ -24,9 +24,19 @@
         .productCol {
             text-align: center;
         }
+
+        .search {
+            display: flex;
+            background: yellow;
+            float: right;
+        }
+        a {
+            text-decoration: none;
+        }
     </style>
 
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+
 <!--    <script>-->
 <!--        function test() {-->
 <!--            let token = localStorage.getItem("Authorization");-->
@@ -55,12 +65,15 @@
 <!--        });-->
 <!--        }-->
 <!--    </script>-->
+
 </head>
 <body>
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
+        <button type="button" onclick="location.href='/omg'" class="btn btn-primary"
+                style="margin-right: 30px">HOME
+        </button>
         <button type="button" class="btn btn-primary">로그인</button>
         <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
         <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
@@ -69,6 +82,11 @@
     <div class="container">
         <div align="center">
             <h1>재고 관리</h1>
+        </div>
+
+        <div class="search">
+            <input type="text" class="form-control" id="searchText">
+            <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
         </div>
 
         <ul class="list-group list-group-horizontal">
@@ -91,8 +109,18 @@
             </thead>
             <tbody>
             <tr th:each="product: ${products}">
-                <td th:text="${product.productId}">회원Id</td>
-                <td th:text="${product.title}">상품명</td>
+                <td th:text="${product.productId}">
+                    <a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
+                                                      th:text="${product.productId}">
+                        회원Id
+                    </a>
+                </td>
+                <td th:text="${product.title}">
+                    <a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
+                                                  th:text="${product.title}">
+                        상품명
+                    </a>
+                </td>
                 <td th:text="${product.price}">상품가격</td>
                 <td th:text="${product.stock}">재고현황</td>
                 <td th:text="${product.isSale}">판매 유무</td>

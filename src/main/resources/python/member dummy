@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import sqlalchemy as db
 import random
 import pandas as pd
-from enum import Enum
+import bcrypt
 
 
 fake = Faker('ko_KR') # locale 정보 설정
@@ -29,7 +29,7 @@ repeat_count = 10000
 
 accountType = [random.choice(['ROLE_STANDARD', 'ROLE_SUBSCRIBE', 'ROLE_ADMIN']) for i in range(repeat_count)]
 username = [fake.name() for i in range(repeat_count)]
-password = [fake.unique.address() for i in range(repeat_count)] # unique 추가시 고유값 생성
+password = [fake.password() for i in range(repeat_count)]
 deletedType = 'DELETE_NO'
 created_at = [fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
 modified_at =[fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]

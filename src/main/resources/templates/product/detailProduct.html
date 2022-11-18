@@ -22,10 +22,17 @@
             display: flex;
         }
 
+        .review-group {
+            display: flex;
+            align-items: center;
+            width: 800px;
+        }
+
     </style>
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script>
+        //상품 주문
         function orderProduct(id) {
             // var data = {
             //     "username": $("#username").val(),
@@ -48,11 +55,81 @@
             });
         }
 
+        //리뷰 작성
+        function createReview(id) {
+            let pid = id;
+            var data = {
+                "reviewContent": $("#review").val(),
+            }
+            alert("pid   " + pid + "reviewContent   " +  $("#review").val());
+
+            $.ajax({
+                type: "POST",
+                url: "/api/" + pid + "/reviews",
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("리뷰를 작성하였습니다.");
+                    location.reload();
+                },
+                error : function(xhr, status, error) {
+                    let response = JSON.parse(xhr.responseText);
+                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                    alert(response.error.message);
+                }
+            });
+        }
+
+        //리뷰 수정
+        function updateReview(id) {
+            let rId = id;
+
+            var data = {
+                "reviewContent": $("#review").val(),
+            }
+
+            $.ajax({
+                type: "PATCH",
+                url: "/api/reviews/" + rId,
+                headers: {'Content-Type': 'application/json'},
+                data: JSON.stringify(data),
+                success: function (response) {
+                    alert("리뷰를 수정하였습니다.");
+                    location.reload();
+                },
+                error : function(xhr, status, error) {
+                    let response = JSON.parse(xhr.responseText);
+                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                    alert(response.error.message);
+                }
+            });
+        }
+
+        //리뷰 삭제
+        function deleteReview(id) {
+            let rId = id;
+
+            $.ajax({
+                type: "DELETE",
+                url: "/api/reviews/" + rId,
+                headers: {'Content-Type': 'application/json'},
+                // data: JSON.stringify(data),
+                success: function (response) {
+                    alert("리뷰를 삭제하였습니다.");
+                    location.reload();
+                },
+                error : function(xhr, status, error) {
+                    let response = JSON.parse(xhr.responseText);
+                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+                    alert(response.error.message);
+                }
+            });
+        }
+
     </script>
 
-
-
 <body>
+
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
         <button type="button" class="btn btn-primary" style="margin-right: 30px">HOME</button>
@@ -120,9 +197,41 @@
     <div class="mb-3">
         <button type="button" th:onclick="'javascript:orderProduct('+ ${product.productId} + ');'" style="width: 100px; height: 40px">주문하기</button>
     </div>
-
-
-
 </div>
+
+<div class = "container">
+    <div class="review-group">
+        <input type="text" class="form-control" id="review">
+        <button type="button" th:onclick="'javascript:createReview('+ ${product.productId} + ');'" style="width: 100px; height: 40px">리뷰 작성</button>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>작성자</th>
+            <th>내용</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="review : ${reviews}">
+            <td th:text="${review.name}"></td>
+            <td th:text="${review.reviewContent}"></td>
+<!--            <td>-->
+<!--                <button type="submit" th:onclick="'javascript:updateReview('+ ${review.reviewId} + ');'" class="update_btn">수정</button>-->
+<!--            </td>-->
+            <td>
+                <button type="submit" th:onclick="'javascript:deleteReview('+ ${review.reviewId} + ');'" class="update_btn">삭제</button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
+
+
 </body>
 </html>

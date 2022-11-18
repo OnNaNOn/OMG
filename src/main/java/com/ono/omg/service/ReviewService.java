@@ -29,21 +29,25 @@ public class ReviewService {
     /**
      * 리뷰 등록
      */
-    public ReviewResponseDto registerReview(Long productId, UserDetailsImpl userDetails, ReviewRequestDto requestDto) {
-        String username = userDetails.getAccount().getUsername();
-        Long userId = userDetails.getAccount().getId();
+    @Transactional
+    //public ReviewResponseDto registerReview(Long productId, UserDetailsImpl userDetails, ReviewRequestDto requestDto) {
+    public ReviewResponseDto registerReview(Long productId, ReviewRequestDto requestDto) {
+//        String username = userDetails.getAccount().getUsername();
+//        Long userId = userDetails.getAccount().getId();
         String reviewContent = requestDto.getReviewContent();
 
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("NOT_FOUND_PRODUCT")
         );
 
-        Review review = new Review(product, reviewContent, userId);
+//        Review review = new Review(product, reviewContent, userId);
+        Review review = new Review(product, reviewContent, 999L);
         reviewRepository.save(review);
 
         return ReviewResponseDto.builder()
                 .productId(productId)
-                .name(username)
+                //.name(username)
+                .name("hihihihihi")
                 .reviewContent(reviewContent)
                 .createdAt(review.getCreatedAt())
                 .modifiedAt(review.getModifiedAt())
@@ -54,6 +58,7 @@ public class ReviewService {
     /**
      * 리뷰 수정
      */
+    @Transactional
     public Long updateReview(Long reviewId, UserDetailsImpl userDetails, ReviewRequestDto requestDto) {
         Review foundReview = findReview(reviewId);
         Long accountId = userDetails.getAccount().getId();
@@ -69,12 +74,14 @@ public class ReviewService {
     /**
      * 리뷰 삭제
      */
-    public Long deleteReview(Long reviewId, UserDetailsImpl userDetails) {
+    @Transactional
+//    public Long deleteReview(Long reviewId, UserDetailsImpl userDetails) {
+    public Long deleteReview(Long reviewId) {
         Review foundReview = findReview(reviewId);
-        Long accountId = userDetails.getAccount().getId();
-
-        //작성자 체크
-        idCheck(accountId, foundReview.getId());
+//        Long accountId = userDetails.getAccount().getId();
+//
+//        //작성자 체크
+//        idCheck(accountId, foundReview.getId());
 
         //reviewRepository.deleteById(foundReview.getId());
 
@@ -86,7 +93,6 @@ public class ReviewService {
     /**
      * 리뷰 조회
      */
-    @Transactional
     public List<ReviewResponseDto> getReviewList(Long productId) {
         List<ReviewResponseDto> dtoList = new ArrayList<>();
         List<Review> allReview = reviewRepository.findAllByProductId(productId);

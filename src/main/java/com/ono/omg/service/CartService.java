@@ -29,6 +29,10 @@ public class CartService {
     private final CartRepository cartRepository;
     private final AccountRepository accountRepository;
     private final ProductRepository productRepository;
+/**
+ * sy
+ * 장바구니 조회 -> querydsl
+ * */
 
     /**
      * SJ: DTO에 Data 애너테이션을 명시적인 애너테이션만 사용하는 것이 좋을 듯 합니다.

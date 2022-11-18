@@ -6,6 +6,7 @@ import com.ono.omg.dto.response.ReviewResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "/api")
+@Slf4j
 public class ReviewController {
 
     private final ReviewService reviewService;
@@ -23,9 +25,10 @@ public class ReviewController {
      */
     @PostMapping("/{productId}/reviews")
     public ResponseDto<ReviewResponseDto> registerReview(@PathVariable Long productId,
-                                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                         //@AuthenticationPrincipal UserDetailsImpl userDetails,
                                                          @RequestBody ReviewRequestDto requestDto) {
-        return ResponseDto.success(reviewService.registerReview(productId, userDetails, requestDto));
+        //return ResponseDto.success(reviewService.registerReview(productId, userDetails, requestDto));
+        return ResponseDto.success(reviewService.registerReview(productId, requestDto));
     }
 
     /**
@@ -42,9 +45,11 @@ public class ReviewController {
      * 리뷰 삭제
      */
     @DeleteMapping("/reviews/{reviewId}")
-    public ResponseDto<Long> deleteReview(@PathVariable Long reviewId,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails));
+    public ResponseDto<Long> deleteReview(@PathVariable Long reviewId
+//                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+                                            ){
+//        return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails));
+        return ResponseDto.success(reviewService.deleteReview(reviewId));
     }
 
     /**

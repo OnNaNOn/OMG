@@ -1,12 +1,10 @@
 package com.ono.omg.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
-@Data
 @NoArgsConstructor
+@Getter
 public class CartResponseDto {
     public Long productId;
     public String title;

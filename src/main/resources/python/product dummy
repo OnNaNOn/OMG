@@ -1,0 +1,270 @@
+from faker import Faker
+from sqlalchemy import create_engine
+import sqlalchemy as db
+import random
+from random import randint
+import pandas as pd
+
+fake = Faker('ko_KR') # locale 정보 설정
+Faker.seed() # 초기 seed 설정
+
+# ======= Reference =======
+# https://velog.io/@seanlee/이커머스-더미데이터-생성
+# https://www.daleseo.com/python-faker/
+
+# name : 이름 (문자)
+# phone : 휴대전화 (문자, 010-****-**** 형식)
+# user_status : 유저상태 (문자, ['active', 'inactive', 'dormancy'])
+# user_class : 유저등급 (문자, ['일반','Family', 'VIP', 'VVIP'])
+# email : 이메일 주소 (문자)
+# marketing_agree : 마케팅 수신동의 (참거짓)
+# social_login : 소셜 로그인 (문자, ['google','facebook','kakao','naver'])
+# last_logged_at : 마지막 접속일 (날짜)
+# created_at : 생성일 및 가입일 (날짜)
+# address: 주소
+
+photo = ["https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon01.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon02.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon03.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon04.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon05.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon06.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon07.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon08.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon09.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon10.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon11.png",
+"https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon12.png"
+        ]
+
+# '패션의류/잡화',
+#              '뷰티',
+#              '식품',
+#              '주방용품',
+#              '스포츠/레저',
+#              '도서/음반',
+#              '가전디지털'
+
+category1 = ['청바지',
+             '운동화',
+             '티셔츠',
+             '후드',
+             '원피스',
+             '가죽장갑',
+             '털장갑',
+             '목도리',
+             '코트',
+             '뷔에또',
+             '탱크탑',
+             '니트',
+             '면바지',
+             '가죽바지',
+             '골덴바지',
+             '맨투맨']
+
+category2 = ['스킨',
+            '로션',
+            '크림',
+            '에센스',
+            '세럼',
+            '엠플',
+            '미스트',
+            '오일',
+            '올인원',
+            '기초세트',
+            '마스크',
+            '선케어',
+            '태닝',
+            '팩',
+            '쿠션']
+
+category3 = ['주방가전',
+            '냄비',
+            '프라이팬',
+             '주방조리도구',
+             '그릇',
+             '홈세트',
+             '수저',
+             '커트러리',
+             '컵',
+             '텀블러',
+             '와인용품',
+             '주전자',
+             '커피',
+             '티용품',
+             '주방수납',
+             '정리',
+             '주방잡화',
+             '종이컵',
+             '일회용품',
+             '보온',
+             '보냉용품'
+]
+category4 = ['캠핑용품',
+            '홈트레이닝',
+            '수영용품',
+            '수상스포츠',
+            '골프',
+            '자전거',
+            '킥보드',
+            '스케이트',
+            '낚시',
+            '등산',
+            '아웃도어',
+            '스포츠신발',
+            '남성스포츠의류',
+            '여성스포츠의류',
+            '유아스포츠의류'
+]
+category5 = ['유아/어린이',
+            '소설',
+            '에세이',
+            '시',
+            '초중고참고서',
+            '가정살림',
+            '건강취미',
+            '경제',
+            '경영',
+            '과학',
+            '공학',
+            '국어',
+            '외국어',
+            '사전',
+             '대학교재',
+             '만화',
+             '라이트노벨',
+             '사회정치',
+             '수험서',
+             '자격증',
+             '여행',
+             '역사'
+]
+category6 = ['TV',
+            '냉장고',
+            '세탁기',
+            '건조기',
+            '청소기',
+            '생활가전',
+            '계절가전',
+            '헤어가전',
+            '건강가전',
+            '주방가전',
+            '노트북',
+            '데스크탑',
+            '모니터',
+            '키보드',
+            '마우스',
+             '저장장치',
+             '프린터',
+             '복합기',
+             'PC부품',
+             '에어팟'
+]
+category7 = ['유기농/친환경',
+            '과일',
+            '견과',
+            '채소',
+            '쌀/잡곡',
+            '축산',
+            '계란',
+            '수산물/건어물',
+            '생수/음료',
+            '커피',
+            '차',
+            '과자',
+            '초콜릿',
+            '면',
+            '통조림',
+            '가공식품',
+             '가루',
+             '치킨',
+             '햄버거',
+             '피자',
+             '족발',
+             '유제품',
+             '아이스크림',
+             '냉장요리',
+             '냉동요리',
+             '건강식품'
+]
+
+categoryId = []
+titleId = []
+
+# dummy data count
+repeat_count = 50000
+
+# title = [fake.bs() for i in range(repeat_count)]
+price = [(randint(1000, 100000)%1000)*100 for i in range(repeat_count)]
+# category = [random.choice(categorys) for i in range(repeat_count)]
+delivery = [random.choice(['일반 배송', '고속 배송', '초고속 배송']) for i in range(repeat_count)]
+stock = [randint(10, 5000) for i in range(repeat_count)]
+sellerId = [randint(1, 10000) for i in range(repeat_count)]
+isDeleted = 'N'
+imgUrl = [random.choice(photo) for i in range(repeat_count)]
+created_at = [fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
+modified_at =[fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
+
+# '패션의류/잡화',
+#              '뷰티',
+#              '식품',
+#              '주방용품',
+#              '스포츠/레저',
+#              '도서/음반',
+#              '가전디지털'
+
+for i in range(repeat_count):
+    id = random.randint(1, 7)
+    if id == 1:
+        categoryId.append("패션의류/잡화'")
+        titleId.append(random.choice(category1))
+    elif id == 2:
+        categoryId.append("뷰티")
+        titleId.append(random.choice(category2))
+    elif id == 3:
+        categoryId.append("주방용품")
+        titleId.append(random.choice(category3))
+    elif id == 4:
+        categoryId.append("스포츠/레저")
+        titleId.append(random.choice(category4))
+    elif id == 5:
+        categoryId.append("도서/음반")
+        titleId.append(random.choice(category5))
+    elif id == 6:
+        categoryId.append("가전디지털")
+        titleId.append(random.choice(category6))
+    elif id == 7:
+        categoryId.append("식품")
+        titleId.append(random.choice(category7))
+
+df = pd.DataFrame()
+df['title'] = titleId
+df['price'] = price
+df['category'] = categoryId
+df['delivery'] = delivery
+df['stock'] = stock
+df['seller'] = sellerId
+df['is_deleted'] = isDeleted
+df['img_url'] = imgUrl
+df['created_at'] = created_at
+df['modified_at'] = modified_at
+
+
+# print(df)
+
+# pandas to dict == to json
+# ex) {"name": "name", ...}
+records = df.to_dict(orient='records')
+# print(records)
+
+# <...> 부분은 본인 DB 정보
+engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
+
+with engine.connect() as conn:
+    metadata = db.MetaData()
+# <table>에는 데이터 형식에 맞게 테이블이 생성되어 있어야 됨 (본인 테이블명 기입)
+    table = db.Table('product', metadata, autoload=True, autoload_with=engine)
+
+    query = db.insert(table).values(records)
+    result_proxy = conn.execute(query)
+    print("=========")

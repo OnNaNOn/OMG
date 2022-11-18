@@ -1,3 +1,4 @@
+
 /*
  *
  *  Copyright 2015-2017 the original author or authors.
@@ -17,6 +18,7 @@
  *
  */
 package springfox.documentation.spring.web.plugins;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;

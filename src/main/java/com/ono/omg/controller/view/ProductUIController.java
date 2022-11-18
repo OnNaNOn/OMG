@@ -15,6 +15,7 @@ import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementRe
 @Slf4j
 public class ProductUIController {
 
+
     private ProductRepository productRepository;
 
     public ProductUIController(ProductRepository productRepository) {

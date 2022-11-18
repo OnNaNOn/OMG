@@ -44,7 +44,7 @@ public class OrderController {
         RLock lock = redissonClient.getLock(productId.toString());
         CreatedOrdersResponseDto responseDto;
         try {
-            boolean available = lock.tryLock(20, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
 
             if (!available) {
                 /**

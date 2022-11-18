@@ -95,6 +95,8 @@ public class ProductResponseDto {
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
             this.stock = product.getStock();
+
+            System.out.println(product.getImgUrl());
         }
     }
 

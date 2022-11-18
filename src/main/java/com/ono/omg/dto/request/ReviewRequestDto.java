@@ -1,11 +1,9 @@
 package com.ono.omg.dto.request;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
 @NoArgsConstructor
+@Getter
 public class ReviewRequestDto {
     private String reviewContent;
 

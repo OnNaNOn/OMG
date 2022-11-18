@@ -26,6 +26,9 @@
             background: yellow;
             float: right;
         }
+        a {
+            text-decoration: none;
+        }
     </style>
 <body>
 
@@ -72,7 +75,7 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th>상품번호</th>
+                        <th>ID</th>
                         <th>상품명</th>
                         <th>가격</th>
                         <th>카테고리</th>
@@ -82,9 +85,10 @@
                     </tr>
                     </thead>
                     <tbody>
+<!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
                     <tr th:each="product : ${products}">
-                        <td th:text="${product.productId}"></td>
-                        <td th:text="${product.title}"></td>
+                        <td><a th:href="@{/api/products/detail/{productId}(productId=${product.productId})}" th:text="${product.productId}"></a></td>
+                        <td><a th:href="@{/api/products/detail/{productId}(productId=${product.productId})}" th:text="${product.title}"></a></td>
                         <td th:text="${product.price}"></td>
                         <td th:text="${product.category}"></td>
                         <td th:text="${product.delivery}"></td>

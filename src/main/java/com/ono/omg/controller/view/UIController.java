@@ -46,7 +46,7 @@ public class UIController {
     }
 
     //메인페이지
-    @GetMapping("/api/products")
+    @GetMapping("/omg")
     public String mainPage(Model model){
         List<Product>products = productRepository.findAll();
         List<MainPageResponseDto> responseDto = new ArrayList<>();
@@ -60,7 +60,7 @@ public class UIController {
     }
 
     //상세페이지
-    @GetMapping("/api/products/detail/{productId}")
+    @GetMapping("/products/detail/{productId}")
     public String detailProductPage(Model model, @PathVariable Long productId){
         Product product = productRepository.detailProduct(productId);
         detailProductResponseDto responseDto = new detailProductResponseDto(product);

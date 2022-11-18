@@ -1,14 +1,13 @@
 package com.ono.omg.dto.response;
 
 import com.ono.omg.domain.Review;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 public class ReviewResponseDto {
     private Long reviewId;
     private Long productId;

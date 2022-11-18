@@ -53,60 +53,66 @@
 <!--</script>-->
 
 
-
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" onclick="location.href='/api/products'" class="btn btn-primary" style="margin-right: 30px">HOME</button>
+        <button type="button" onclick="location.href='/omg'" class="btn btn-primary"
+                style="margin-right: 30px">HOME
+        </button>
         <button type="button" class="btn btn-primary">로그인</button>
         <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
-        <button type="button" onclick="location.href='/accounts/mypage'" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
+        <button type="button" onclick="location.href='/accounts/mypage'" class="btn btn-primary"
+                style="margin-left: 30px">마이페이지
+        </button>
     </div>
 
+    <div class="container">
         <div align="center">
-            <h1>ONO.com</h1>
+            <h1>ONO.COM</h1>
         </div>
 
-        <div class = "search">
+        <div class="search">
             <input type="text" class="form-control" id="searchText">
             <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
         </div>
 
-            <div>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>상품명</th>
-                        <th>가격</th>
-                        <th>카테고리</th>
-                        <th>배송상태</th>
-                        <th>재고수량</th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-<!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
-                    <tr th:each="product : ${products}">
-                        <td><a th:href="@{/api/products/detail/{productId}(productId=${product.productId})}" th:text="${product.productId}"></a></td>
-                        <td><a th:href="@{/api/products/detail/{productId}(productId=${product.productId})}" th:text="${product.title}"></a></td>
-                        <td th:text="${product.price}"></td>
-                        <td th:text="${product.category}"></td>
-                        <td th:text="${product.delivery}"></td>
-                        <td th:text="${product.stock}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>상품 번호</th>
+                    <th>상품명</th>
+                    <th>상품 가격</th>
+                    <th>카테고리</th>
+                    <th>배송 상태</th>
+                    <th>재고 수량</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
+                <tr th:each="product : ${products}">
+                    <td><a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
+                           th:text="${product.productId}"></a></td>
+                    <td><a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
+                           th:text="${product.title}"></a></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.category}"></td>
+                    <td th:text="${product.delivery}"></td>
+                    <td th:text="${product.stock}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination">
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                </ul>
-            </nav>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+            </ul>
+        </nav>
     </div>
+</div> <!-- container -->
 </body>
 </html>

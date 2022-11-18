@@ -22,7 +22,7 @@ public class LikesController {
     private final LikeService likeService;
 
     @PostMapping("/{productId}/like")
-    public ResponseEntity<ResponseDto<String>> addLikes(@PathVariable long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto<String>> addLikes(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(likeService.addLikes(productId, userDetails.getAccount())), HttpStatus.OK);
     }
 }

@@ -21,7 +21,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Slf4j
 public class ReviewService {
-
+/**
+ * sy
+ * log랑 주석 정리(wiew 토큰이슈 정리되면 진행 예정)
+ * */
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;

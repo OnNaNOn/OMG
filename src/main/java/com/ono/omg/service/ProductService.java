@@ -3,7 +3,6 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.dto.response.ProductResDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ono.omg.dto.response.ProductResponseDto.*;
 import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 
 @Service

@@ -10,6 +10,32 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 public class ProductResponseDto {
+
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Getter
+    public static class ProductResDto{
+        private String title;
+        private int price;
+        private int stock;
+        private String category;
+        private String delivery;
+        private Long sellerId;
+        private String isDeleted;
+        private String imgUrl;
+
+        public ProductResDto(Product product) {
+            this.title = product.getTitle();
+            this.price = product.getPrice();
+            this.stock = product.getStock();
+            this.category = product.getCategory();
+            this.delivery = product.getDelivery();
+            this.sellerId = product.getSellerId();
+            this.isDeleted = product.getIsDeleted();
+            this.imgUrl = product.getImgUrl();
+        }
+    }
+
     /**
      * 관리자 전용 상품 관리 페이지 DTO
      */
@@ -52,6 +78,7 @@ public class ProductResponseDto {
      */
     @Getter
     @NoArgsConstructor
+    @ToString
     @AllArgsConstructor
     public static class MainPageResponseDto {
         private Long productId;

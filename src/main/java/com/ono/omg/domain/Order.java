@@ -33,9 +33,6 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    /**
-     * isDeleted >> OrderType
-     */
     @Enumerated(EnumType.STRING)
     private OrderType orderType = OrderType.ORDER_OK;
 
@@ -52,7 +49,7 @@ public class Order extends BaseEntity {
     }
 
     /**
-     * 재고 부족 테스트 완료
+     * 재고 감소 (재고 없을 시 예외 발생)
      */
     public void decrease(Product product) {
         int productStock = product.getStock();

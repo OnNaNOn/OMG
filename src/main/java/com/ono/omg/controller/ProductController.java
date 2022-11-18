@@ -21,7 +21,6 @@ import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 @RequestMapping("/api")
 public class ProductController {
     private final ProductService productService;
-    private final ProductRepository productRepository;
 
     @GetMapping("/omg")
     public ResponseDto<List<MainPageResponseDto>> findAllProducts() {

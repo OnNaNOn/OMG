@@ -22,10 +22,7 @@ public class LikesController {
     private final LikeService likeService;
 
     /**
-     * SJ: productId의 타입을 기본형 long >> 참조형 래퍼클래스인 Long으로 변경
-     * @param productId
-     * @param userDetails
-     * @return
+     * 좋아요 기능
      */
     @PostMapping("/{productId}/like")
     public ResponseEntity<ResponseDto<String>> addLikes(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {

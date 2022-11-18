@@ -1,7 +1,6 @@
 package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
-import com.ono.omg.domain.DeletedType;
 import com.ono.omg.domain.RefreshToken;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
@@ -69,7 +68,7 @@ public class AccountService {
         /**
          * 탈퇴한 회원
          */
-        if(findAccount.getDeletedType().equals(DeletedType.DELETE_YES)) {
+        if(findAccount.getIsDeleted().equals("Y")) {
             throw new CustomCommonException(ErrorCode.UNREGISTER_USER);
         }
 

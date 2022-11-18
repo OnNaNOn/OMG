@@ -42,7 +42,7 @@ public class AccountController {
     }
 
     /**
-     * 회원 탈퇴 (API 명세 추가 예정)
+     * 회원 탈퇴
      */
     @DeleteMapping("/unregister")
     public ResponseDto<UnregisterUser> eraseAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {

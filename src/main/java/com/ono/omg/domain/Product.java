@@ -74,6 +74,7 @@ public class Product extends BaseEntity {
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
         this.sellerId = account.getId();
+        this.imgUrl = productReqDto.getImgUrl();
         this.isDeleted = "N";
     }
 

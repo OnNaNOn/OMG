@@ -34,7 +34,7 @@
                     alert("로그인이 완료되었습니다.");
                     let token = xhr.getResponseHeader("authorization");
                     localStorage.setItem("Authorization", token)
-                    window.location.href = '/api/products';
+                    window.location.href = '/omg';
                 },
                 error : function(xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);

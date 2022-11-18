@@ -51,14 +51,30 @@ public class UIController {
 
     //메인페이지
     @GetMapping("/omg")
-    public String mainPage(Model model){
-        List<Product>products = productRepository.findAll();
+    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model){
+        Page<Product> products = productRepository.findAll(pageable);
         List<MainPageResponseDto> responseDto = new ArrayList<>();
 
-        for(Product product : products){
-            responseDto.add(new MainPageResponseDto(product));
-        }
-        model.addAttribute("products", responseDto);
+//        for(Product product : products){
+//            responseDto.add(new MainPageResponseDto(product));
+//        }
+//
+//        model.addAttribute("products", responseDto);
+
+        //페이지블럭 처리
+        //1을 더해주는 이유는 pageable은 0부터라 1을 처리하려면 1을 더해서 시작해주어야 한다.
+        int nowPage = products.getPageable().getPageNumber() + 1;
+        //-1값이 들어가는 것을 막기 위해서 max값으로 두 개의 값을 넣고 더 큰 값을 넣어주게 된다.
+        int startPage =  Math.max(nowPage - 2, 1);
+        int endPage = Math.min(nowPage+2, products.getTotalPages());
+
+        model.addAttribute("products", products);
+        model.addAttribute("nowPage",nowPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        model.addAttribute("max", products.getTotalPages());
+        model.addAttribute("productsSize", products.getTotalElements());
 
         return "main/mainPage";
     }

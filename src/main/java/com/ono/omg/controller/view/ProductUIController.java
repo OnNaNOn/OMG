@@ -21,7 +21,10 @@ import static com.ono.omg.dto.response.ProductResponseDto.*;
 @Slf4j
 public class ProductUIController {
 
+
     private ProductRepository productRepository;
+
+    //SW : 사용하지않는 코드는 제거요망
     private AccountRepository accountRepository;
 
     public ProductUIController(ProductRepository productRepository) {

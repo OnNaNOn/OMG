@@ -3,6 +3,8 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Like;
 import com.ono.omg.domain.Product;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.like.LikeRepository;
 import com.ono.omg.repository.product.ProductRepository;
@@ -26,10 +28,10 @@ public class LikeService {
     public String addLikes(long productId, Account account) {
 
         accountRepository.findById(account.getId()).orElseThrow(
-                () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.FORBIDDEN_USER));
 
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
+        productRepository.findById(productId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         Optional<Like> likes = likeRepository.findByProductIdAndAccountId(productId, account);
 

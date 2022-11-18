@@ -37,20 +37,166 @@ photo = ["https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon01.png"
 "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon12.png"
         ]
 
-categorys = ['패션의류/잡화',
-             '뷰티',
-             '식품',
-             '주방용품',
-             '스포츠/레저',
-             '도서/음반',
-             '가전디지털']
+# '패션의류/잡화',
+#              '뷰티',
+#              '식품',
+#              '주방용품',
+#              '스포츠/레저',
+#              '도서/음반',
+#              '가전디지털'
+
+category1 = ['청바지',
+             '운동화',
+             '티셔츠',
+             '후드',
+             '원피스',
+             '가죽장갑',
+             '털장갑',
+             '목도리',
+             '코트',
+             '뷔에또',
+             '탱크탑',
+             '니트',
+             '면바지',
+             '가죽바지',
+             '골덴바지',
+             '맨투맨']
+
+category2 = ['스킨',
+            '로션',
+            '크림',
+            '에센스',
+            '세럼',
+            '엠플',
+            '미스트',
+            '오일',
+            '올인원',
+            '기초세트',
+            '마스크',
+            '선케어',
+            '태닝',
+            '팩',
+            '쿠션']
+
+category3 = ['주방가전',
+            '냄비',
+            '프라이팬',
+             '주방조리도구',
+             '그릇',
+             '홈세트',
+             '수저',
+             '커트러리',
+             '컵',
+             '텀블러',
+             '와인용품',
+             '주전자',
+             '커피',
+             '티용품',
+             '주방수납',
+             '정리',
+             '주방잡화',
+             '종이컵',
+             '일회용품',
+             '보온',
+             '보냉용품'
+]
+category4 = ['캠핑용품',
+            '홈트레이닝',
+            '수영용품',
+            '수상스포츠',
+            '골프',
+            '자전거',
+            '킥보드',
+            '스케이트',
+            '낚시',
+            '등산',
+            '아웃도어',
+            '스포츠신발',
+            '남성스포츠의류',
+            '여성스포츠의류',
+            '유아스포츠의류'
+]
+category5 = ['유아/어린이',
+            '소설',
+            '에세이',
+            '시',
+            '초중고참고서',
+            '가정살림',
+            '건강취미',
+            '경제',
+            '경영',
+            '과학',
+            '공학',
+            '국어',
+            '외국어',
+            '사전',
+             '대학교재',
+             '만화',
+             '라이트노벨',
+             '사회정치',
+             '수험서',
+             '자격증',
+             '여행',
+             '역사'
+]
+category6 = ['TV',
+            '냉장고',
+            '세탁기',
+            '건조기',
+            '청소기',
+            '생활가전',
+            '계절가전',
+            '헤어가전',
+            '건강가전',
+            '주방가전',
+            '노트북',
+            '데스크탑',
+            '모니터',
+            '키보드',
+            '마우스',
+             '저장장치',
+             '프린터',
+             '복합기',
+             'PC부품',
+             '에어팟'
+]
+category7 = ['유기농/친환경',
+            '과일',
+            '견과',
+            '채소',
+            '쌀/잡곡',
+            '축산',
+            '계란',
+            '수산물/건어물',
+            '생수/음료',
+            '커피',
+            '차',
+            '과자',
+            '초콜릿',
+            '면',
+            '통조림',
+            '가공식품',
+             '가루',
+             '치킨',
+             '햄버거',
+             '피자',
+             '족발',
+             '유제품',
+             '아이스크림',
+             '냉장요리',
+             '냉동요리',
+             '건강식품'
+]
+
+categoryId = []
+titleId = []
 
 # dummy data count
 repeat_count = 50000
 
-title = [fake.bs() for i in range(repeat_count)]
+# title = [fake.bs() for i in range(repeat_count)]
 price = [(randint(1000, 100000)%1000)*100 for i in range(repeat_count)]
-category = [random.choice(categorys) for i in range(repeat_count)]
+# category = [random.choice(categorys) for i in range(repeat_count)]
 delivery = [random.choice(['일반 배송', '고속 배송', '초고속 배송']) for i in range(repeat_count)]
 stock = [randint(10, 5000) for i in range(repeat_count)]
 sellerId = [randint(1, 10000) for i in range(repeat_count)]
@@ -59,10 +205,42 @@ imgUrl = [random.choice(photo) for i in range(repeat_count)]
 created_at = [fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
 modified_at =[fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
 
+# '패션의류/잡화',
+#              '뷰티',
+#              '식품',
+#              '주방용품',
+#              '스포츠/레저',
+#              '도서/음반',
+#              '가전디지털'
+
+for i in range(repeat_count):
+    id = random.randint(1, 7)
+    if id == 1:
+        categoryId.append("패션의류/잡화'")
+        titleId.append(random.choice(category1))
+    elif id == 2:
+        categoryId.append("뷰티")
+        titleId.append(random.choice(category2))
+    elif id == 3:
+        categoryId.append("주방용품")
+        titleId.append(random.choice(category3))
+    elif id == 4:
+        categoryId.append("스포츠/레저")
+        titleId.append(random.choice(category4))
+    elif id == 5:
+        categoryId.append("도서/음반")
+        titleId.append(random.choice(category5))
+    elif id == 6:
+        categoryId.append("가전디지털")
+        titleId.append(random.choice(category6))
+    elif id == 7:
+        categoryId.append("식품")
+        titleId.append(random.choice(category7))
+
 df = pd.DataFrame()
-df['title'] = title
+df['title'] = titleId
 df['price'] = price
-df['category'] = category
+df['category'] = categoryId
 df['delivery'] = delivery
 df['stock'] = stock
 df['seller'] = sellerId

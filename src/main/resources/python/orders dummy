@@ -26,7 +26,7 @@ Faker.seed() # 초기 seed 설정
 # address: 주소
 
 # dummy data count
-repeat_count = 10000
+repeat_count = 10
 
 account_id = [randint(1, 10000) for i in range(repeat_count)]
 product_id = [randint(1, 50000) for i in range(repeat_count)]
@@ -44,6 +44,8 @@ df['total_price'] = total_price
 df['order_type'] = orderType
 df['created_at'] = created_at
 df['modified_at'] = modified_at
+
+print(created_at)
 
 # print(df)
 

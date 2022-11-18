@@ -27,6 +27,34 @@
     </style>
 
     <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!--    <script>-->
+<!--        function test() {-->
+<!--            let token = localStorage.getItem("Authorization");-->
+
+
+<!--        $.ajax({-->
+<!--            type: "POST",-->
+<!--            url: "/accounts/login", // /accounts/admin/login API 추가되어야 함-->
+<!--            headers: {'Content-Type': 'application/json', 'Authorization': token},-->
+<!--            data: JSON.stringify(data),-->
+<!--            success: function (response, dd, xhr) {-->
+<!--                // console.log(response.data.token);-->
+<!--                // $.cookie('Authorization', response.data.token);-->
+<!--                //-->
+<!--                let token = xhr.getResponseHeader("authorization");-->
+<!--                console.log("token == > " + token);-->
+
+<!--                localStorage.setItem("Authorization", token)-->
+
+<!--                alert("관리자 로그인이 완료되었습니다.");-->
+<!--                /**-->
+<!--                 * 아래를 사용하지 않고는 어떻게 해야 하는지??-->
+<!--                 */-->
+<!--                window.location.href = '/admin/management';-->
+<!--            },-->
+<!--        });-->
+<!--        }-->
+<!--    </script>-->
 </head>
 <body>
 
@@ -103,15 +131,6 @@
 
 <!--                <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
 <!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">4</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">5</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">6</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">7</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">8</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">9</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">10</a></li>-->
 <!--                <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
             </ul>
         </nav>

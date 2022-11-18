@@ -25,12 +25,11 @@ public class Cart extends BaseEntity {
     private Long productId;
 
     @Column(nullable = false)
-    private String isDeleted;
+    private String isDeleted = "N";
 
     public Cart(Account account, Long productId) {
         this.account = account;
         this.productId = productId;
-        this.isDeleted = "N";
     }
 
     /**

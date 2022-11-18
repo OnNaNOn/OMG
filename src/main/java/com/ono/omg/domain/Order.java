@@ -1,11 +1,15 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,13 +33,39 @@ public class Order extends BaseEntity {
     @Column(name = "total_price")
     private Integer totalPrice;
 
-    private String isDeleted;
+    /**
+     * isDeleted >> OrderType
+     */
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType = OrderType.ORDER_OK;
 
+    /**
+     * 장바구니 ID를 LIST로 갖도록 구현해야 함
+     */
+//    private Long cartId;
 
     public Order(Account account, Product product, Integer totalPrice) {
+        decrease(product);
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
-        isDeleted = "N";
+    }
+
+    /**
+     * 재고 부족 테스트 완료
+     */
+    public void decrease(Product product) {
+        int productStock = product.getStock();
+        if (productStock - 1 < 0) {
+            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
+        }
+        product.decreaseStock(productStock);
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void orderCancel() {
+        this.orderType = OrderType.ORDER_CANCEL;
     }
 }

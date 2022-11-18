@@ -5,13 +5,14 @@ import com.ono.omg.dto.request.ProductReqDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Random;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Product extends BaseEntity {
 
     @Id
@@ -43,7 +44,8 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String imgUrl;
 
-    public Product(String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+    public Product(Long id, String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+        this.id = id;
         this.title = title;
         this.price = price;
         this.stock = stock;
@@ -52,6 +54,11 @@ public class Product extends BaseEntity {
         this.sellerId = sellerId;
         this.isDeleted = isDeleted;
         this.imgUrl = imgUrl;
+    }
+
+    public Product(Long id, int stock) {
+        this.id = id;
+        this.stock = stock;
     }
 
     public Product(ProductReqDto productReqDto, Account account) {
@@ -63,7 +70,6 @@ public class Product extends BaseEntity {
         this.sellerId = account.getId();
         this.isDeleted = "N";
     }
-
 
     public Product(String title, int price, String category, String delivery, int stock, Long sellerId) {
         this.title = title;
@@ -92,6 +98,10 @@ public class Product extends BaseEntity {
         this.stock = productReqDto.getStock();
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
+    }
+
+    public void decreaseStock(int productStock) {
+        this.stock = productStock - 1;
     }
 
     public void isDeleted() {

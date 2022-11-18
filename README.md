@@ -1,4 +1,4 @@
-# OMG
+# 온앤온 (ONO, On NaN On)
 
 ## MEMBER
 - 이승우 님 BE
@@ -8,15 +8,29 @@
 </br>
 
 ## 기술 스택
+
 - Spring Boot 2.7.5
+- spring data jpa 2.7.5
+- querydsl 5.0.0
+- redisson 3.18.0
+- java 11
 - Swagger 3.0.0
+- spring security5 3.0.4
 - jwt 0.11.2
 - h2 1.4.200
 - mysql 8.0.31
-- querydsl 5.0.0
-- spring data jpa 2.7.5
 - thymeleaf 2.7.5
-- spring security5 3.0.4
+
+</br>
+
+## ERD
+
+![Copy of ONO COM (1)](https://user-images.githubusercontent.com/64416833/202631453-b2fd0897-7404-40aa-bb17-ade1d40d5be3.png)
+
+</br>
+
+## API
+https://www.notion.so/4d8247417fb94ed1b69460821da962e7?v=a11f85efb4714bcb988a0d510266985a
 
 </br>
 

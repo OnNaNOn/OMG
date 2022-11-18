@@ -4,6 +4,8 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.dto.response.ProductResDto;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,7 @@ public class ProductService {
     public String createProduct(ProductReqDto productReqDto, Account account) {
 
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
 
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
@@ -52,13 +54,13 @@ public class ProductService {
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
 
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
 
         productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new IllegalArgumentException("수정 권한이 없는 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
 
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         product.updateProduct(productReqDto);
             return "상품수정 완료";
@@ -69,13 +71,13 @@ public class ProductService {
     @Transactional
     public String deleteProduct(Long productId, Account account) {
         accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new IllegalArgumentException("로그인하지 않은 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
 
         productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new IllegalArgumentException("삭제 권한이 없는 사용자입니다"));
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
 
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         product.isDeleted();
             return "상품삭제 완료";
@@ -85,7 +87,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         return new ProductResDto(product);
     }

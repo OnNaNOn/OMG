@@ -8,6 +8,7 @@ import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;

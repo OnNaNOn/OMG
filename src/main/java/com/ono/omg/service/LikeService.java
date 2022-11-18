@@ -28,7 +28,7 @@ public class LikeService {
     public String addLikes(long productId, Account account) {
 
         accountRepository.findById(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.FORBIDDEN_USER));
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
 
         productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));

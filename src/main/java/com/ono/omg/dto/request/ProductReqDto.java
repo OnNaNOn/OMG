@@ -14,4 +14,5 @@ public class ProductReqDto {
     private int stock;
     private String category;
     private String delivery;
+    private String imgUrl;
 }

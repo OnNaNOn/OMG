@@ -22,11 +22,12 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
+    @Enumerated(EnumType.STRING)
+    private DeletedType deletedType = DeletedType.DELETE_NO;
+
     private String username;
     private String password;
 
-    @Enumerated(EnumType.STRING)
-    private DeletedType deletedType = DeletedType.DELETE_NO;
 
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
         this.accountType = AccountType.ROLE_STANDARD;

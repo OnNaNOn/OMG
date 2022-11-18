@@ -35,10 +35,10 @@ class ProductRepositoryTest {
         Page<AllProductManagementResponseDto> productStock2 = productRepository.findAllProductStock(pageable2);
 
         // then
-//        assertThat(productStock1.getSize()).isEqualTo(10);
-//        assertThat(productStock2.getNumberOfElements()).isEqualTo(5);
-//        assertThat(productStock1.getTotalPages()).isEqualTo(2);
-//        assertThat(productStock2.hasPrevious()).isTrue();
+        assertThat(productStock1.getSize()).isEqualTo(10);
+        assertThat(productStock2.getNumberOfElements()).isEqualTo(5);
+        assertThat(productStock1.getTotalPages()).isEqualTo(2);
+        assertThat(productStock2.hasPrevious()).isTrue();
     }
 
 }

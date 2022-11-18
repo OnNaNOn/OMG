@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -36,6 +38,11 @@ public class Order extends BaseEntity {
      */
     @Enumerated(EnumType.STRING)
     private OrderType orderType = OrderType.ORDER_OK;
+
+    /**
+     * 장바구니 ID를 LIST로 갖도록 구현해야 함
+     */
+//    private Long cartId;
 
     public Order(Account account, Product product, Integer totalPrice) {
         decrease(product);

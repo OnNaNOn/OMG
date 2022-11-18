@@ -38,14 +38,23 @@ public class AccountResponseDto {
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
-//        private String token;
-
         public AccountLoginResponseDto(Account account) {
             this.username = account.getUsername();
             this.accountType = account.getAccountType();
             this.createdAt = account.getCreatedAt();
             this.modifiedAt = account.getModifiedAt();
-//            this.token = accessToken;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UnregisterUser {
+        private String username;
+        private String msg = "그동안 온앤온(ONO) 서비스를 이용해주셔서 감사합니다.";
+
+        public UnregisterUser(String username) {
+            this.username = username;
         }
     }
 }

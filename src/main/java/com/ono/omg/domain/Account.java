@@ -1,9 +1,9 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -12,6 +12,7 @@ import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDt
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class Account extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +34,7 @@ public class Account extends BaseEntity {
         this.password = accountRegisterRequestDto.getPassword();
     }
 
-    public Account(Long id, AccountType accountType, String username, String password, DeletedType deletedType) {
-        this.id = id;
+    public Account(AccountType accountType, String username, String password, DeletedType deletedType) {
         this.accountType = accountType;
         this.username = username;
         this.password = password;

@@ -1,6 +1,7 @@
 package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
+import com.ono.omg.domain.DeletedType;
 import com.ono.omg.domain.RefreshToken;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
@@ -18,10 +19,10 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.Optional;
 
-import static com.ono.omg.dto.request.AccountRequestDto.*;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountLoginRequestDto;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 import static com.ono.omg.dto.response.AccountResponseDto.*;
 
 @Service
@@ -64,6 +65,13 @@ public class AccountService {
                 () -> new CustomCommonException(ErrorCode.DUPLICATE_USERNAME)
         );
 
+        /**
+         * 탈퇴한 회원
+         */
+        if(findAccount.getDeletedType().equals(DeletedType.DELETE_YES)) {
+            throw new CustomCommonException(ErrorCode.UNREGISTER_USER);
+        }
+
         if(!passwordEncoder.matches(accountLoginRequestDto.getPassword(), findAccount.getPassword())){
             throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
         }
@@ -72,7 +80,7 @@ public class AccountService {
          * 관리자 번호와 일치할 시 관리자 등급으로 변경
          */
         String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
-        if (hasAdminAuthroized(adminSecretKey)) {
+        if (hasAdminAuthorized(adminSecretKey)) {
             findAccount.upgradeAdmin();
             accountRepository.save(findAccount);
         }
@@ -87,6 +95,7 @@ public class AccountService {
             refreshTokenRepository.save(newRefreshToken);
         }
         System.out.println("tokenDto = " + tokenDto.getAccessToken());
+
         addTokenHeader(response, tokenDto);
 //        addTokenCookie(response, tokenDto);
 
@@ -100,7 +109,17 @@ public class AccountService {
         response.addCookie(cookie);
     }
 
-    private boolean hasAdminAuthroized(String adminSecretKey) {
+    @Transactional
+    public UnregisterUser unregister(Account account) {
+        Account findAccount = accountRepository.findByUsername(account.getUsername()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+        );
+        findAccount.deleteAccount();
+
+        return new UnregisterUser(findAccount.getUsername());
+    }
+
+    private boolean hasAdminAuthorized(String adminSecretKey) {
         return hasAdminSecretKey(adminSecretKey) && adminSecretKey.equals(ADMIN_SECRET_KEY);
     }
 

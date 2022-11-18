@@ -21,10 +21,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 @Slf4j
 public class ReviewService {
-/**
- * sy
- * log랑 주석 정리(wiew 토큰이슈 정리되면 진행 예정)
- * */
+    /**
+     * sy
+     * log랑 주석 정리(view 토큰이슈 정리되면 진행 예정)
+     * */
     private final ReviewRepository reviewRepository;
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
@@ -40,7 +40,7 @@ public class ReviewService {
         String reviewContent = requestDto.getReviewContent();
 
         /**
-         * IllegalArgumentException >> CustomException으로 변경!
+         * SJ: IllegalArgumentException >> CustomException으로 변경!
          * findReview와 idCheck 메서드도 동일
          */
         Product product = productRepository.findById(productId).orElseThrow(

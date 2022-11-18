@@ -1,16 +1,10 @@
 package com.ono.omg.utils;
 
-import com.ono.omg.domain.Account;
-import com.ono.omg.domain.AccountType;
-import com.ono.omg.domain.DeletedType;
-import com.ono.omg.domain.Product;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 
 @Component
 @RequiredArgsConstructor

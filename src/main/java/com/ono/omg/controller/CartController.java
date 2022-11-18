@@ -21,8 +21,7 @@ public class CartController {
      */
     @PostMapping("/{productId}/cart")
     public ResponseDto<Long> inputProduct(@PathVariable Long productId,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails
-                                          ) {
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(cartService.inputProduct(productId, userDetails));
     }
 

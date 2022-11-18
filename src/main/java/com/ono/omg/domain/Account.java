@@ -22,12 +22,10 @@ public class Account extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    @Enumerated(EnumType.STRING)
-    private DeletedType deletedType = DeletedType.DELETE_NO;
+    private String isDeleted = "N";
 
     private String username;
     private String password;
-
 
     public Account(AccountRegisterRequestDto accountRegisterRequestDto) {
         this.accountType = AccountType.ROLE_STANDARD;
@@ -35,11 +33,11 @@ public class Account extends BaseEntity {
         this.password = accountRegisterRequestDto.getPassword();
     }
 
-    public Account(AccountType accountType, String username, String password, DeletedType deletedType) {
+    public Account(AccountType accountType, String username, String password, String isDeleted) {
         this.accountType = accountType;
         this.username = username;
         this.password = password;
-        this.deletedType = deletedType;
+        this.isDeleted = isDeleted;
     }
 
     /**
@@ -53,6 +51,6 @@ public class Account extends BaseEntity {
      * 회원 탈퇴
      */
     public void deleteAccount() {
-        deletedType = DeletedType.DELETE_YES;
+        isDeleted = "Y";
     }
 }

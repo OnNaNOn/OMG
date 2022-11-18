@@ -104,15 +104,15 @@ public class ReviewService {
         List<ReviewResponseDto> dtoList = new ArrayList<>();
         List<Review> allReview = reviewRepository.findAllByProductId(productId);
 
-        log.info("allReview ===========>" + allReview);
+//        log.info("allReview ===========>" + allReview);
         for (Review review : allReview) {
             String reviewContent = review.getReviewContent();
             Long userId = review.getUserId();
             String username = accountRepository.findUsernameByAccountId(userId);
 
-            log.info("reviewContent ===========>" + reviewContent);
-            log.info("userId ===========>" + userId);
-            log.info("username ===========>" + username);
+//            log.info("reviewContent ===========>" + reviewContent);
+//            log.info("userId ===========>" + userId);
+//            log.info("username ===========>" + username);
 
             ReviewResponseDto responseDto = ReviewResponseDto.builder()
                     .productId(productId)

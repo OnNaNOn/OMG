@@ -40,7 +40,7 @@ public class Order extends BaseEntity {
     private OrderType orderType = OrderType.ORDER_OK;
 
     /**
-     * 장바구니 ID를 LIST로 갖도록 구현해야 함
+     * SJ: 장바구니 ID
      */
 //    private Long cartId;
 

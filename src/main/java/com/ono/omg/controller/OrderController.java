@@ -37,8 +37,8 @@ public class OrderController {
      */
     @PostMapping("/{productId}/confirm")
     public ResponseDto<CreatedOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
-                                                              Account account
-//                                                              @AuthenticationPrincipal UserDetailsImpl account
+//                                                              Account account
+                                                              @AuthenticationPrincipal UserDetailsImpl account
                                                               ) {
 
         RLock lock = redissonClient.getLock(productId.toString());
@@ -48,13 +48,16 @@ public class OrderController {
 
             if (!available) {
                 /**
-                 * 별도의 Custom Exception으로 처리
+                 * SJ: 별도의 Custom Exception으로 처리
                  */
                 return null;
             }
-            responseDto = orderService.productOrder(productId, account);
-//            responseDto = orderService.productOrder(productId, account.getAccount());
+//            responseDto = orderService.productOrder(productId, account);
+            responseDto = orderService.productOrder(productId, account.getAccount());
         } catch (InterruptedException e) {
+            /**
+             * SJ: 별도의 Custom Exception으로 처리
+             */
             throw new RuntimeException(e);
         } finally {
             lock.unlock();
@@ -63,9 +66,7 @@ public class OrderController {
     }
 
     /**
-     * 주문 취소 (주문취소 및 다른 사용자인 경우 예외처리까지 테스트 완료)
-     * (삭제가 아닌 Order.OrderType 을 ORDER_CANCEL 로 변경)
-     * API 명세서 추가 필요
+     * 주문 취소
      */
     @PostMapping("/{orderId}/cancel")
     public ResponseDto<cancelOrderResponseDto> cancelOrder(@PathVariable Long orderId,

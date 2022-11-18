@@ -22,13 +22,13 @@ import static com.ono.omg.dto.response.ProductResponseDto.RegistedProductRespons
 @Controller
 @RequiredArgsConstructor
 public class UIController {
-    // 계층형 아키텍처에 맞게 재고관리와 메인 페이지는
-    // Controller > Service > Repository로 변경할 필요 있음
+    /**
+     * SJ: 계층형 아키텍처에 맞게 재고관리와 메인 페이지는
+     *  Controller > Service > Repository로 변경할 필요 있음 
+     */
     private final ProductRepository productRepository;
     private final ReviewRepository reviewRepository;
-
-    private  final AccountRepository accountRepository;
-
+    private final AccountRepository accountRepository;
 
     @GetMapping("/accounts/signup")
     public String register() {

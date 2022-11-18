@@ -24,6 +24,9 @@ public class Cart extends BaseEntity {
     @Column(nullable = false, name = "product_id")
     private Long productId;
 
+    /**
+     * SJ: isDeleted 로 결정
+     */
     @Column(nullable = false)
     private String isDeleted = "N";
 

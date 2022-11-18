@@ -1,21 +1,15 @@
 package com.ono.omg.controller.view;
 
-import com.ono.omg.dto.response.ProductResponseDto;
-import com.ono.omg.exception.CustomCommonException;
-import com.ono.omg.exception.ErrorCode;
-import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import static com.ono.omg.dto.response.ProductResponseDto.*;
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 
 @Controller
 @Slf4j
@@ -23,9 +17,6 @@ public class ProductUIController {
 
 
     private ProductRepository productRepository;
-
-    //SW : 사용하지않는 코드는 제거요망
-    private AccountRepository accountRepository;
 
     public ProductUIController(ProductRepository productRepository) {
         this.productRepository = productRepository;

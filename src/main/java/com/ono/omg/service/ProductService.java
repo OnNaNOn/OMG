@@ -80,7 +80,8 @@ public class ProductService {
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         product.isDeleted();
-            return "상품삭제 완료";
+
+        return "상품삭제 완료";
     }
 
     //상품조회

@@ -20,7 +20,6 @@ import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class ProductController {
-
     private final ProductService productService;
     private final ProductRepository productRepository;
 

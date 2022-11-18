@@ -2,8 +2,6 @@ package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.dto.response.ProductResponseDto;
-import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
 import lombok.RequiredArgsConstructor;

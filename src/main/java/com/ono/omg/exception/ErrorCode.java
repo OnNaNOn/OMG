@@ -28,6 +28,7 @@ public enum ErrorCode {
     ORDER_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 주문이 존재하지 않습니다."),
     NOT_FOUND_PRODUCT(404, HttpStatus.NOT_FOUND, "상품이 존재하지 않습니다."),
     EMAIL_NOT_FOUND(404, HttpStatus.NOT_FOUND, "해당 이메일은 존재하지 않습니다."),
+    NOT_FOUND_SELLER(404, HttpStatus.NOT_FOUND, "올바른 판매자가 아닙니다."),
 
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(500, HttpStatus.INTERNAL_SERVER_ERROR, "서버 에러입니다."),

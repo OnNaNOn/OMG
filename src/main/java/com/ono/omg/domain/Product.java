@@ -14,7 +14,10 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Product extends BaseEntity {
-
+    /**
+     * SJ: entity에 nullable에 대한 항목을 추가하는 것이 좋을 것 같음
+     * 처음 알았는데 필드에 nullable = false이면 테이블이 생성될 때 Not Null이 됨
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -44,6 +47,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String imgUrl;
 
+    /**
+     * SJ: 승우님 나중에 필요없으시다고 생각되는 생성자는 지워주세용!
+     */
     public Product(Long id, String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
         this.id = id;
         this.title = title;

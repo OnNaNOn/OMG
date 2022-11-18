@@ -31,6 +31,11 @@ public class CartService {
     private final ProductRepository productRepository;
 
     /**
+     * SJ: DTO에 Data 애너테이션을 명시적인 애너테이션만 사용하는 것이 좋을 듯 합니다.
+     * 예를 들어 Getter와 ToString만 사용한다던지요!
+     */
+
+    /**
      * 상품 장바구니 담기
      */
     @Transactional

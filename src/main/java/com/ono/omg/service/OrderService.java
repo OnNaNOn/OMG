@@ -55,6 +55,9 @@ public class OrderService {
         );
     }
 
+    /**
+     * SJ: 지워도 괜찮은지요??
+     */
     @Transactional
     public void testDecrease(Long productId, Account account) {
         Product findProduct = productRepository.findById(productId).orElseThrow(
@@ -104,6 +107,7 @@ public class OrderService {
         }
 
         /**
+         * SJ:
          * 우리 서비스만의 [주문 취소] 정책이 필요함
          * 예를 들어, 주문 취소를 했을 경우 재고 관리에 창고재고 라는 필드를 만들어서
          * 해당 값은 증가 시키고 사용자에게 보여지는 상품 재고는 유지를 한다던지와 같은

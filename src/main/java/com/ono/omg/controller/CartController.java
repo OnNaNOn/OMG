@@ -33,7 +33,4 @@ public class CartController {
     public ResponseDto<List<CartResponseDto>> getCartList(@AuthenticationPrincipal UserDetailsImpl userDetails){
         return ResponseDto.success(cartService.getCartList(userDetails));
     }
-
-
-
 }

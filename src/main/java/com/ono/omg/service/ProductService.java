@@ -78,7 +78,8 @@ public class ProductService {
                 () -> new IllegalArgumentException("상품 ID를 찾을 수 없습니다"));
 
         product.isDeleted();
-            return "상품삭제 완료";
+
+        return "상품삭제 완료";
     }
 
     //상품조회

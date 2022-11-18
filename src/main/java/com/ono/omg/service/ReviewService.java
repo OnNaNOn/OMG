@@ -34,6 +34,10 @@ public class ReviewService {
         Long userId = userDetails.getAccount().getId();
         String reviewContent = requestDto.getReviewContent();
 
+        /**
+         * IllegalArgumentException >> CustomException으로 변경!
+         * findReview와 idCheck 메서드도 동일
+         */
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new IllegalArgumentException("NOT_FOUND_PRODUCT")
         );

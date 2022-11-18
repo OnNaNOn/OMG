@@ -16,8 +16,10 @@ import static com.ono.omg.dto.response.ProductResponseDto.RegistedProductRespons
 
 @Controller
 public class UIController {
-    // 계층형 아키텍처에 맞게 재고관리와 메인 페이지는
-    // Controller > Service > Repository로 변경할 필요 있음
+    /**
+     * SJ: 계층형 아키텍처에 맞게 재고관리와 메인 페이지는
+     *  Controller > Service > Repository로 변경할 필요 있음 
+     */
     private ProductRepository productRepository;
 
     public UIController(ProductRepository productRepository) {

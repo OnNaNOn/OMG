@@ -12,6 +12,9 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event extends BaseEntity {
 
+    /**
+     * SJ: 이벤트에 maxParticipant이 있는데 재고 stock과 어떻게 연결 시킬지도 고민 해보면 좋을 것 같음!!
+     */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long id;

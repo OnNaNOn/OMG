@@ -41,8 +41,7 @@ public class ProductService {
     @Transactional
     public String createProduct(ProductReqDto productReqDto, Account account) {
 
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        getAccount(account);
 
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
@@ -53,14 +52,11 @@ public class ProductService {
     @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
 
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        getAccount(account);
 
-        productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
+        getSeller(account);
 
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = getProduct(productId);
 
         product.updateProduct(productReqDto);
             return "상품수정 완료";
@@ -70,14 +66,11 @@ public class ProductService {
     //상품삭제
     @Transactional
     public String deleteProduct(Long productId, Account account) {
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        getAccount(account);
 
-        productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
+        getSeller(account);
 
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = getProduct(productId);
 
         product.isDeleted();
 
@@ -87,9 +80,25 @@ public class ProductService {
     //상품조회
     @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = getProduct(productId);
+
 
         return new ProductResDto(product);
+    }
+
+
+    private Account getAccount(Account account) {
+        return accountRepository.findByUsername(account.getUsername()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Product getSeller(Account account) {
+        return productRepository.findBySellerId(account.getId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
+    }
+
+    private Product getProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
     }
 }

@@ -41,7 +41,7 @@ public class ProductService {
     @Transactional
     public String createProduct(ProductReqDto productReqDto, Account account) {
 
-        validAccount(account);
+        hasAccount(account);
 
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
@@ -52,11 +52,11 @@ public class ProductService {
     @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
 
-        validAccount(account);
+        hasAccount(account);
 
-        validSeller(account);
+        hasSeller(account);
 
-        Product product = validProduct(productId);
+        Product product = hasProduct(productId);
 
         product.updateProduct(productReqDto);
             return "상품수정 완료";
@@ -66,11 +66,11 @@ public class ProductService {
     //상품삭제
     @Transactional
     public String deleteProduct(Long productId, Account account) {
-        validAccount(account);
+        hasAccount(account);
 
-        validSeller(account);
+        hasSeller(account);
 
-        Product product = validProduct(productId);
+        Product product = hasProduct(productId);
 
         product.isDeleted();
 
@@ -80,24 +80,24 @@ public class ProductService {
     //상품조회
     @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
-        Product product = validProduct(productId);
+        Product product = hasProduct(productId);
 
 
         return new ProductResDto(product);
     }
 
 
-    private Account validAccount(Account account) {
+    private Account hasAccount(Account account) {
         return accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
     }
 
-    private Product validSeller(Account account) {
+    private Product hasSeller(Account account) {
         return productRepository.findBySellerId(account.getId()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
     }
 
-    private Product validProduct(Long productId) {
+    private Product hasProduct(Long productId) {
         return productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
     }

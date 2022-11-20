@@ -39,3 +39,7 @@ logs/**
 
 ### VS Code ###
 .vscode/
+
+### yml ###
+application-local.yml
+

@@ -16,10 +16,11 @@ public enum ErrorCode {
 
     DUPLICATE_PRODUCT(400, HttpStatus.BAD_REQUEST, "중복된 상품이 존재합니다."),
     // 401 UNAUTHORIZED 권한 없음
-    UNAUTHORIZED_USER(401, HttpStatus.UNAUTHORIZED, "권한이 필요합니다."),
+    UNAUTHORIZED_USER(401, HttpStatus.UNAUTHORIZED, "권한이 없는 사용자입니다."),
 
     // 403 FORBIDDEN 접근 실패
     FORBIDDEN_USER(403, HttpStatus.FORBIDDEN, "로그인이 필요합니다."),
+    INVALID_TOKEN(403, HttpStatus.FORBIDDEN, "토큰이 유효하지 않습니다."),
     INVALID_USER(403, HttpStatus.FORBIDDEN, "올바른 사용자가 아닙니다."),
     OUT_OF_STOCK(403, HttpStatus.FORBIDDEN, "재고가 없습니다. 판매자에게 문의하세요"),
 

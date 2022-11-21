@@ -3,6 +3,7 @@ package com.ono.omg.repository.order;
 import com.ono.omg.dto.response.QOrderResponseDto_CreatedOrdersResponseDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     }
 
     @Override
-    public List<CreatedOrdersResponseDto> findOrdersParticularAccount(Long id) {
+    public List<CreatedOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long id) {
         List<CreatedOrdersResponseDto> results = queryFactory
                 .select(new QOrderResponseDto_CreatedOrdersResponseDto(
                         order.product.imgUrl,
@@ -31,6 +32,8 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                 .join(order.product, product)
                 .join(order.account, account)
                 .where(account.id.eq(id))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         return results;

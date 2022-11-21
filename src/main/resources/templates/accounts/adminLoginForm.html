@@ -17,8 +17,6 @@
         }
     </style>
 
-    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>-->
-    <!--<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>-->
     <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
 
     <script>
@@ -29,26 +27,26 @@
                 "password": $("#password").val(),
                 "adminSecretKey": $("#adminSecretKey").val()
             }
+            console.log("adminSecretKey = " + $("#adminSecretKey").val());
 
             // let token = localStorage.getItem("Authorization");
 
             $.ajax({
                 type: "POST",
-                url: "/accounts/login",
                 headers: {'Content-Type': 'application/json'},
+                url: "/accounts/login",
                 data: JSON.stringify(data),
                 success: function (response, dd, xhr) {
-                    // $.cookie('Authorization', response.data.token);
-                    let token = xhr.getResponseHeader("authorization");
-                    localStorage.setItem("Authorization", token);
-                    alert("관리자 로그인이 완료되었습니다.");
-                    /**
-                     * 아래를 사용하지 않고는 어떻게 해야 하는지??
-                     * >> 못함. ajax로 해야된다.
-                     */
-                    window.location.href = '/admin/management';
+                    if (response.data.accountType != "ROLE_ADMIN") {
+                        alert("관리자 권한이 없습니다.");
+                        window.location.href = '/admin/login';
+                    } else {
+                        alert("관리자 로그인이 완료되었습니다.");
+                        window.location.href = '/admin/management';
+                        localStorage.setItem("Authorization", xhr.getResponseHeader("authorization"));
+                    }
                 },
-                error : function(response, status, error) {
+                error: function (response, status, error) {
                     let resp = JSON.parse(response.responseText);
                     // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
                     alert(resp.error.message);

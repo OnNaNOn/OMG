@@ -3,20 +3,26 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -84,6 +90,20 @@ public class ProductService {
         return new ProductResDto(product);
     }
 
+    /**
+     * 상품 등록내역 조회
+     * */
+    @Transactional(readOnly = true)
+    public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, UserDetailsImpl userDetails) {
+        Long accountId = userDetails.getAccount().getId();
+
+        List<Product> registerProductList = productRepository.findRegisterProductList(pageable, accountId);
+
+        return registerProductList.stream()
+                .map((o)-> new MainPageOrdersResponseDto(o.getId(), o.getImgUrl(), o.getTitle()))
+                .collect(toList());
+    }
+
 
     private Account validAccount(Account account) {
         return accountRepository.findByUsername(account.getUsername()).orElseThrow(
@@ -99,4 +119,6 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
     }
+
+
 }

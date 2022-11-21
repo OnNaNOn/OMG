@@ -3,9 +3,13 @@ package com.ono.omg.controller;
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.dto.request.ReviewRequestDto;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -50,5 +54,14 @@ public class ProductController {
     public ResponseEntity<ResponseDto<ProductResDto>> searchProduct(@PathVariable Long productId) {
         return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId)), HttpStatus.OK);
     }
+
+    /**
+     * 상품 등록내역 조회
+     * */
+    @GetMapping("/products/details")
+    ResponseEntity<ResponseDto<List<MainPageOrdersResponseDto>>> registerDetailsProduct(@PageableDefault(size = 10) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return new ResponseEntity<>(ResponseDto.success(productService.registerDetailsProduct(pageable, userDetails)), HttpStatus.OK);
+    }
+
 
 }

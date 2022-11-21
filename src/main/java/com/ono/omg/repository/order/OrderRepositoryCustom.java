@@ -1,12 +1,13 @@
 package com.ono.omg.repository.order;
 
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
 
 public interface OrderRepositoryCustom {
 
-    List<CreatedOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long id);
+    List<MainPageOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long id);
 }

@@ -2,6 +2,8 @@ package com.ono.omg.controller;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.dto.common.ResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.createdOrdersResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
+
 import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
 
 @RestController
@@ -34,13 +36,13 @@ public class OrderController {
      * 만약 Postman으로 테스트 시 주석 번갈아가면서 테스트
      */
     @PostMapping("/{productId}/confirm")
-    public ResponseDto<Long> CreatedOrder(@PathVariable Long productId,
+    public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
 //                                                              Account account
                                                               @AuthenticationPrincipal UserDetailsImpl account
                                                               ) {
 
         RLock lock = redissonClient.getLock(productId.toString());
-        Long orderId;
+        createdOrdersResponseDto createdOrdersResponseDto;
         try {
             boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
 
@@ -51,7 +53,7 @@ public class OrderController {
                 return null;
             }
 //            responseDto = orderService.productOrder(productId, account);
-            orderId = orderService.productOrder(productId, account.getAccount());
+            createdOrdersResponseDto = orderService.productOrder(productId, account.getAccount());
         } catch (InterruptedException e) {
             /**
              * SJ: 별도의 Custom Exception으로 처리
@@ -60,7 +62,7 @@ public class OrderController {
         } finally {
             lock.unlock();
         }
-        return ResponseDto.success(orderId);
+        return ResponseDto.success(createdOrdersResponseDto);
     }
 
     /**

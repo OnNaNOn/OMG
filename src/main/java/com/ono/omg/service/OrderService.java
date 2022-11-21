@@ -3,13 +3,14 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Order;
 import com.ono.omg.domain.Product;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.createdOrdersResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.security.user.UserDetailsImpl;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -18,11 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
 import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
 
 @Service
@@ -40,7 +38,7 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
-    public Long productOrder(Long productId, Account account) {
+    public createdOrdersResponseDto productOrder(Long productId, Account account) {
         Product findProduct = productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
@@ -52,7 +50,9 @@ public class OrderService {
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
         orderRepository.save(savedOrder);
 
-        return savedOrder.getId();
+        return new createdOrdersResponseDto(
+                savedOrder.getId(), savedOrder.getTotalPrice(), account.getUsername(), findProduct
+        );
     }
 
     /**
@@ -86,8 +86,8 @@ public class OrderService {
         return price;
     }
 
-    public List<CreatedOrdersResponseDto> findAllOrders(Pageable pageable, Account account) {
-        List<CreatedOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(pageable, account.getId());
+    public List<MainPageOrdersResponseDto> findAllOrders(Pageable pageable, Account account) {
+        List<MainPageOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(pageable, account.getId());
 
         return findOrders;
     }

@@ -1,6 +1,8 @@
 package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
+
 
 @RestController
 @Slf4j
@@ -25,8 +27,8 @@ public class MyPageController {
     private final OrderService orderService;
 
     @GetMapping("/mypage/orders")
-    public ResponseDto<List<CreatedOrdersResponseDto>> findAllOrdersParticularAccount(@PageableDefault(size = 10) Pageable pageable,
-                                                                                      @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseDto<List<MainPageOrdersResponseDto>> findAllOrdersParticularAccount(@PageableDefault(size = 10) Pageable pageable,
+                                                                                       @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(orderService.findAllOrders(pageable, userDetails.getAccount()));
     }
 }

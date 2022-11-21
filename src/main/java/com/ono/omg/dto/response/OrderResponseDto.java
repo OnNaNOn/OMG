@@ -10,16 +10,46 @@ public class OrderResponseDto {
 
     @Getter
     @NoArgsConstructor
-    public static class CreatedOrdersResponseDto {
+    public static class MainPageOrdersResponseDto {
 
         private String imgUrl;
         private String title;
 
 
         @QueryProjection
-        public CreatedOrdersResponseDto(String imgUrl, String title) {
+        public MainPageOrdersResponseDto(String imgUrl, String title) {
             this.imgUrl = imgUrl;
             this.title = title;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class createdOrdersResponseDto {
+        /**
+         * 다중 상품인 경우 아래 두 필드는 List에 별도의 Dto로 담김
+         */
+        private Long orderId;
+        private Integer getTotalPrice;
+        private String username;
+
+        private Long productId;
+        private int price;
+        private String category;
+        private String delivery;
+        private String imgUrl;
+
+        public createdOrdersResponseDto(Long orderId, Integer getTotalPrice, String username, Product product) {
+            this.orderId = orderId;
+            this.getTotalPrice = getTotalPrice;
+            this.username = username;
+            this.productId = product.getId();
+            this.price = product.getPrice();
+            this.category = product.getCategory();
+            this.delivery = product.getDelivery();
+            this.imgUrl = product.getImgUrl();
+
         }
     }
 

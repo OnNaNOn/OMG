@@ -94,9 +94,4 @@ public class ProductService {
         return new ProductResDto(product);
     }
 
-    //상품 검색
-    @Transactional
-    public MainPageResponseDto lookUpProduct(String keyword, UserDetailsImpl userDetails) {
-        return new MainPageResponseDto();
-    }
 }

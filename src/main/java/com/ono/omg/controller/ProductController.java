@@ -51,10 +51,4 @@ public class ProductController {
         return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId)), HttpStatus.OK);
     }
 
-    //상품 검색
-    @PostMapping("/products")
-    public ResponseDto<MainPageResponseDto> lookUpProduct(@RequestParam(value = "keyword") String keyword,
-                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(productService.lookUpProduct(keyword, userDetails));
-    }
 }

@@ -26,6 +26,7 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     public List<MainPageOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long id) {
         List<MainPageOrdersResponseDto> results = queryFactory
                 .select(new QOrderResponseDto_MainPageOrdersResponseDto(
+                        product.id,
                         product.imgUrl,
                         product.title
                 ))

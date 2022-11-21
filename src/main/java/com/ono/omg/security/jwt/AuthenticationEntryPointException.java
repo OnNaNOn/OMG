@@ -23,6 +23,6 @@ public class AuthenticationEntryPointException implements AuthenticationEntryPoi
                         ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 )
         );
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
     }
 }

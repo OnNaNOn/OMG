@@ -3,6 +3,8 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Product;
 import com.ono.omg.domain.Review;
 import com.ono.omg.dto.request.ReviewRequestDto;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.dto.response.ReviewResponseDto;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
@@ -10,11 +12,16 @@ import com.ono.omg.repository.review.ReviewRepository;
 import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -138,5 +145,23 @@ public class ReviewService {
         if (!userId.equals(currentId)) {
             throw new IllegalArgumentException("NOT_WRITER");
         }
+    }
+
+    /**
+     * 리뷰 등록내역 조회
+     * */
+    public List<MainPageOrdersResponseDto> reviewDetails(UserDetailsImpl userDetails) {
+        Long accountId = userDetails.getAccount().getId();
+        Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "modifiedAt");
+        List<Review> registerReviewList = reviewRepository.findReviewList(pageable, accountId);
+
+        System.out.println("accountId" + accountId);
+        for (Review review : registerReviewList) {
+            System.out.println(review.getUserId());
+        }
+
+        return registerReviewList.stream()
+                .map((o)-> new MainPageOrdersResponseDto(o.getId(), o.getProduct().getImgUrl(), o.getProduct().getTitle()))
+                .collect(toList());
     }
 }

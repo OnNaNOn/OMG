@@ -59,7 +59,7 @@ public class ProductController {
      * 상품 등록내역 조회
      * */
     @GetMapping("/products/details")
-    ResponseEntity<ResponseDto<List<MainPageOrdersResponseDto>>> registerDetailsProduct(@PageableDefault(size = 10) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public ResponseEntity<ResponseDto<List<MainPageOrdersResponseDto>>> registerDetailsProduct(@PageableDefault(size = 10) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.registerDetailsProduct(pageable, userDetails)), HttpStatus.OK);
     }
 

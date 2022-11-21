@@ -2,6 +2,7 @@ package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.dto.request.ReviewRequestDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +49,12 @@ public class ProductController {
     @GetMapping("/products/{productId}")
     public ResponseEntity<ResponseDto<ProductResDto>> searchProduct(@PathVariable Long productId) {
         return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId)), HttpStatus.OK);
+    }
+
+    //상품 검색
+    @PostMapping("/products")
+    public ResponseDto<MainPageResponseDto> lookUpProduct(@RequestParam(value = "keyword") String keyword,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(productService.lookUpProduct(keyword, userDetails));
     }
 }

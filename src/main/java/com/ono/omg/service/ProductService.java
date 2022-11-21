@@ -7,6 +7,7 @@ import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -91,5 +92,11 @@ public class ProductService {
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
         return new ProductResDto(product);
+    }
+
+    //상품 검색
+    @Transactional
+    public MainPageResponseDto lookUpProduct(String keyword, UserDetailsImpl userDetails) {
+        return new MainPageResponseDto();
     }
 }

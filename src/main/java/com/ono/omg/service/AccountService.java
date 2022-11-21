@@ -80,10 +80,13 @@ public class AccountService {
          * 관리자 번호와 일치할 시 관리자 등급으로 변경
          */
         String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
+        System.out.println("adminSecretKey = " + adminSecretKey);
+
         if (hasAdminAuthorized(adminSecretKey)) {
             findAccount.upgradeAdmin();
             accountRepository.save(findAccount);
         }
+        // 로직을 한 개 더 만들어야 하나?
 
         TokenDto tokenDto = jwtUtil.createAllToken(accountLoginRequestDto.getUsername());
         Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUsername(findAccount.getUsername());
@@ -118,7 +121,7 @@ public class AccountService {
     }
 
     private boolean hasAdminAuthorized(String adminSecretKey) {
-        return hasAdminSecretKey(adminSecretKey) && adminSecretKey.equals(ADMIN_SECRET_KEY);
+        return hasAdminSecretKey(adminSecretKey) & adminSecretKey.equals(ADMIN_SECRET_KEY);
     }
 
     private boolean hasAdminSecretKey(String adminSecretKey) {

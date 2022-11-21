@@ -1,10 +1,18 @@
+spring:
+  profiles:
+    default: local
 
+  datasource:
+# 전셩영 님
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
 
-  #전성영
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
-  #    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-  #    username: root
-  #    password: 1234
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
   config:
     import:
@@ -44,7 +52,7 @@ logging:
 #            debug
 
 server:
-  port: 8080
+  port: 8090
   servlet:
     encoding:
       charset: utf-8

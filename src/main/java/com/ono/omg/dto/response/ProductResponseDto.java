@@ -8,7 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ProductResponseDto {
 
     @NoArgsConstructor
@@ -123,7 +125,7 @@ public class ProductResponseDto {
             this.delivery = product.getDelivery();
             this.stock = product.getStock();
 
-            System.out.println(product.getImgUrl());
+            log.info("product.getImgUrl() = {}", product.getImgUrl());
         }
     }
 

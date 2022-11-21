@@ -59,10 +59,6 @@ public class UIController {
         for(Product product : products){
             responseDto.add(new MainPageResponseDto(product));
         }
-
-        for (int i = 0; i < 10; i++) {
-            System.out.println("responseDto.get(i) = " + responseDto.get(i));;
-        }
         model.addAttribute("products", responseDto);
 
         //페이지블럭 처리

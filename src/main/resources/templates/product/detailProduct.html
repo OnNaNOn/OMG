@@ -54,13 +54,13 @@
             // var data = {
             //     "username": $("#username").val(),
             // }
-            // let pid = id;
+            let pid = id;
             // alert(pid);
             $.ajax({
                 type: "POST",
                 url: "/api/" + pid + "/confirm",
-                headers: {'Content-Type': 'application/json'},
-                    // , 'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhc2oiLCJleHAiOjE2Njg3OTI2ODcsImlhdCI6MTY2ODc4NTQ4N30.vXhjUpLBZU1sNpLn9a6AnNuIvcjtkPMmIISvG7GLmG4.eyJzdWIiOiJkcyIsImV4cCI6MTY2ODc5MjE4NCwiaWF0IjoxNjY4Nzg0OTg0fQ.gD9l5OOH9Wu8LgmFA1jNuqDxgKMuwTIjUlHSgD2Vu9w"},
+                headers: {'Content-Type': 'application/json'
+                    , 'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsImV4cCI6MTY2ODgzMzEzNiwiaWF0IjoxNjY4ODI1OTM2fQ.aXY_-zFTBenZjI73GJRI636rnN-7FP0iwDIutoqPnRs"},
                 // data: JSON.stringify(data),
                 success: function (response) {
                     alert("주문을 완료했습니다.");

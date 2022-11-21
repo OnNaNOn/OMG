@@ -11,13 +11,15 @@ public class OrderResponseDto {
     @Getter
     @NoArgsConstructor
     public static class MainPageOrdersResponseDto {
+        private Long productId;
 
         private String imgUrl;
         private String title;
 
 
         @QueryProjection
-        public MainPageOrdersResponseDto(String imgUrl, String title) {
+        public MainPageOrdersResponseDto(Long productId, String imgUrl, String title) {
+            this.productId = productId;
             this.imgUrl = imgUrl;
             this.title = title;
         }

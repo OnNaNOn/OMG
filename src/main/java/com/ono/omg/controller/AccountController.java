@@ -29,7 +29,6 @@ public class AccountController {
      */
     @PostMapping("/signup")
     public ResponseDto<AccountRegisterResponseDto> registerAccount(@RequestBody @Valid AccountRegisterRequestDto accountRequestDto) {
-        System.out.println("accountRequestDto = " + accountRequestDto);
         return ResponseDto.success(accountService.signup(accountRequestDto));
     }
 

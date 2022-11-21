@@ -45,7 +45,7 @@ public class CartService {
 
         Optional<Cart> found = cartRepository.findByProductIdAndAccountId(productId, account.getId());
 
-        log.info("found -----------> " + found.toString());
+//        log.info("found -----------> " + found.toString());
 
         if (found.isEmpty()) {
             Cart cart = new Cart(account, productId);
@@ -61,12 +61,10 @@ public class CartService {
      * */
     public List<CartResponseDto> getCartList(UserDetailsImpl userDetails) {
         Long accountId = userDetails.getAccount().getId();
-        log.info("accountId ======================= > " + accountId);
 
         List<Long> cartProductIdList = cartRepository.findProductIdByAccountId(accountId);
-        log.info("cartProductIdList ======================= > " + cartProductIdList.size());
-
         List<CartResponseDto>cartResponseList = new ArrayList<>();
+
         //가져온 상품Id로 해당 상품에 대한 정보 가져오기
         for(Long productId : cartProductIdList){
             Product p = productRepository.findById(productId).orElseThrow(

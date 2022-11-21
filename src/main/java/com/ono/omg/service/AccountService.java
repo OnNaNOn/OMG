@@ -94,8 +94,6 @@ public class AccountService {
             RefreshToken newRefreshToken = new RefreshToken(tokenDto.getRefreshToken(), findAccount.getUsername());
             refreshTokenRepository.save(newRefreshToken);
         }
-        System.out.println("tokenDto = " + tokenDto.getAccessToken());
-
         addTokenHeader(response, tokenDto);
 //        addTokenCookie(response, tokenDto);
 

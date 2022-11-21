@@ -16,8 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.*;
 import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
 
 @Service
 @Slf4j
@@ -42,8 +42,7 @@ public class ProductService {
     @Transactional
     public String createProduct(ProductReqDto productReqDto, Account account) {
 
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        validAccount(account);
 
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
@@ -54,14 +53,9 @@ public class ProductService {
     @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
 
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
-
-        productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
-
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        validAccount(account);
+        validSeller(account);
+        Product product = validProduct(productId);
 
         product.updateProduct(productReqDto);
             return "상품수정 완료";
@@ -71,14 +65,11 @@ public class ProductService {
     //상품삭제
     @Transactional
     public String deleteProduct(Long productId, Account account) {
-        accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        validAccount(account);
 
-        productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
+        validSeller(account);
 
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = validProduct(productId);
 
         product.isDeleted();
 
@@ -88,10 +79,25 @@ public class ProductService {
     //상품조회
     @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
-        Product product = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Product product = validProduct(productId);
+
 
         return new ProductResDto(product);
+    }
+
+    private Account validAccount(Account account) {
+        return accountRepository.findByUsername(account.getUsername()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private Product validSeller(Account account) {
+        return productRepository.findBySellerId(account.getId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
+    }
+
+    private Product validProduct(Long productId) {
+        return productRepository.findById(productId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
     }
 
 }

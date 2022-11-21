@@ -3,22 +3,24 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Order;
 import com.ono.omg.domain.Product;
+import com.ono.omg.dto.response.OrderResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
+import com.ono.omg.dto.response.OrderResponseDto.createdOrdersResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
 import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
 
 @Service
@@ -36,7 +38,7 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
-    public CreatedOrdersResponseDto productOrder(Long productId, Account account) {
+    public createdOrdersResponseDto productOrder(Long productId, Account account) {
         Product findProduct = productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
@@ -48,11 +50,8 @@ public class OrderService {
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
         orderRepository.save(savedOrder);
 
-        return new CreatedOrdersResponseDto(
-                savedOrder.getId(),
-                savedOrder.getTotalPrice(),
-                savedOrder.getAccount().getUsername(),
-                savedOrder.getProduct()
+        return new createdOrdersResponseDto(
+                savedOrder.getId(), savedOrder.getTotalPrice(), account.getUsername(), findProduct
         );
     }
 
@@ -87,8 +86,8 @@ public class OrderService {
         return price;
     }
 
-    public List<CreatedOrdersResponseDto> findAllOrders(Account account) {
-        List<CreatedOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(account.getId());
+    public List<MainPageOrdersResponseDto> findAllOrders(Pageable pageable, Account account) {
+        List<MainPageOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(pageable, account.getId());
 
         return findOrders;
     }
@@ -130,7 +129,29 @@ public class OrderService {
 
     }
 
+
+//    /**
+//     * 주문내역 조회
+//     * */
+//    public List<MyPageResponseDto> getOrderList(UserDetailsImpl userDetails) {
+//        Long accountId = userDetails.getAccount().getId();
+//        accountRepository.findById(accountId).orElseThrow(
+//                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+//        );
+//
+//        List<Order> orders = orderRepository.findorderListByOrderId(accountId);
+//        List<MyPageResponseDto> responseDtoList = orders.stream()
+//                .map((o)-> new MyPageResponseDto(o.getProduct().getImgUrl(), o.getProduct().getTitle()))
+//                .collect(Collectors.toList());
+//
+//        return responseDtoList;
+//    }
+
+
+
     private boolean isSameAccount(Order findOrder, Account findAccount) {
         return !findOrder.getAccount().getId().equals(findAccount.getId());
     }
+
+
 }

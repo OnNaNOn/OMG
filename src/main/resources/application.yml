@@ -10,10 +10,10 @@ spring:
     password:
 
 # 전셩영 님
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: 1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3307/test?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username: root
+#    password: 1234
 
   h2:
     console:

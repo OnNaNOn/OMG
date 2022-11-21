@@ -12,40 +12,14 @@ public class OrderResponseDto {
     @NoArgsConstructor
     public static class CreatedOrdersResponseDto {
 
-        // order
-        private Long orderId;
-        private Integer orderTotalPrice;
-//        private String orderStatus;
-
-        // account
-        private String username;
-
-        // product
+        private String imgUrl;
         private String title;
-        private String category;
-        private String delivery;
-        private Long seller;
 
 
         @QueryProjection
-        public CreatedOrdersResponseDto(Long orderId, Integer orderTotalPrice, String username, String title, String category, String delivery, Long seller) {
-            this.orderId = orderId;
-            this.orderTotalPrice = orderTotalPrice;
-            this.username = username;
+        public CreatedOrdersResponseDto(String imgUrl, String title) {
+            this.imgUrl = imgUrl;
             this.title = title;
-            this.category = category;
-            this.delivery = delivery;
-            this.seller = seller;
-        }
-
-        public CreatedOrdersResponseDto(Long orderId, Integer orderTotalPrice, String username, Product product) {
-            this.orderId = orderId;
-            this.orderTotalPrice = orderTotalPrice;
-            this.username = username;
-            this.title = product.getTitle();
-            this.category = product.getCategory();
-            this.delivery = product.getDelivery();
-            this.seller = product.getSellerId();
         }
     }
 

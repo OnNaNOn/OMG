@@ -24,15 +24,8 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
     public List<CreatedOrdersResponseDto> findOrdersParticularAccount(Long id) {
         List<CreatedOrdersResponseDto> results = queryFactory
                 .select(new QOrderResponseDto_CreatedOrdersResponseDto(
-                        order.id,
-                        order.totalPrice,
-
-                        account.username,
-
-                        product.title,
-                        product.category,
-                        product.delivery,
-                        product.sellerId
+                        order.product.imgUrl,
+                        order.product.title
                 ))
                 .from(order)
                 .join(order.product, product)

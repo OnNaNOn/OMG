@@ -9,11 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
@@ -36,13 +34,13 @@ public class OrderController {
      * 만약 Postman으로 테스트 시 주석 번갈아가면서 테스트
      */
     @PostMapping("/{productId}/confirm")
-    public ResponseDto<CreatedOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
+    public ResponseDto<Long> CreatedOrder(@PathVariable Long productId,
 //                                                              Account account
                                                               @AuthenticationPrincipal UserDetailsImpl account
                                                               ) {
 
         RLock lock = redissonClient.getLock(productId.toString());
-        CreatedOrdersResponseDto responseDto;
+        Long orderId;
         try {
             boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
 
@@ -53,7 +51,7 @@ public class OrderController {
                 return null;
             }
 //            responseDto = orderService.productOrder(productId, account);
-            responseDto = orderService.productOrder(productId, account.getAccount());
+            orderId = orderService.productOrder(productId, account.getAccount());
         } catch (InterruptedException e) {
             /**
              * SJ: 별도의 Custom Exception으로 처리
@@ -62,7 +60,7 @@ public class OrderController {
         } finally {
             lock.unlock();
         }
-        return ResponseDto.success(responseDto);
+        return ResponseDto.success(orderId);
     }
 
     /**
@@ -73,4 +71,13 @@ public class OrderController {
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(orderService.cancel(orderId, userDetails.getAccount()));
     }
+
+//    /**
+//     * 주문내역 조회
+//    * */
+//    @GetMapping("/orders")
+//    public ResponseDto<List<MyPageResponseDto>> getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return ResponseDto.success(orderService.getOrderList(userDetails));
+//    }
+
 }

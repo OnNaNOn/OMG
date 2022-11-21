@@ -8,6 +8,7 @@ import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.security.user.UserDetailsImpl;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +17,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto;
 import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
@@ -36,7 +39,7 @@ public class OrderService {
      * 주문하기
      */
     @Transactional
-    public CreatedOrdersResponseDto productOrder(Long productId, Account account) {
+    public Long productOrder(Long productId, Account account) {
         Product findProduct = productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
@@ -48,12 +51,7 @@ public class OrderService {
         Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
         orderRepository.save(savedOrder);
 
-        return new CreatedOrdersResponseDto(
-                savedOrder.getId(),
-                savedOrder.getTotalPrice(),
-                savedOrder.getAccount().getUsername(),
-                savedOrder.getProduct()
-        );
+        return savedOrder.getId();
     }
 
     /**
@@ -130,7 +128,29 @@ public class OrderService {
 
     }
 
+
+//    /**
+//     * 주문내역 조회
+//     * */
+//    public List<MyPageResponseDto> getOrderList(UserDetailsImpl userDetails) {
+//        Long accountId = userDetails.getAccount().getId();
+//        accountRepository.findById(accountId).orElseThrow(
+//                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+//        );
+//
+//        List<Order> orders = orderRepository.findorderListByOrderId(accountId);
+//        List<MyPageResponseDto> responseDtoList = orders.stream()
+//                .map((o)-> new MyPageResponseDto(o.getProduct().getImgUrl(), o.getProduct().getTitle()))
+//                .collect(Collectors.toList());
+//
+//        return responseDtoList;
+//    }
+
+
+
     private boolean isSameAccount(Order findOrder, Account findAccount) {
         return !findOrder.getAccount().getId().equals(findAccount.getId());
     }
+
+
 }

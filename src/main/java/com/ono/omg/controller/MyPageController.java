@@ -17,12 +17,12 @@ import static com.ono.omg.dto.response.OrderResponseDto.CreatedOrdersResponseDto
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/mypage")
+@RequestMapping("/api")
 public class MyPageController {
 
     private final OrderService orderService;
 
-    @GetMapping("/orders")
+    @GetMapping("/mypage/orders")
     public ResponseDto<List<CreatedOrdersResponseDto>> findAllOrdersParticularAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return ResponseDto.success(orderService.findAllOrders(userDetails.getAccount()));
     }

@@ -51,11 +51,11 @@ public class UIController {
     }
 
     @GetMapping("/admin/management")
-    public String adminProductManagement(@PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String adminProductManagement(@PageableDefault(size = 10)Pageable pageable , Model model) {
         System.out.println("UIController.adminProductManagement");
         System.out.println("page = " + pageable.getPageNumber());
 
-        model.addAttribute("page", pageable.getPageNumber());
+        model.addAttribute("nowPage", pageable.getPageNumber());
         return "admin/managedProducts";
     }
 

@@ -1,13 +1,12 @@
 package com.ono.omg.redisson;
 
 import com.ono.omg.controller.OrderController;
-import com.ono.omg.domain.*;
-import com.ono.omg.dto.request.AccountRequestDto;
+import com.ono.omg.domain.Account;
+import com.ono.omg.domain.AccountType;
+import com.ono.omg.domain.Product;
 import com.ono.omg.repository.account.AccountRepository;
-import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.service.OrderService;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +16,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class RedissonLockStockFacadeTest {
-
-    @Autowired
-    private OrderService orderService;
 
     @Autowired
     private RedissonLockStockFacade redissonLockStockFacade;
@@ -33,6 +27,9 @@ class RedissonLockStockFacadeTest {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    OrderService orderService;
 
     @BeforeEach
     public void insert() {
@@ -48,13 +45,6 @@ class RedissonLockStockFacadeTest {
 //
 //        productRepository.saveAndFlush(product);
     }
-
-    // 검증에 상관없는 요소 (삭제 순서가 바뀌어도 관련이 없다)
-//    @AfterEach
-//    public void delete() {
-//        productRepository.deleteAll();
-//        accountRepository.deleteAll();
-//    }
 
     @Test
     public void 동시에_100개의_요청() throws InterruptedException {
@@ -105,3 +95,11 @@ class RedissonLockStockFacadeTest {
 //        assertEquals(10, product.getStock());
     }
 }
+
+//
+//    // 검증에 상관없는 요소 (삭제 순서가 바뀌어도 관련이 없다)
+////    @AfterEach
+////    public void delete() {
+////        productRepository.deleteAll();
+////        accountRepository.deleteAll();
+////    }

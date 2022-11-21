@@ -10,42 +10,46 @@ public class OrderResponseDto {
 
     @Getter
     @NoArgsConstructor
-    public static class CreatedOrdersResponseDto {
+    public static class MainPageOrdersResponseDto {
 
-        // order
-        private Long orderId;
-        private Integer orderTotalPrice;
-//        private String orderStatus;
-
-        // account
-        private String username;
-
-        // product
+        private String imgUrl;
         private String title;
-        private String category;
-        private String delivery;
-        private Long seller;
 
 
         @QueryProjection
-        public CreatedOrdersResponseDto(Long orderId, Integer orderTotalPrice, String username, String title, String category, String delivery, Long seller) {
-            this.orderId = orderId;
-            this.orderTotalPrice = orderTotalPrice;
-            this.username = username;
+        public MainPageOrdersResponseDto(String imgUrl, String title) {
+            this.imgUrl = imgUrl;
             this.title = title;
-            this.category = category;
-            this.delivery = delivery;
-            this.seller = seller;
         }
+    }
 
-        public CreatedOrdersResponseDto(Long orderId, Integer orderTotalPrice, String username, Product product) {
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class createdOrdersResponseDto {
+        /**
+         * 다중 상품인 경우 아래 두 필드는 List에 별도의 Dto로 담김
+         */
+        private Long orderId;
+        private Integer getTotalPrice;
+        private String username;
+
+        private Long productId;
+        private int price;
+        private String category;
+        private String delivery;
+        private String imgUrl;
+
+        public createdOrdersResponseDto(Long orderId, Integer getTotalPrice, String username, Product product) {
             this.orderId = orderId;
-            this.orderTotalPrice = orderTotalPrice;
+            this.getTotalPrice = getTotalPrice;
             this.username = username;
-            this.title = product.getTitle();
+            this.productId = product.getId();
+            this.price = product.getPrice();
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
-            this.seller = product.getSellerId();
+            this.imgUrl = product.getImgUrl();
+
         }
     }
 

@@ -2,9 +2,9 @@ name: Deploy to Amazon EC2
 
 # main브랜치에 push 혹은 pull_request가 되었을 때 작동하게 설정
 on:
-  push:
-    branches:
-      - main
+#   push:
+#     branches:
+#       - main
   pull_request:
     branches:
       - main

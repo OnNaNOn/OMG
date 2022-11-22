@@ -1,16 +1,13 @@
 package com.ono.omg.domain;
 
-import com.ono.omg.dto.request.AccountRequestDto;
 import com.ono.omg.dto.request.ProductReqDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -28,6 +25,7 @@ class ProductTest {
 
             // when & then
             assertThat(product.getTitle()).isEqualTo("computer");
+            assertThat(product.getPrice()).isEqualTo(1000000);
             assertThat(product.getImgUrl().equals("")).isFalse();
             assertThat(product.getCategory()).isEqualTo("컴퓨터");
             assertThat(product.getDelivery()).isEqualTo("초고속 배송");
@@ -53,6 +51,7 @@ class ProductTest {
 
             // then
             assertThat(product.getTitle()).isEqualTo("당근");
+            assertThat(product.getPrice()).isEqualTo(1000);
             assertThat(product.getImgUrl()).isEqualTo(basicImgUrl);
             assertThat(product.getCategory()).isEqualTo("채소");
             assertThat(product.getDelivery()).isEqualTo("빠른 배송");

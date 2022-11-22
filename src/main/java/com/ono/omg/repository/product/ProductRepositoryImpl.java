@@ -1,6 +1,5 @@
 package com.ono.omg.repository.product;
 
-import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.domain.QProduct;
 import com.ono.omg.dto.request.SearchRequestDto;
@@ -38,13 +37,14 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.stock
                 ))
                 .from(product)
+                .where(product.stock.ne(0))
                 .orderBy(product.id.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
         JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
+        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.stream().count());
     }
 
     /**

@@ -12,8 +12,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomCommonException.class)
     public ResponseEntity<ResponseDto<Object>> customCommonException(CustomCommonException e) {
-        return new ResponseEntity<>(ResponseDto.fail(e.getStatus(), e.getHttpStatus(), e.getMessage()),
-                                     e.getHttpStatus());
+        return new ResponseEntity<>(ResponseDto.fail(e.getStatus(), e.getHttpStatus(), e.getMessage()), e.getHttpStatus());
     }
 
     @ExceptionHandler(Exception.class)

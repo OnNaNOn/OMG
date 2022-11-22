@@ -14,7 +14,7 @@ plugins {
 
 jacoco {
     // JaCoCo 버전
-    toolVersion = "0.8.5"
+    toolVersion = "0.8.8"
 
 //  테스트결과 리포트를 저장할 경로 변경
 //  default는 "${project.reporting.baseDir}/jacoco"
@@ -109,16 +109,17 @@ jacocoTestReport {
         classDirectories.setFrom(
                 files(classDirectories.files.collect {
                     fileTree(dir: it, excludes: [
-                            '**/BlogApplication*',
-                            '**/*Request*',
-                            '**/*Response*',
+                            '**/domain/base/*',
+                            '**/UIController.*',
+                            '**/RefreshToken.*',
                             '**/*Dto*',
-                            '**/*OAuthClient*',
-                            '**/*Interceptor*',
-                            '**/*Exception*',
-                            '**/*Storage*',
-                            '**/*BaseDate*',
-                            '**/*PageController*'
+                            '**/config/*',
+                            '**/security/*',
+                            '**/aop/*',
+                            '**/utils/*',
+                            '**/BaseEntity',
+                            '**/redisson/*',
+                            '**/springfox/*',
                     ] + Qdomains)
                 })
         )
@@ -154,16 +155,13 @@ jacocoTestCoverageVerification {
             ]
 
             excludes = [
-                    '**.*BlogApplication*',
-                    '**.*Request*',
-                    '**.*Response*',
-                    '**.*Dto*',
-                    '**.*OAuthClient*',
-                    '**.*Interceptor*',
-                    '**.*Exception*',
-                    '**.*Storage*',
-                    '**.*BaseDate*',
-                    '**.*PageController*',
+                    '**/domain/base/*',
+                    '**/*Dto*',
+                    '**/config/*',
+                    '**/jwt/*',
+                    '**/utils/*',
+                    '**/BaseEntity',
+                    '**/redisson/*',
             ] + Qdomains
         }
     }

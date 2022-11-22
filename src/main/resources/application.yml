@@ -16,6 +16,10 @@ spring:
 #      username: root
 #      password: 1234
 
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
 
   config:
     import:

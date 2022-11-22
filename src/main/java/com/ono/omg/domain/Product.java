@@ -104,6 +104,7 @@ public class Product extends BaseEntity {
         this.stock = productReqDto.getStock();
         this.category = productReqDto.getCategory();
         this.delivery = productReqDto.getDelivery();
+        this.imgUrl = productReqDto.getImgUrl();
     }
 
     public void decreaseStock(int productStock) {

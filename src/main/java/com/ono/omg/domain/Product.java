@@ -12,7 +12,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
 public class Product extends BaseEntity {
     /**
      * SJ: entity에 nullable에 대한 항목을 추가하는 것이 좋을 것 같음

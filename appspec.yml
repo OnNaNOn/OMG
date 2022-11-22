@@ -1,6 +1,6 @@
 version: 0.0
 os: linux
-
+#asdf
 # 배포 파일 설정
 ## source: 인스턴스에 복사할 디렉터리 경로
 ## destination: 인스턴스에서 파일이 복사되는 위치

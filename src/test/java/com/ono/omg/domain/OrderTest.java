@@ -1,7 +1,6 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.exception.CustomCommonException;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,8 +9,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("test")

@@ -28,6 +28,7 @@ out/
 logs/**
 **/resources/application-**
 **/resources/admin-number.yml
+**/resources/application-test.yml
 #**/resources/jwt.yml
 
 ### NetBeans ###

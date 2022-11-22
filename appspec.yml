@@ -1,5 +1,5 @@
-#version: 0.0
-#os: linux
+version: 0.0
+os: linux
 
 # 배포 파일 설정
 ## source: 인스턴스에 복사할 디렉터리 경로

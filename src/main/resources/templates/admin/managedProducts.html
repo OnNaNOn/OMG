@@ -27,6 +27,7 @@
             background: yellow;
             float: right;
         }
+
         a {
             text-decoration: none;
         }
@@ -35,7 +36,7 @@
             text-align: center;
             display: inline-block;
 
-            list-style:none;
+            list-style: none;
         }
 
         #pagingul {
@@ -64,20 +65,40 @@
         ul li.on a {
             color: #fff;
         }
+
+
+        .wrapper {
+            margin: 60px auto;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 1.25em;
+        }
+
+        .paging-div {
+            padding: 15px 0 5px 10px;
+            display: table;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
     </style>
 
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.twbsPagination.js"></script>
     <script>
-
         let totalData; //총 데이터 수
         let dataPerPage; //한 페이지에 나타낼 글 수
         let pageCount = 10; //페이징에 나타낼 페이지 수
-        let globalCurrentPage=1; //현재 페이지
+        let globalCurrentPage = 1; //현재 페이지
+
 
         $(document).ready(function () {
             loadManagedProducts();
-
-
         });
 
         function loadManagedProducts() {
@@ -85,7 +106,6 @@
             console.log("token = " + token)
 
             let givenPage = $("#givenPage").val();
-            console.log(givenPage);
 
             $.ajax({
                 type: "GET",
@@ -95,28 +115,32 @@
                 success: function (response, dd, xhr) {
                     $('#list-group').remove();
 
-                    alert("관리자 권한을 가졌습니다.");
+                    // alert("관리자 권한을 가졌습니다.");
 
                     let totalPages = `${response.products.totalPages}`
                     let totalElements = `${response.products.totalElements}`
+                    let products = response.products.content;
 
-                    console.log(totalPages)
-                    console.log(totalElements)
-
+                    // console.log(totalPages)
+                    // console.log(totalElements)
+                    // console.log(products);
                     // console.log(response.products.totalPages);
                     // console.log(response.products.totalElements);
 
+                    /**
+                     * 전체 페이지 수, 전체 상품수
+                     */
                     let tmpStr = `<ul class="list-group list-group-horizontal">
                                     <li class="list-group-item">전체 페이지 수</li>
                                     <li class="list-group-item">${totalPages}</li>
                                     <li class="list-group-item">전체 상품수</li>
                                     <li class="list-group-item">${totalElements}</li>
                                 </ul>`
-                    let products = response.products.content;
+                    $('#list-groups').append(tmpStr)
 
-                    console.log(response['products']);
-                    // console.log(products);
-
+                    /**
+                     * 상품 리스트
+                     */
                     for (let i = 0; i < products.length; i++) {
                         let product = products[i];
 
@@ -134,137 +158,41 @@
                                             <td>${stock}</td>
                                             <td>${isSale}</td>
                                             <td>${isNowEvent}</td>
-                                        </tr>
-
-                            `
+                                        </tr>`
                         $('#products').append(tmpProducts)
                     }
 
-                    /*
-                    let tempPage = `<li class="page-item" th:each="page:${#numbers.sequence(startPage,endPage)}">
-                                        <a class="page-link" th:if="${page != nowPage}" th:href="@{/admin/management(page=${page-1})}" th:text="${page}">0</a>
-                                        <b><a class="page-link" th:if="${page==nowPage}" th:text="${page}"></a></b>
-                                    </li>
-
-                                    <li class="page-item" th:if="${start > 1}">
-                                        <a class="page-link" th:href="@{/admin/management(page=0)}" th:text="'<<'"> << </a>
-                                    </li>
-                                    <li class="page-item" th:if="${start > 1}">
-                                        <a class="page-link" th:href="@{/admin/management(page=${start - maxPage})}" th:text="'<'"> < </a>
-                                    </li>
-
-                                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}">
-                                        <a class="page-link" th:text="${page}" th:href="@{/admin/management(page=${page - 1}, size=${pageOffset})}">0</a>
-                                    </li>
-
-                                    <li class="page-item" th:if="${end < products.totalPages}">
-                                        <a class="page-link" th:href="@{/admin/management(page=${start + maxPage})}" th:text="'>'"> > </a>
-                                    </li>
-                                    <li class="page-item" th:if="${end < products.totalPages}">
-                                        <a class="page-link" th:href="@{/admin/management(page=${products.totalPages - 1})}" th:text="'>>'"> >> </a>
-                                    </li>
-                    `
-
+                    /**
+                     * 페이징
                      */
-                    $('#list-groups').append(tmpStr)
+                    var curPage = Number($("#startPage").val())
 
-                    //페이징 표시 호출
-                    paging(totalElements, 10, 10, 1);
+                    window.pagObj = $('#pagination').twbsPagination({
+                        totalPages: totalPages,     // 전체 페이지
+                        startPage: curPage, // 시작(현재) 페이지
+                        initiateStartPageClick: false,
+                        visiblePages: 5,    // 최대로 보여줄 페이지
+                        prev: "‹",          // Previous Button Label
+                        next: "›",          // Next Button Label
+                        first: '«',         // First Button Label
+                        last: '»',          // Last Button Label
+                        onPageClick: function (event, page) { // Page Click event
+                            console.info("current page : " + page);
+
+                            $('#startPage').text(page);
+                            var chg = $('#startPage').val(page);
+                        }
+                    }).on('page', function (event, page) {
+                        $("#frmSearch").submit();
+                    });
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     let response = JSON.parse(xhr.responseText);
                     alert("response.error.message");
                     window.location.href = '/admin/login';
                 }
             });
 
-            function paging(totalData, dataPerPage, pageCount, currentPage) {
-                console.log("currentPage : " + currentPage);
-
-                totalPage = Math.ceil(totalData / dataPerPage); //총 페이지 수
-
-                if(totalPage<pageCount){
-                    pageCount=totalPage;
-                }
-
-                let pageGroup = Math.ceil(currentPage / pageCount); // 페이지 그룹
-                let last = pageGroup * pageCount; //화면에 보여질 마지막 페이지 번호
-
-                if (last > totalPage) {
-                    last = totalPage;
-                }
-
-                let first = last - (pageCount - 1); //화면에 보여질 첫번째 페이지 번호
-                let next = last + 1;
-                let prev = first - 1;
-
-                let pageHtml = "";
-
-                if (prev > 0) {
-                    pageHtml += "<li><a href='#' id='prev'> 이전 </a></li>";
-                }
-
-                //페이징 번호 표시
-                for (var i = first; i <= last; i++) {
-                    if (currentPage == i) {
-                        pageHtml += "<li class='on'><a href='#' id='" + i + "'>" + i + "</a></li>";
-                    } else {
-                        pageHtml += "<li><a href='#' id='" + i + "'>" + i + "</a></li>";
-                    }
-                }
-
-                if (last < totalPage) {
-                    pageHtml += "<li><a href='#' id='next'> 다음 </a></li>";
-                }
-
-                $("#pagingul").html(pageHtml);
-                let displayCount = "";
-                displayCount = "현재 1 - " + totalPage + " 페이지 / " + totalData + "건";
-                $("#displayCount").text(displayCount);
-
-
-                //페이징 번호 클릭 이벤트
-                $("#pagingul li a").click(function () {
-                    let $id = $(this).attr("id");
-                    selectedPage = $(this).text();
-
-                    if ($id == "next") selectedPage = next;
-                    if ($id == "prev") selectedPage = prev;
-
-                    //전역변수에 선택한 페이지 번호를 담는다...
-                    globalCurrentPage = selectedPage;
-                    //페이징 표시 재호출
-                    paging(totalData, dataPerPage, pageCount, selectedPage);
-                    //글 목록 표시 재호출
-                    displayData(selectedPage, dataPerPage);
-                });
-            }
-
-            //현재 페이지(currentPage)와 페이지당 글 개수(dataPerPage) 반영
-            function displayData(currentPage, dataPerPage) {
-
-                let chartHtml = "";
-
-//Number로 변환하지 않으면 아래에서 +를 할 경우 스트링 결합이 되어버림..
-                currentPage = Number(currentPage);
-                dataPerPage = Number(dataPerPage);
-
-                for (
-                    var i = (currentPage - 1) * dataPerPage;
-                    i < (currentPage - 1) * dataPerPage + dataPerPage;
-                    i++
-                ) {
-                    chartHtml +=
-                        "<tr><td>" +
-                        dataList[i].d1 +
-                        "</td><td>" +
-                        dataList[i].d2 +
-                        "</td><td>" +
-                        dataList[i].d3 +
-                        "</td></tr>";
-                } //dataList는 임의의 데이터임.. 각 소스에 맞게 변수를 넣어주면 됨...
-                $("#dataTableBody").html(chartHtml);
-            }
         }
     </script>
 
@@ -274,7 +202,7 @@
 <body>
 
 <!--  send page size  -->
-<input type="hidden" id="givenPage" th:value="${page}">
+<input type="hidden" id="givenPage" th:value="${nowPage}">
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -314,71 +242,31 @@
             <tbody id="products">
             <!-- 여기에 상품 이 들어감 -->
 
-            <!-- thymeleaf-->
-            <!--
-            <tr th:each="product: ${products}">
-                <td th:text="${product.productId}">
-                    <a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
-                                                      th:text="${product.productId}">
-                        회원Id
-                    </a>
-                </td>
-                <td th:text="${product.title}">
-                    <a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
-                                                  th:text="${product.title}">
-                        상품명
-                    </a>
-                </td>
-                <td th:text="${product.price}">상품가격</td>
-                <td th:text="${product.stock}">재고현황</td>
-                <td th:text="${product.isSale}">판매 유무</td>
-                <td th:text="${product.isNowEvent}">이벤트 상품</td>
-            </tr>
-            -->
             </tbody>
         </table>
 
-        <nav align="center" aria-label="Page navigation example">
-            <ul id="pagingul" align="center">
+        <!--        <nav align="center" aria-label="Page navigation example">-->
+
+        <div class="paging-div">
+            <ul class="pagination" id="pagination">
 
             </ul>
+        </div>
 
+        <form class="form-inline" id="frmSearch" action="/admin/management">
+            <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+<!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
+<!--            <div class="row">-->
+<!--                <div class="col-md-2" style="text-align:center">-->
+<!--                    <h4><strong>검색어</strong></h4>-->
+<!--                </div>-->
+<!--                <div class="col-md-10">-->
+<!--                    <input type="text" class="form-control" name="searchWord" value="${searchWord}" maxlength="8"/>-->
+<!--                </div>-->
+<!--            </div>-->
+        </form>
 
-            <!--
-            <ul class="pagination">
-
-                <li class="page-item" th:each="page:${#numbers.sequence(startPage,endPage)}">
-                    <a class="page-link" th:if="${page != nowPage}" th:href="@{/admin/management(page=${page-1})}" th:text="${page}">0</a>
-                    <b><a class="page-link" th:if="${page==nowPage}" th:text="${page}"></a></b>
-                </li>
-
-                <li class="page-item" th:if="${start > 1}">
-                    <a class="page-link" th:href="@{/admin/management(page=0)}" th:text="'<<'"> << </a>
-                </li>
-                <li class="page-item" th:if="${start > 1}">
-                    <a class="page-link" th:href="@{/admin/management(page=${start - maxPage})}" th:text="'<'"> < </a>
-                </li>
-
-                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}">
-                    <a class="page-link" th:text="${page}" th:href="@{/admin/management(page=${page - 1}, size=${pageOffset})}">0</a>
-                </li>
-
-                <li class="page-item" th:if="${end < products.totalPages}">
-                    <a class="page-link" th:href="@{/admin/management(page=${start + maxPage})}" th:text="'>'"> > </a>
-                </li>
-                <li class="page-item" th:if="${end < products.totalPages}">
-                    <a class="page-link" th:href="@{/admin/management(page=${products.totalPages - 1})}" th:text="'>>'"> >> </a>
-                </li>
-                -->
-
-
-<!--                th:with="start=${(products.number / maxPage) * maxPage + 1},-->
-<!--                                            end=(${(products.totalPages == 0) ? 1 : (start + (maxPage - 1) < products.totalPages ? start + (maxPage - 1) : products.totalPages)})">-->
-
-<!--                <li class="page-item"><a class="page-link" href="#">Previous</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">Next</a></li>-->
-            </ul>
+        </ul>
         </nav>
     </div> <!-- /container -->
 </div>

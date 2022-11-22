@@ -47,6 +47,7 @@ public class WebSecurityConfig {
                                         "/swagger-ui.html",
                                         "/webjars/**",
                                         "/swagger/**",
+                                        "/js/**",
                                         "/favicon.ico");
     }
 

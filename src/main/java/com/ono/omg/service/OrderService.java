@@ -3,9 +3,11 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Order;
 import com.ono.omg.domain.Product;
+import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.OrderResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.createdOrdersResponseDto;
+import com.ono.omg.dto.response.SearchResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
@@ -15,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,6 +132,14 @@ public class OrderService {
 
     }
 
+    /**
+     * 상품 검색
+     * */
+    @Transactional
+    public Page<SearchResponseDto> searchOrders(SearchRequestDto requestDto, Pageable pageable) {
+        return productRepository.searchProduct(requestDto, pageable);
+    }
+
 
 //    /**
 //     * 주문내역 조회
@@ -148,10 +159,8 @@ public class OrderService {
 //    }
 
 
-
     private boolean isSameAccount(Order findOrder, Account findAccount) {
         return !findOrder.getAccount().getId().equals(findAccount.getId());
     }
-
 
 }

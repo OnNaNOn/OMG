@@ -48,11 +48,14 @@ jobs:
         spring.datasource.username: ${{ secrets.DB_USERNAME }} 
         spring.datasource.password: ${{ secrets.DB_PASSWORD }} 
 
-   # (4) Gradle build (Test 제외)
+   # (4) Gradle build
+   - name: Grant execute permission for gradlew
+     run: chmod +x gradlew
+     shell: bash
+
    - name: Build with Gradle
-     uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
-     with:
-       arguments: clean build -x test
+     run: ./gradlew build
+     shell: bash
 
    # (5) AWS 인증 (IAM 사용자 Access Key, Secret Key 활용)
    - name: Configure AWS credentials

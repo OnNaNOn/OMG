@@ -1,14 +1,24 @@
 buildscript { // 동적쿼리
-	ext {
-		queryDslVersion = "5.0.0"
-	}
+    ext {
+        queryDslVersion = "5.0.0"
+    }
 }
 
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // 동적쿼리
+    id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // 동적쿼리
+    id 'jacoco' // jacoco
+}
+
+jacoco {
+    // JaCoCo 버전
+    toolVersion = "0.8.5"
+
+//  테스트결과 리포트를 저장할 경로 변경
+//  default는 "${project.reporting.baseDir}/jacoco"
+//  reportsDir = file("$buildDir/customJacocoReportDir")
 }
 
 group = 'com.ono'
@@ -16,91 +26,188 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
-	compileOnly 'org.projectlombok:lombok'
-	compileOnly("org.springframework.boot:spring-boot-devtools")
+    compileOnly 'org.projectlombok:lombok'
+    compileOnly("org.springframework.boot:spring-boot-devtools")
 
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 
-	// swagger
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    // swagger
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
-	// redisson
-	implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+    // redisson
+    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 
-	// querydsl
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+    // querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-	// p6spy
-	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+    // p6spy
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
-	//Actuator
+    //Actuator
 //	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	//jwt
-	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
-	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+    //jwt
+    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }
 
 jar {
 	enabled = false
 }
 
+/**
+ * jacoco start
+ */
+jacocoTestReport {
+    reports {
+        html.destination  file("${buildDir}/jacocoHtml")
+        xml.enabled false
+        csv.enabled false
+
+//        html.destination file("src/jacoco/jacoco.html")
+//        xml.destination file("src/jacoco/jacoco.xml")
+    }
+
+    def Qdomains = []
+    for (qPattern in '**/QA'..'**/QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(
+                files(classDirectories.files.collect {
+                    fileTree(dir: it, excludes: [
+                            '**/BlogApplication*',
+                            '**/*Request*',
+                            '**/*Response*',
+                            '**/*Dto*',
+                            '**/*OAuthClient*',
+                            '**/*Interceptor*',
+                            '**/*Exception*',
+                            '**/*Storage*',
+                            '**/*BaseDate*',
+                            '**/*PageController*'
+                    ] + Qdomains)
+                })
+        )
+    }
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification {
+    def Qdomains = []
+    for (qPattern in '*.QA'..'*.QZ') {
+        Qdomains.add(qPattern + '*')
+    }
+
+    violationRules {
+        rule {
+            element = 'CLASS'
+            enabled = true
+
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.60
+            }
+
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.60
+            }
+
+            includes = [
+                    '**/domain/**'
+            ]
+
+            excludes = [
+                    '**.*BlogApplication*',
+                    '**.*Request*',
+                    '**.*Response*',
+                    '**.*Dto*',
+                    '**.*OAuthClient*',
+                    '**.*Interceptor*',
+                    '**.*Exception*',
+                    '**.*Storage*',
+                    '**.*BaseDate*',
+                    '**.*PageController*',
+            ] + Qdomains
+        }
+    }
+}
+
+task testCoverage {
+    group 'verification'
+    description 'Run tests with coverage'
+
+    dependsOn('test', 'jacocoTestReport', 'jacocoTestCoverageVerification')
+
+    tasks['jacocoTestReport'].mustRunAfter(tasks['test'])
+    tasks['jacocoTestCoverageVerification'].mustRunAfter(tasks['jacocoTestReport'])
+}
+/**
+ * jacoco end
+ */
+
 
 /**
  * queryDSL start
  */
-def querydslDir = "$buildDir/generated/querydsl"
+	def querydslDir = "$buildDir/generated/querydsl"
 
-querydsl {
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-	main.java.srcDir querydslDir
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+	querydsl {
+		jpa = true
+		querydslSourcesDir = querydslDir
 	}
-	querydsl.extendsFrom compileClasspath
-}
 
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
+	sourceSets {
+		main.java.srcDir querydslDir
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+		querydsl.extendsFrom compileClasspath
+	}
+
+	compileQuerydsl {
+		options.annotationProcessorPath = configurations.querydsl
+	}
+
 /**
  * queryDSL end
  */

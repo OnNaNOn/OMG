@@ -14,7 +14,7 @@ public class TestScheduler {
     @Autowired
     ProductRepository productRepository;
 
-    @Scheduled(cron = "0 50 14 21-30 * *")
+    @Scheduled(cron = "0 45 10 21-30 * *")
     public void test() {
 
         Product product = new Product("에어팟", 5000, "가전제품", "일반 배송", 100,11L );

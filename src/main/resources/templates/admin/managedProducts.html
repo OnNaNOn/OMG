@@ -170,6 +170,7 @@
                     window.pagObj = $('#pagination').twbsPagination({
                         totalPages: totalPages,     // 전체 페이지
                         startPage: curPage, // 시작(현재) 페이지
+                        initiateStartPageClick: false,
                         visiblePages: 5,    // 최대로 보여줄 페이지
                         prev: "‹",          // Previous Button Label
                         next: "›",          // Next Button Label
@@ -253,7 +254,7 @@
         </div>
 
         <form class="form-inline" id="frmSearch" action="/admin/management">
-            <input type="hidden" id="startPage" name="page" th:value="${nowPage}" value=""><!-- 페이징을 위한 hidden타입 추가 -->
+            <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
 <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
 <!--            <div class="row">-->
 <!--                <div class="col-md-2" style="text-align:center">-->

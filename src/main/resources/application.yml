@@ -10,7 +10,6 @@ spring:
       classpath:./admin-number.yml,
       classpath:./jwt.yml
 
-
   jpa:
     hibernate:
        ddl-auto: create

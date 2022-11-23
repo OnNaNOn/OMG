@@ -12,7 +12,6 @@ import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDt
 @Entity
 @Getter
 @NoArgsConstructor
-@ToString
 public class Account extends BaseEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,13 +30,6 @@ public class Account extends BaseEntity {
         this.accountType = AccountType.ROLE_STANDARD;
         this.username = accountRegisterRequestDto.getUsername();
         this.password = accountRegisterRequestDto.getPassword();
-    }
-
-    public Account(AccountType accountType, String username, String password, String isDeleted) {
-        this.accountType = accountType;
-        this.username = username;
-        this.password = password;
-        this.isDeleted = isDeleted;
     }
 
     /**

@@ -26,10 +26,6 @@ import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 public class ProductController {
     private final ProductService productService;
 
-    @GetMapping("/omg")
-    public ResponseDto<List<MainPageResponseDto>> findAllProducts() {
-        return ResponseDto.success(productService.findAllSavedProducts());
-    }
 
     // 상품등록
     @PostMapping("/products")

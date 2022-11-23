@@ -26,7 +26,7 @@ public class Product extends BaseEntity {
     private String title;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private String category;
@@ -35,7 +35,7 @@ public class Product extends BaseEntity {
     private String delivery;
 
     @Column(nullable = false)
-    private int stock;
+    private Integer stock;
 
     @Column(nullable = false, name = "seller")
     private Long sellerId;

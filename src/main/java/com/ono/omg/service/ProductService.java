@@ -57,21 +57,27 @@ public class ProductService {
     @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
         validAccount(account);
-        validSeller(account);
+
+        /**
+         * validSeller는 없어도 될 것 같습니다!
+         */
+//        validSeller(account);
 
         Product product = validProduct(productId);
 
         product.updateProduct(productReqDto);
-            return "상품 수정 완료";
-        }
+        return "상품 수정 완료";
+    }
 
 
     //상품삭제
     @Transactional
     public String deleteProduct(Long productId, Account account) {
         validAccount(account);
-        validSeller(account);
-
+        /**
+         * 위와 동
+         */
+//        validSeller(account);
         Product product = validProduct(productId);
 
         product.isDeleted();
@@ -84,15 +90,17 @@ public class ProductService {
     public ProductResDto searchProduct(Long productId) {
         Product product = validProduct(productId);
 
-
         return new ProductResDto(product);
     }
 
     /**
-     * 상품 등록내역 조회
+     * 마이페이지에서 로그인한 사용자가 등록한 상품 내역 조회
      * */
     @Transactional(readOnly = true)
     public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, UserDetailsImpl userDetails) {
+        /**
+         * SJ: getAcoount를 하고나서 사용자 유효성 처리를 해주는 예외 처리가 필요할 듯 합니다!
+         */
         Long accountId = userDetails.getAccount().getId();
 
         List<Product> registerProductList = productRepository.findRegisterProductList(pageable, accountId);

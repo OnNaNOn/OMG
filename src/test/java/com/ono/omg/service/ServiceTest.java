@@ -2,6 +2,7 @@ package com.ono.omg.service;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
+import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.token.RefreshTokenRepository;
@@ -66,6 +67,14 @@ abstract class ServiceTest {
 
     protected Product createProduct(String title, Integer stock) {
         return new Product(title, 1000, "카테고리", "배송상태", stock, (long) stock);
+    }
+
+    protected Product createProductExistAccount(String title, Integer stock, Long sellerId) {
+        return new Product(title, 1000, "카테고리", "배송상태", stock, sellerId);
+    }
+
+    protected ProductReqDto createProductInfoWithLogin(String title, Integer stock) {
+        return new ProductReqDto(title, 1000, stock,"카테고리",  "배송상태", "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/omg.jpg");
     }
 
 }

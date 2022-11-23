@@ -17,3 +17,18 @@ spring:
         format_sql: 'true'
     hibernate:
       ddl-auto: create
+
+  config:
+    import:
+      classpath:./admin-number.yml,
+      classpath:./jwt.yml
+
+
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true

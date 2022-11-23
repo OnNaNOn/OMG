@@ -33,9 +33,6 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
-        
-    - name: Run chmod to make gradlew executable
-      run: chmod +x ./gradlew
 
     # (3) Gradle build (Test 제외)
     - name: Build with Gradle

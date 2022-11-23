@@ -19,5 +19,5 @@ hooks:
       runas: ubuntu
   ApplicationStart:
     - location: scripts/start.sh
-      timeout: 119
+      timeout: 117
       runas: ubuntu

@@ -8,7 +8,6 @@ spring:
     username: ${AWS_username}
     password: ${AWS_password}
 
-
   data:
     web:
       pageable:

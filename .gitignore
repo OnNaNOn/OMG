@@ -44,6 +44,5 @@ logs/**
 ### yml ###
 application-local.yml
 application-dev.yml
-aws.yml
 
 

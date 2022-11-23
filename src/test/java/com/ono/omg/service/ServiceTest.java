@@ -7,13 +7,17 @@ import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.token.RefreshTokenRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.ono.omg.dto.request.AccountRequestDto.*;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountLoginRequestDto;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -52,6 +56,24 @@ abstract class ServiceTest {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
+
+    @Autowired
+    protected RedissonClient redissonClient;
+
+    @BeforeEach
+    public void beforeEach() {
+        orderRepository.deleteAll();
+        accountRepository.deleteAll();
+        productRepository.deleteAll();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        orderRepository.deleteAll();
+        accountRepository.deleteAll();
+        productRepository.deleteAll();
+    }
+
 
     protected AccountRegisterRequestDto registerAccountInfo(String username) {
         return new AccountRegisterRequestDto(username, "pw", "pw");

@@ -34,17 +34,18 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.id,
                         product.title,
                         product.price,
-                        product.stock
+                        product.stock,
+                        product.isSale
                 ))
                 .from(product)
-                .where(product.stock.ne(0))
+                .where(product.isSale.eq("Y"))
                 .orderBy(product.id.asc())
-                .offset(pageable.getOffset())
+//                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.stream().count());
+//        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
+        return PageableExecutionUtils.getPage(results, pageable, () -> results.size());
     }
 
     /**
@@ -74,7 +75,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .fetch();
 
         JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
+        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetch().size());
     }
     private BooleanExpression titleEq(String productTitle) {
         return StringUtils.hasText(productTitle) ? product.title.eq(productTitle) : null;

@@ -2,6 +2,7 @@ package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
 import com.ono.omg.dto.request.ProductReqDto;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class Product extends BaseEntity {
     private String title;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private String category;
@@ -34,13 +35,16 @@ public class Product extends BaseEntity {
     private String delivery;
 
     @Column(nullable = false)
-    private int stock;
+    private Integer stock;
 
     @Column(nullable = false, name = "seller")
     private Long sellerId;
 
     @Column(nullable = false)
     private String isDeleted;
+
+    // 재고가 0이거나 판매 종료된 상품에 대한 YN 필드
+    private String isSale;
 
     @Column(nullable = false)
     private String imgUrl;
@@ -84,6 +88,7 @@ public class Product extends BaseEntity {
         this.stock = stock;
         this.sellerId = sellerId;
         this.isDeleted = "N";
+        this.isSale = "Y";
         this.imgUrl = "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/SpartaIcon" + numRandom() + ".png";
     }
 
@@ -108,6 +113,10 @@ public class Product extends BaseEntity {
 
     public void decreaseStock(int productStock) {
         this.stock = productStock - 1;
+
+        if(this.stock == 0) {
+            this.isSale = "N";
+        }
     }
 
     public void isDeleted() {

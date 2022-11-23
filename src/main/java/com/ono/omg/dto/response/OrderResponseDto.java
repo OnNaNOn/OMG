@@ -12,7 +12,6 @@ public class OrderResponseDto {
     @NoArgsConstructor
     public static class MainPageOrdersResponseDto {
         private Long productId;
-
         private String imgUrl;
         private String title;
 

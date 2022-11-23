@@ -1,7 +1,34 @@
 spring:
-  profiles:
-    active: dev
+  h2:
+    console:
+      enabled: 'true'
+      settings:
+        web-allow-others: 'true'
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:testdb
+    password: ''
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    properties:
+      hibernate:
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create
+
   config:
     import:
       classpath:./admin-number.yml,
       classpath:./jwt.yml
+
+
+
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true

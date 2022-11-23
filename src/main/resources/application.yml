@@ -1,7 +1,19 @@
 spring:
-  profiles:
-    active: dev
-  config:
-    import:
-      classpath:./admin-number.yml,
-      classpath:./jwt.yml
+  h2:
+    console:
+      enabled: 'true'
+      settings:
+        web-allow-others: 'true'
+  datasource:
+    username: sa
+    url: jdbc:h2:mem:testdb
+    password: ''
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    properties:
+      hibernate:
+        format_sql: 'true'
+    hibernate:
+      ddl-auto: create

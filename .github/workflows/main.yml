@@ -44,6 +44,8 @@ jobs:
         spring.datasource.username: ${{ secrets.DB_USERNAME }} 
         spring.datasource.password: ${{ secrets.DB_PASSWORD }} 
 
+    - name: Run chmod to make gradlew executable
+      run: chmod +x ./gradlew
 
     # (3) Gradle build (Test 제외)
     - name: Build with Gradle

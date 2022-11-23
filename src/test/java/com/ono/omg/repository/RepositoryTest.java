@@ -24,7 +24,7 @@ import static com.ono.omg.dto.response.ProductResponseDto.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-public abstract class RepositoryTest {
+abstract class RepositoryTest {
 
     @Autowired
     AccountRepository accountRepository;

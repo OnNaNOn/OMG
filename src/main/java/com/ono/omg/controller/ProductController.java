@@ -60,7 +60,7 @@ public class ProductController {
      * */
     @GetMapping("/products/details")
     public ResponseEntity<ResponseDto<List<MainPageOrdersResponseDto>>> registerDetailsProduct(@PageableDefault(size = 10) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(ResponseDto.success(productService.registerDetailsProduct(pageable, userDetails)), HttpStatus.OK);
+        return new ResponseEntity<>(ResponseDto.success(productService.registerDetailsProduct(pageable, userDetails.getAccount())), HttpStatus.OK);
     }
 
 

@@ -4,6 +4,7 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.repository.account.AccountRepository;
+import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.token.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,9 @@ abstract class ServiceTest {
 
     @Autowired
     protected ProductRepository productRepository;
+
+    @Autowired
+    protected OrderRepository orderRepository;
 
     @Autowired
     protected RefreshTokenRepository refreshTokenRepository;

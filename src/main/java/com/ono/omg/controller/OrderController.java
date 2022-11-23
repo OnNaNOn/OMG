@@ -1,8 +1,6 @@
 package com.ono.omg.controller;
 
-import com.ono.omg.domain.Account;
 import com.ono.omg.dto.common.ResponseDto;
-import com.ono.omg.dto.response.OrderResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.createdOrdersResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.OrderService;
@@ -11,11 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
-
 
 import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
 
@@ -36,10 +35,7 @@ public class OrderController {
      * 만약 Postman으로 테스트 시 주석 번갈아가면서 테스트
      */
     @PostMapping("/{productId}/confirm")
-    public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId,
-//                                                              Account account
-                                                              @AuthenticationPrincipal UserDetailsImpl account
-                                                              ) {
+    public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
 
         RLock lock = redissonClient.getLock(productId.toString());
         createdOrdersResponseDto createdOrdersResponseDto;

@@ -3,13 +3,11 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.dto.response.OrderResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
@@ -97,13 +94,12 @@ public class ProductService {
      * 마이페이지에서 로그인한 사용자가 등록한 상품 내역 조회
      * */
     @Transactional(readOnly = true)
-    public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, UserDetailsImpl userDetails) {
-        /**
-         * SJ: getAcoount를 하고나서 사용자 유효성 처리를 해주는 예외 처리가 필요할 듯 합니다!
-         */
-        Long accountId = userDetails.getAccount().getId();
+    public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, Account account) {
+        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+        );
 
-        List<Product> registerProductList = productRepository.findRegisterProductList(pageable, accountId);
+        List<Product> registerProductList = productRepository.findRegisterProductList(pageable, findAccount.getId());
 
         return registerProductList.stream()
                 .map((o)-> new MainPageOrdersResponseDto(o.getId(), o.getImgUrl(), o.getTitle()))

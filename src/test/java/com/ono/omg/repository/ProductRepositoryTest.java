@@ -1,12 +1,9 @@
 package com.ono.omg.repository;
 
-import com.ono.omg.repository.RepositoryTest;
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.SearchResponseDto;
-import com.ono.omg.repository.product.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 

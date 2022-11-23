@@ -3,15 +3,16 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.*;
+import static com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -106,10 +107,22 @@ class ProductServiceTest extends ServiceTest {
     @DisplayName("registerDetailsProduct 메서드는 마이페이지에서 로그인한 사용자의 등록 상품 내역을 조회한다.")
     public void 특정_사용자의_등록_상품_조회() throws Exception {
         // given
+        final Integer MAX = 5;
+
+        Pageable pageable = Pageable.ofSize(5);
+
+        Account account = accountRepository.save(createAccount("jae"));
+        for (int i = 1; i <= MAX; i++) {
+            productRepository.save(createProductExistAccount("상품" + i, i, account.getId()));
+        }
 
         // when
+        List<MainPageOrdersResponseDto> registerProduct = productService.registerDetailsProduct(pageable, account);
 
         // then
+        assertThat(registerProduct.size()).isEqualTo(MAX);
+        assertThat(registerProduct.get(MAX - 1).getTitle()).isEqualTo("상품" + MAX);
+
     }
 
 }

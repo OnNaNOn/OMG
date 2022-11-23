@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface OrderRepositoryCustom {
 
-    List<MainPageOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long id);
+    List<MainPageOrdersResponseDto> findOrdersParticularAccount(Pageable pageable, Long accountId);
 }

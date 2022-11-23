@@ -23,6 +23,7 @@ spring:
       classpath:./admin-number.yml,
       classpath:./jwt.yml
 
+
 server:
   port: 8080
   servlet:

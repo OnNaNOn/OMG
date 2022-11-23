@@ -85,7 +85,7 @@ public class WebSecurityConfig {
                 .antMatchers("/products/detail/{productId}").permitAll()
                 .antMatchers("/admin/management").permitAll()
 //                .antMatchers("/").permitAll()
-                .antMatchers("/**").permitAll()
+//                .antMatchers("/**").permitAll()
 //                .antMatchers("/admin/management").hasRole("ADMIN")
 
 //                .antMatchers(HttpMethod.GET, "/product/**").permitAll()

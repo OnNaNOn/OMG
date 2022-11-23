@@ -1,11 +1,8 @@
 package com.ono.omg.repository;
 
-import com.ono.omg.repository.RepositoryTest;
 import com.ono.omg.domain.Order;
-import com.ono.omg.repository.order.OrderRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
@@ -31,5 +28,4 @@ class OrderRepositoryTest extends RepositoryTest {
         assertThat(orders.size()).isEqualTo(1);
         assertThat(orders.get(0).getTitle()).isEqualTo(order.getProduct().getTitle());
     }
-
 }

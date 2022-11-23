@@ -106,10 +106,4 @@ class ProductTest {
             assertThat(product.getIsDeleted()).isEqualTo("Y");
         }
     }
-
-
-
-
-
-
 }

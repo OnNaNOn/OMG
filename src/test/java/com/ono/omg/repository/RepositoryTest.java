@@ -3,7 +3,6 @@ package com.ono.omg.repository;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Order;
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.cart.CartRepository;
 import com.ono.omg.repository.like.LikeRepository;
@@ -19,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
-import static com.ono.omg.dto.response.ProductResponseDto.*;
+import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -70,5 +69,4 @@ abstract class RepositoryTest {
         }
         return productRepository.findAllProductStock(PageRequest.ofSize(5));
     }
-
 }

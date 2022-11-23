@@ -13,6 +13,14 @@ TIME_NOW=$(date +%c)
 echo "$TIME_NOW > $JAR_FILE 파일 복사" >> $DEPLOY_LOG
 cp $PROJECT_ROOT/build/libs/*.jar $JAR_FILE
 
+echo "> $JAR_NAME에 실행권한 추가"
+chmod +x $JAR_NAME
+
+export AWS_url=$(aws ssm get-parameters --region ap-northeast-2 --names url --query Parameters[0].Value | sed 's/"//g')
+export AWS_username=$(aws ssm get-parameters --region ap-northeast-2 --names username --query Parameters[0].Value | sed 's/"//g')
+export AWS_password=$(aws ssm get-parameters --region ap-northeast-2 --names password --query Parameters[0].Value | sed 's/"//g')
+
+
 # jar 파일 실행
 echo "$TIME_NOW > $JAR_FILE 파일 실행" >> $DEPLOY_LOG
 nohup java -jar $JAR_FILE > $APP_LOG 2> $ERROR_LOG &

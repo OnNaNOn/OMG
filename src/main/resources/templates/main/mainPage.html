@@ -33,6 +33,104 @@
         }
     </style>
 <body>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.twbsPagination.js"></script>
+<script>
+    $(document).ready(function () {
+        loadMainPage();
+    });
+
+    function loadMainPage() {
+        let givenPage = $("#givenPage").val();
+
+        $.ajax({
+            type: "GET",
+            url: "/api/omg?page=" + givenPage,
+            headers: {'Content-Type': 'application/json'},
+            // data: JSON.stringify(data),
+            success: function (response, dd, xhr) {
+                $('#list-group').remove();
+
+                console.log(response);
+
+
+                let totalPages = `${response.products.totalPages}`
+                let totalElements = `${response.products.totalElements}`
+                let products = response.products.content;
+                // console.log(totalPages)
+                // console.log(totalElements)
+                console.log(products);
+                // console.log(response.products.totalPages);
+                // console.log(response.products.totalElements);
+
+                /**
+                 * 전체 페이지 수, 전체 상품수
+                 */
+                let tmpStr = `<ul class="list-group list-group-horizontal">
+                                    <li class="list-group-item">전체 페이지 수</li>
+                                    <li class="list-group-item">${totalPages}</li>
+                                    <li class="list-group-item">전체 상품수</li>
+                                    <li class="list-group-item">${totalElements}</li>
+                                </ul>`
+                $('#list-groups').append(tmpStr)
+
+                /**
+                 * 상품 리스트
+                 */
+                for (let i = 0; i < products.length; i++) {
+                    let product = products[i];
+
+                    let productId = product.id;
+                    let title = product.title;
+                    let price = product.price;
+                    let stock = product.stock;
+                    let category = product.catergory;
+                    let delivery = product.delivery;
+
+                    let tmpProducts = `<tr>
+                                            <td><a href="/products/detail/${productId}">${productId}</a></td>
+                                            <td><a href="/products/detail/${productId}">${title}</a></td>
+                                            <td>${price}</td>
+                                            <td>${category}</td>
+                                            <td>${delivery}</td>
+                                            <td>${stock}</td>
+                                        </tr>`
+                    $('#products').append(tmpProducts)
+                }
+
+                /**
+                 * 페이징
+                 */
+                var curPage = Number($("#startPage").val())
+
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: totalPages,     // 전체 페이지
+                    startPage: curPage, // 시작(현재) 페이지
+                    initiateStartPageClick: false,
+                    visiblePages: 5,    // 최대로 보여줄 페이지
+                    prev: "‹",          // Previous Button Label
+                    next: "›",          // Next Button Label
+                    first: '«',         // First Button Label
+                    last: '»',          // Last Button Label
+                    onPageClick: function (event, page) { // Page Click event
+                        console.info("current page : " + page);
+
+                        $('#startPage').text(page);
+                        var chg = $('#startPage').val(page);
+                    }
+                }).on('page', function (event, page) {
+                    $("#frmSearch").submit();
+                });
+            },
+            error: function (xhr, status, error) {
+                // let response = JSON.parse(xhr.responseText);
+                // alert("response.error.message");
+                // window.location.href = '/admin/login';
+            }
+        });
+    }
+</script>
 
 <!--<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>-->
 <!--<script>-->
@@ -54,6 +152,7 @@
 <!--    }-->
 <!--</script>-->
 
+<input type="hidden" id="givenPage" th:value="${nowPage}">
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -96,33 +195,31 @@
                     <th></th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="products">
                 <!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
-                <tr th:each="product : ${products}">
-                    <td><a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
-                           th:text="${product.productId}"></a></td>
-                    <td><a th:href="@{/products/detail/{productId}(productId=${product.productId})}"
-                           th:text="${product.title}"></a></td>
-                    <td th:text="${product.price}"></td>
-                    <td th:text="${product.category}"></td>
-                    <td th:text="${product.delivery}"></td>
-                    <td th:text="${product.stock}"></td>
-                </tr>
+
                 </tbody>
             </table>
         </div>
 
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <!--                th:with="start=${(products.number / maxPage) * maxPage + 1},-->
-                <!--                                            end=(${(products.totalPages == 0) ? 1 : (start + (maxPage - 1) < products.totalPages ? start + (maxPage - 1) : products.totalPages)})">-->
-                <li class="page-item" th:each="page:${#numbers.sequence(startPage,endPage)}">
-                    <a class="page-link" th:if="${page != nowPage}" th:href="@{/omg(page=${page-1})}" th:text="${page}">0</a>
-                    <b><a class="page-link" th:if="${page==nowPage}" th:text="${page}"></a></b>
-                </li>
+        <div class="paging-div">
+            <ul class="pagination" id="pagination">
 
             </ul>
-        </nav>
+        </div>
+
+        <form class="form-inline" id="frmSearch" action="/admin/management">
+            <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+            <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
+            <!--            <div class="row">-->
+            <!--                <div class="col-md-2" style="text-align:center">-->
+            <!--                    <h4><strong>검색어</strong></h4>-->
+            <!--                </div>-->
+            <!--                <div class="col-md-10">-->
+            <!--                    <input type="text" class="form-control" name="searchWord" value="${searchWord}" maxlength="8"/>-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </form>
     </div>
 </div> <!-- container -->
 </body>

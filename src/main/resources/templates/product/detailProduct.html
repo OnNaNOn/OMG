@@ -37,7 +37,7 @@
             margin-bottom: 30px;
         }
 
-        .list-group-horizontal>.list-group-item+.list-group-item {
+        .list-group-horizontal > .list-group-item + .list-group-item {
             width: 300px;
         }
 
@@ -46,11 +46,65 @@
         }
 
     </style>
-    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.twbsPagination.js"></script>
     <script>
-        //상품 주문
+        $(document).ready(function () {
+            loadDetailsPage();
+        });
+
+        function loadDetailsPage() {
+            let productId = $("#pId").val();
+            console.log(productId);
+            $.ajax({
+                type: "GET",
+                url: "/api/products/detail/" + productId,
+                headers: {'Content-Type': 'application/json'},
+                // data: JSON.stringify(data),
+                success: function (response, dd, xhr) {
+                    $('#list-group').remove();
+                    console.log(response);      //여기까지 잘 넘어온다.
+
+                    let productId = response.productId;
+                    let imgUrl = response.imgUrl;
+                    let title = response.title;
+                    let price = response.price;
+                    let category = response.category;
+                    let delivery = response.delivery;
+                    let stock = response.stock;
+
+                    let tmpProductId = `<li class="list-group-item" style="width: 110px">번호</li>
+                                        <li class="list-group-item" text="${productId}">A second item</li>`
+                    let tmpImgUrl = `<img th:src="${imgUrl}" alt="image" class="img-fluid rounded-start">`
+                    let tmpTitle = `<li class="list-group-item" style="width: 110px">상품명</li>
+                                    <li class="list-group-item" text="${title}">A second item</li>`
+                    let tmpPrice = `<li class="list-group-item" style="width: 110px">상품 가격</li>
+                                    <li class="list-group-item" text="${price}">A second item</li>`
+                    let tmpCategory = `<li class="list-group-item" style="width: 110px">카테고리</li>
+                                       <li class="list-group-item" text="${category}">A second item</li>`
+                    let tmpDelivery = `<li class="list-group-item" style="width: 110px">배송 상태</li>
+                                       <li class="list-group-item" text="${delivery}">A second item</li>`
+                    let tmpStock = `<li class="list-group-item" style="width: 110px">재고 수량</li>
+                                    <li class="list-group-item" text="${stock}">A second item</li>`
+                    let orderButton = `<button class="btn btn-primary" type="button" onclick="orderProduct(${productId});" style="width: 400px;">주문하기</button>`
+
+                    $('#productId').append(tmpProductId)
+                    $('#imgUrl').append(tmpImgUrl)
+                    $('#title').append(tmpTitle)
+                    $('#price').append(tmpPrice)
+                    $('#category').append(tmpCategory)
+                    $('#delivery').append(tmpDelivery)
+                    $('#stock').append(tmpStock)
+                    $('#orderButton').append(orderButton)
+                }
+            });
+        }
+
+        // //상품 주문
         function orderProduct(id) {
+            let token = localStorage.getItem("Authorization");
+            console.log("token = " + token)
             // var data = {
             //     "username": $("#username").val(),
             // }
@@ -59,8 +113,7 @@
             $.ajax({
                 type: "POST",
                 url: "/api/" + pid + "/confirm",
-                headers: {'Content-Type': 'application/json'
-                    , 'Authorization': "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsImV4cCI6MTY2ODgzMzEzNiwiaWF0IjoxNjY4ODI1OTM2fQ.aXY_-zFTBenZjI73GJRI636rnN-7FP0iwDIutoqPnRs"},
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
                 // data: JSON.stringify(data),
                 success: function (response) {
                     alert("주문을 완료했습니다.");
@@ -74,80 +127,83 @@
             });
         }
 
-        //리뷰 작성
-        function createReview(id) {
-            let pid = id;
-            var data = {
-                "reviewContent": $("#review").val(),
-            }
-            // alert("pid   " + pid + "reviewContent   " + $("#review").val());
-
-            $.ajax({
-                type: "POST",
-                url: "/api/" + pid + "/reviews",
-                headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(data),
-                success: function (response) {
-                    alert("리뷰를 작성하였습니다.");
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    let response = JSON.parse(xhr.responseText);
-                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-                    alert(response.error.message);
-                }
-            });
-        }
-
-        //리뷰 수정
-        function updateReview(id) {
-            let rId = id;
-
-            var data = {
-                "reviewContent": $("#review").val(),
-            }
-
-            $.ajax({
-                type: "PATCH",
-                url: "/api/reviews/" + rId,
-                headers: {'Content-Type': 'application/json'},
-                data: JSON.stringify(data),
-                success: function (response) {
-                    alert("리뷰를 수정하였습니다.");
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    let response = JSON.parse(xhr.responseText);
-                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-                    alert(response.error.message);
-                }
-            });
-        }
-
-        //리뷰 삭제
-        function deleteReview(id) {
-            let rId = id;
-
-            $.ajax({
-                type: "DELETE",
-                url: "/api/reviews/" + rId,
-                headers: {'Content-Type': 'application/json'},
-                // data: JSON.stringify(data),
-                success: function (response) {
-                    alert("리뷰를 삭제하였습니다.");
-                    location.reload();
-                },
-                error: function (xhr, status, error) {
-                    let response = JSON.parse(xhr.responseText);
-                    // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-                    alert(response.error.message);
-                }
-            });
-        }
+        //
+        // //리뷰 작성
+        // function createReview(id) {
+        //     let pid = id;
+        //     var data = {
+        //         "reviewContent": $("#review").val(),
+        //     }
+        //     // alert("pid   " + pid + "reviewContent   " + $("#review").val());
+        //
+        //     $.ajax({
+        //         type: "POST",
+        //         url: "/api/" + pid + "/reviews",
+        //         headers: {'Content-Type': 'application/json'},
+        //         data: JSON.stringify(data),
+        //         success: function (response) {
+        //             alert("리뷰를 작성하였습니다.");
+        //             location.reload();
+        //         },
+        //         error: function (xhr, status, error) {
+        //             let response = JSON.parse(xhr.responseText);
+        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+        //             alert(response.error.message);
+        //         }
+        //     });
+        // }
+        //
+        // //리뷰 수정
+        // function updateReview(id) {
+        //     let rId = id;
+        //
+        //     var data = {
+        //         "reviewContent": $("#review").val(),
+        //     }
+        //
+        //     $.ajax({
+        //         type: "PATCH",
+        //         url: "/api/reviews/" + rId,
+        //         headers: {'Content-Type': 'application/json'},
+        //         data: JSON.stringify(data),
+        //         success: function (response) {
+        //             alert("리뷰를 수정하였습니다.");
+        //             location.reload();
+        //         },
+        //         error: function (xhr, status, error) {
+        //             let response = JSON.parse(xhr.responseText);
+        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+        //             alert(response.error.message);
+        //         }
+        //     });
+        // }
+        //
+        // //리뷰 삭제
+        // function deleteReview(id) {
+        //     let rId = id;
+        //
+        //     $.ajax({
+        //         type: "DELETE",
+        //         url: "/api/reviews/" + rId,
+        //         headers: {'Content-Type': 'application/json'},
+        //         // data: JSON.stringify(data),
+        //         success: function (response) {
+        //             alert("리뷰를 삭제하였습니다.");
+        //             location.reload();
+        //         },
+        //         error: function (xhr, status, error) {
+        //             let response = JSON.parse(xhr.responseText);
+        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
+        //             alert(response.error.message);
+        //         }
+        //     });
+        // }
 
     </script>
 
 <body>
+
+<input type="hidden" id="pId" th:value="${productId}">
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -166,81 +222,74 @@
     </div>
 
     <div>
-        <div class="card" style="width: 18rem; float: left" align="center">
-            <img th:src="${product.imgUrl}" alt="image" class="img-fluid rounded-start">
-        </div>
+        <div class="card" style="width: 18rem; float: left" align="center" id="imgUrl">
 
+        </div>
         <div>
             <div align="center">
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">번호</li>
-                    <li class="list-group-item" th:text="${product.productId}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="productId">
+
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">상품명</li>
-                    <li class="list-group-item" th:text="${product.title}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="title">
+
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">카테고리</li>
-                    <li class="list-group-item" th:text="${product.category}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="category">
+
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">상품 가격</li>
-                    <li class="list-group-item" th:text="${product.price}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="price">
+
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">재고 수량</li>
-                    <li class="list-group-item" th:text="${product.stock}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="stock">
+
                 </ul>
-                <ul class="list-group list-group-horizontal">
-                    <li class="list-group-item" style="width: 110px">배송 상태</li>
-                    <li class="list-group-item" th:text="${product.delivery}">A second item</li>
+                <ul class="list-group list-group-horizontal" id="delivery">
+
                 </ul>
-                <ul class="list-group list-group-horizontal" style="margin-top: 5px">
-                    <button class="btn btn-primary" type="button" th:onclick="'javascript:orderProduct('+ ${product.productId} + ');'" style="width: 400px;">주문하기</button>
+                <ul class="list-group list-group-horizontal" style="margin-top: 5px" id="orderButton">
+
                 </ul>
-                </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-    <div class="review-group">
-        <input type="text" class="form-control" id="review">
-        <button type="button" th:onclick="'javascript:createReview('+ ${product.productId} + ');'" class="btn btn-dark" style="width: 150px; margin-left: 5px">리뷰 작성</button>
-    </div>
-</div>
+<!--&lt;!&ndash;리뷰관련&ndash;&gt;-->
+<!--<div class="container">-->
+<!--    <div class="review-group">-->
+<!--        <input type="text" class="form-control" id="review">-->
+<!--        <button type="button" th:onclick="'javascript:createReview('+ ${product.productId} + ');'" class="btn btn-dark"-->
+<!--                style="width: 150px; margin-left: 5px">리뷰 작성-->
+<!--        </button>-->
+<!--    </div>-->
+<!--</div>-->
 
-<div class="container">
+<!--<div class="container">-->
+<!--    <table class="table table-striped">-->
+<!--        <thead>-->
+<!--        <tr align="center">-->
+<!--            <th>작성자</th>-->
+<!--            <th>내용</th>-->
+<!--            <th width="100px"></th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
 
+<!--        <tr th:each="review : ${reviews}" style="text-align: center">-->
+<!--            <td th:text="${review.name}" width="120px"></td>-->
+<!--            <td th:text="${review.reviewContent}"></td>-->
+<!--            &lt;!&ndash;            <td>&ndash;&gt;-->
+<!--            &lt;!&ndash;                <button type="submit" th:onclick="'javascript:updateReview('+ ${review.reviewId} + ');'" class="update_btn">수정</button>&ndash;&gt;-->
+<!--            &lt;!&ndash;            </td>&ndash;&gt;-->
+<!--            <td width="80px">-->
+<!--                <button type="submit" th:onclick="'javascript:deleteReview('+ ${review.reviewId} + ');'"-->
+<!--                        class="btn btn-dark">삭제-->
+<!--                </button>-->
+<!--            </td>-->
+<!--        </tr>-->
 
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
 
-
-
-    <table class="table table-striped">
-        <thead>
-        <tr align="center">
-            <th>작성자</th>
-            <th>내용</th>
-            <th width="100px"></th>
-        </tr>
-        </thead>
-        <tbody>
-
-        <tr th:each="review : ${reviews}" style="text-align: center">
-            <td th:text="${review.name}" width="120px"></td>
-            <td th:text="${review.reviewContent}"></td>
-            <!--            <td>-->
-            <!--                <button type="submit" th:onclick="'javascript:updateReview('+ ${review.reviewId} + ');'" class="update_btn">수정</button>-->
-            <!--            </td>-->
-            <td width="80px"><button type="submit" th:onclick="'javascript:deleteReview('+ ${review.reviewId} + ');'" class="btn btn-dark">삭제</button></td>
-        </tr>
-
-        </tbody>
-    </table>
-</div>
-
-</div>
 </body>
 </html>

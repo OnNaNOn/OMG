@@ -33,17 +33,7 @@ jobs:
       with:
         distribution: 'temurin'
         java-version: '11'
-      
-    # (2) yml세팅
-    - name: set yml
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ./src/main/resources/application.yml 
-      env:
-        spring.datasource.url: ${{ secrets.DB_URL }} 
-        spring.datasource.username: ${{ secrets.DB_USERNAME }} 
-        spring.datasource.password: ${{ secrets.DB_PASSWORD }} 
-
+        
     - name: Run chmod to make gradlew executable
       run: chmod +x ./gradlew
 
@@ -69,7 +59,6 @@ jobs:
           --ignore-hidden-files \
           --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
           --source .
-
     # (6) S3 버킷에 있는 파일을 대상으로 CodeDeploy 실행
     - name: Deploy to AWS EC2 from S3
       run: |

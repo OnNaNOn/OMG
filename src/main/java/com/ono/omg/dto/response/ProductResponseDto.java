@@ -49,29 +49,16 @@ public class ProductResponseDto {
         private String title;             // 상품 명
         private int price;                // 상품 가격
         private int stock;                // 재고 현황
-        private String isSale = isSold(); // 판매 유무
+        private String isSale;            // 판매 유무
         private String isNowEvent = "N";  // 이벤트 유무
 
-        private String isSold() {
-            if(stock < 0) {
-                /**
-                 * 정합성이 깨질 경우 500번 에러와 함께 재고 수량 불일치 메시지 발생
-                 */
-                throw new CustomCommonException(ErrorCode.NO_CONSISTENCY_STOCK);
-            }
-
-            if(stock == 0) {
-                return "N";
-            }
-            return "Y";
-        }
-
         @QueryProjection
-        public AllProductManagementResponseDto(Long productId, String title, int price, int stock) {
+        public AllProductManagementResponseDto(Long productId, String title, int price, int stock, String isSale) {
             this.productId = productId;
             this.title = title;
             this.price = price;
             this.stock = stock;
+            this.isSale = isSale;
         }
     }
 

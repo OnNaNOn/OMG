@@ -1,7 +1,8 @@
-package com.ono.omg.repository.order;
+package com.ono.omg.repository;
 
-import com.ono.omg.common.RepositoryTest;
+import com.ono.omg.repository.RepositoryTest;
 import com.ono.omg.domain.Order;
+import com.ono.omg.repository.order.OrderRepositoryImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("OrderRepository 의")
 class OrderRepositoryTest extends RepositoryTest {
-
-    @Autowired
-    OrderRepository orderRepository;
 
     @Test
     @DisplayName("findOrdersParticularAccount 는 특정 주문에 대해 조회를 했을 때 원하는 개수(1개)가 나와야 한다.")

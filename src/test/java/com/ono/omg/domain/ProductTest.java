@@ -73,6 +73,20 @@ class ProductTest {
             // then
             assertThat(product.getStock()).isEqualTo(90);
         }
+
+        @Test
+        @DisplayName("상품의 재고가 0개가 되면 isSale 필드를 'N'로 변경한다. N은 '판매 안함'을 의미한다.")
+        public void 상품_재고_없음() throws Exception {
+            // given
+            Product product = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 1, 2L);
+
+            // when
+            product.decreaseStock(product.getStock());
+
+            // then
+            assertThat(product.getStock()).isEqualTo(0);
+            assertThat(product.getIsSale()).isEqualTo("N");
+        }
     }
 
     @Nested

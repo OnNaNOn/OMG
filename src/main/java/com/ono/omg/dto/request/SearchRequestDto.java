@@ -18,4 +18,8 @@ public class SearchRequestDto {
     private Long sellerId;
     private String isDeleted;
     private String imgUrl;
+
+    public SearchRequestDto(String title) {
+        this.title = title;
+    }
 }

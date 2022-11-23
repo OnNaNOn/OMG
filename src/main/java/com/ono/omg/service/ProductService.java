@@ -46,24 +46,23 @@ public class ProductService {
     // 상품등록
     @Transactional
     public String createProduct(ProductReqDto productReqDto, Account account) {
-
         validAccount(account);
 
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
-        return "상품등록 완료";
+        return "상품 등록 완료";
     }
 
     // 상품수정
     @Transactional
     public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
-
         validAccount(account);
         validSeller(account);
+
         Product product = validProduct(productId);
 
         product.updateProduct(productReqDto);
-            return "상품수정 완료";
+            return "상품 수정 완료";
         }
 
 
@@ -71,14 +70,13 @@ public class ProductService {
     @Transactional
     public String deleteProduct(Long productId, Account account) {
         validAccount(account);
-
         validSeller(account);
 
         Product product = validProduct(productId);
 
         product.isDeleted();
 
-        return "상품삭제 완료";
+        return "상품 삭제 완료";
     }
 
     //상품조회

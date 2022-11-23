@@ -105,6 +105,11 @@
             let token = localStorage.getItem("Authorization");
             console.log("token = " + token)
 
+            if(token == null) {
+                alert("토큰이 존재하지 않습니다. 로그인 해주세요.");
+                window.location.href = '/admin/login';
+            }
+
             let givenPage = $("#givenPage").val();
 
             $.ajax({
@@ -114,8 +119,6 @@
                 // data: JSON.stringify(data),
                 success: function (response, dd, xhr) {
                     $('#list-group').remove();
-
-                    // alert("관리자 권한을 가졌습니다.");
 
                     let totalPages = `${response.products.totalPages}`
                     let totalElements = `${response.products.totalElements}`
@@ -187,8 +190,13 @@
                     });
                 },
                 error: function (xhr, status, error) {
-                    let response = JSON.parse(xhr.responseText);
-                    alert("response.error.message");
+                    // if(status == "error") {
+                    //     alert("접근 권한이 없습니다.");
+                    //     window.location.href = '/admin/login';
+                    // }
+                    // let response = JSON.parse(xhr.responseText);
+                    // alert("response.error.message");
+                    alert("접근 권한이 없습니다.");
                     window.location.href = '/admin/login';
                 }
             });

@@ -1,4 +1,4 @@
-package com.ono.omg.common;
+package com.ono.omg.repository;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Order;
@@ -16,11 +16,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
+import static com.ono.omg.dto.response.ProductResponseDto.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 public abstract class RepositoryTest {
 
     @Autowired
@@ -44,7 +47,6 @@ public abstract class RepositoryTest {
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
 
-
     protected Account saveAccount(String username) {
         Account account = new Account(new AccountRegisterRequestDto(username, "pw", "pw"));
         return accountRepository.save(account);
@@ -61,12 +63,12 @@ public abstract class RepositoryTest {
         return orderRepository.save(new Order(givenAccount, givenProduct, givenProduct.getPrice()));
     }
 
-    protected Page<ProductResponseDto.AllProductManagementResponseDto> findAllProductHasStock() {
-        int max = 5;
-        for (int i = 0; i < max; i++) {
+    protected Page<AllProductManagementResponseDto> findAllProductHasStock() {
+        int max = 3;
+        for (int i = 1; i <= max; i++) {
             productRepository.save(new Product("항해" + i, 1000 + i, "스파르타" + i, "빠른 배송", i, (long) i));
         }
-        return productRepository.findAllProductStock(PageRequest.ofSize(1));
+        return productRepository.findAllProductStock(PageRequest.ofSize(5));
     }
 
 }

@@ -40,6 +40,11 @@ public class AccountRequestDto {
         private String password;
 
         String adminSecretKey = "";
+
+        public AccountLoginRequestDto(String username, String password) {
+            this.username = username;
+            this.password = password;
+        }
     }
 
 }

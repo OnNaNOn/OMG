@@ -1,8 +1,9 @@
 spring:
   profiles:
-    default: dev
+    default: local
+#    active: dev
 
-#  datasource:
+  #  datasource:
 #    driver-class-name: org.h2.Driver
 #    url: jdbc:h2:mem:testdb
 #    username: sa
@@ -18,52 +19,52 @@ spring:
 ##      username: root
 ##      password: 1234
 #
-#  data:
-#    web:
-#      pageable:
-#        one-indexed-parameters: true
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+
+  config:
+    import:
+      classpath:./admin-number.yml,
+      classpath:./jwt.yml
+
+  jpa:
+    hibernate:
+#     ddl-auto: create
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+#      database-platform: org.hibernate.dialect.H2Dialect
+#        use_sql_comments: true
+
+  logging:
+    level:
+      org.hibernate.SQL: debug
+#      org.hibernate.type: trace
 #
-#  config:
-#    import:
-#      classpath:./admin-number.yml,
-#      classpath:./jwt.yml
-#
-#  jpa:
-#    hibernate:
-#      #     ddl-auto: create
-#      ddl-auto: update
-#    properties:
-#      hibernate:
-#        show_sql: true
-#        format_sql: true
-#  #      database-platform: org.hibernate.dialect.H2Dialect
-#  #        use_sql_comments: true
-#
-#  logging:
-#    level:
-#      org.hibernate.SQL: debug
-#  #      org.hibernate.type: trace
-#
-#  mvc:
-#    pathmatch:
-#      matching-strategy: ant_path_matcher
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 #
 #
-#logging:
-#  level:
-#    org:
-#      springframework:
-#        boot:
-#          autoconfigure: ERROR
-##      apache:
-##        coyote:
-##          http11:
-##            debug
+logging:
+  level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: ERROR
+#      apache:
+#        coyote:
+#          http11:
+#            debug
 #
-#server:
-#  port: 8090
-#  servlet:
-#    encoding:
-#      charset: utf-8
-#      enabled: true
-#      force: true
+server:
+  port: 8090
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true

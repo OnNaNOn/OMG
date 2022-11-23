@@ -34,6 +34,7 @@ public class OrderResponseDto {
         private Long orderId;
         private Integer getTotalPrice;
         private String username;
+        private Integer stock;
 
         private Long productId;
         private int price;
@@ -45,6 +46,7 @@ public class OrderResponseDto {
             this.orderId = orderId;
             this.getTotalPrice = getTotalPrice;
             this.username = username;
+            this.stock = product.getStock();
             this.productId = product.getId();
             this.price = product.getPrice();
             this.category = product.getCategory();

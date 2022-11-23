@@ -30,9 +30,7 @@ public class OrderController {
     private final RedissonClient redissonClient;
 
     /**
-     * 리팩토링 정상작동 OK
-     * 나중에 토큰 구현되면 Account account만 AuthenticationPrincipal로 변경하면 OK
-     * 만약 Postman으로 테스트 시 주석 번갈아가면서 테스트
+     * 동시성 제어 With Redis - Redisson
      */
     @PostMapping("/{productId}/confirm")
     public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
@@ -59,6 +57,14 @@ public class OrderController {
             lock.unlock();
         }
         return ResponseDto.success(createdOrdersResponseDto);
+    }
+
+    /**
+     * 동시성 제어 With Pessimistic Lock
+     */
+    @PostMapping("/v1/{productId}/confirm")
+    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
+        return ResponseDto.success(orderService.productOrderWithPessimisticLock(productId, account.getAccount().getId()));
     }
 
     /**

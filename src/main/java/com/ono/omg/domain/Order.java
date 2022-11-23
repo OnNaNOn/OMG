@@ -23,11 +23,11 @@ public class Order extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private Account account;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "product_id")
     private Product product;
 
     @Column(name = "total_price")
@@ -42,7 +42,7 @@ public class Order extends BaseEntity {
 //    private Long cartId;
 
     public Order(Account account, Product product, Integer totalPrice) {
-        decrease(product);
+//        decrease(product);
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;

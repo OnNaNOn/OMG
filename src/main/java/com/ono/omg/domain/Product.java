@@ -2,6 +2,8 @@ package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
 import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -111,8 +113,11 @@ public class Product extends BaseEntity {
         this.imgUrl = productReqDto.getImgUrl();
     }
 
-    public void decreaseStock(int productStock) {
-        this.stock = productStock - 1;
+    public void decreaseStock(int stock) {
+        if (this.stock - stock < 0) {
+            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
+        }
+        this.stock -= stock;
 
         if(this.stock == 0) {
             this.isSale = "N";

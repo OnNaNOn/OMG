@@ -1,6 +1,8 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,8 +22,8 @@ public class Event extends BaseEntity {
     @Column(name = "event_id")
     private Long id;
 
-    @Column(name = "product_id")
-    private Long productId;
+    @Column(name = "event_title")
+    private String eventTitle;
 
     @Column(name = "event_name")
     private String eventName;
@@ -29,21 +31,32 @@ public class Event extends BaseEntity {
     private String content;
 
     @Column(name = "max_participant")
-    private String maxParticipant;
+    private Long maxParticipant;
 
     private String isDeleted;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime startedAt;
 
     private LocalDateTime endedAt;
 
-    public Event(Long productId, String eventName, String content, String maxParticipant, String isDeleted, LocalDateTime createdAt, LocalDateTime endedAt) {
-        this.productId = productId;
+    public Event(String eventTitle, String eventName, String content, Long maxParticipant, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.eventTitle = eventTitle;
         this.eventName = eventName;
         this.content = content;
         this.maxParticipant = maxParticipant;
-        this.isDeleted = isDeleted;
-        this.createdAt = createdAt;
+        this.isDeleted = "N";
+        this.startedAt = startedAt;
         this.endedAt = endedAt;
+    }
+
+    public Long decreaseEventStock(int Eventstock) {
+        if (this.maxParticipant - Eventstock < 0) {
+            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
+        }
+        this.maxParticipant -= Eventstock;
+
+        if(this.maxParticipant == 0) {
+        }
+        return this.maxParticipant;
     }
 }

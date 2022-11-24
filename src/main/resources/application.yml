@@ -1,18 +1,4 @@
 spring:
-  profiles:
-    default: dev
-
-#  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: ${AWS_url}
-#    username: ${AWS_username}
-#    password: ${AWS_password}
-
-  data:
-    web:
-      pageable:
-        one-indexed-parameters: true
-
   config:
     import:
       classpath:./admin-number.yml,
@@ -20,22 +6,24 @@ spring:
 
   jpa:
     hibernate:
-#     ddl-auto: create
+      #     ddl-auto: create
       ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-#      database-platform: org.hibernate.dialect.H2Dialect
-#        use_sql_comments: true
+  #      database-platform: org.hibernate.dialect.H2Dialect
+  #        use_sql_comments: true
+
   logging:
     level:
       org.hibernate.SQL: debug
-#      org.hibernate.type: trace
-#
+  #      org.hibernate.type: trace
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
 
 logging:
   level:

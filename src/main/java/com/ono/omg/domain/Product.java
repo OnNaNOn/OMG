@@ -51,26 +51,6 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private String imgUrl;
 
-    /**
-     * SJ: 승우님 나중에 필요없으시다고 생각되는 생성자는 지워주세용!
-     */
-    public Product(Long id, String title, int price, int stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
-        this.id = id;
-        this.title = title;
-        this.price = price;
-        this.stock = stock;
-        this.category = category;
-        this.delivery = delivery;
-        this.sellerId = sellerId;
-        this.isDeleted = isDeleted;
-        this.imgUrl = imgUrl;
-    }
-
-    public Product(Long id, int stock) {
-        this.id = id;
-        this.stock = stock;
-    }
-
     public Product(ProductReqDto productReqDto, Account account) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();

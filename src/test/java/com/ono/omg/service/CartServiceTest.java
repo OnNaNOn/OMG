@@ -3,14 +3,12 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.response.CartResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("CartServiceTest 의")
 class CartServiceTest extends ServiceTest {

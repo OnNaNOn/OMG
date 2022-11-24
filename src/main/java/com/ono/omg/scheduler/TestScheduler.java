@@ -1,18 +1,18 @@
 package com.ono.omg.scheduler;
 
+import com.ono.omg.domain.Event;
 import com.ono.omg.domain.Product;
+import com.ono.omg.repository.event.EventRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import static java.time.LocalTime.now;
-
 @Component
 public class TestScheduler {
 
     @Autowired
-    ProductRepository productRepository;
+    EventRepository eventRepository;
 
     @Scheduled(cron = "0 45 10 21-30 * *")
     public void test() {
@@ -49,8 +49,17 @@ public class TestScheduler {
         // 이벤트가 될 때 에어팟의  현재 재고를 123개 >> 5000
         //    setProduct = 5000;
 
-        Product product = new Product("에어팟", 5000, "가전제품", "일반 배송", 100,11L );
-
-        productRepository.saveAndFlush(product);
+//        Product product = new Product("에어팟", 5000, "가전제품", "일반 배송", 100, 11L);
+//
+//        productRepository.saveAndFlush(product);
+//
+//    }
+//}
+//    @Scheduled(cron = "0 45 10 21 * *")
+//    public void test() {
+//dfdsaf
+//        Event event = new Event("에어팟", 5000, "가전제품", "일반 배송", 100,11L );
+//
+//        eventRepository.saveAndFlush(event);
     }
 }

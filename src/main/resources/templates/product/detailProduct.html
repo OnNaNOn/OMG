@@ -74,19 +74,20 @@
                     let delivery = response.delivery;
                     let stock = response.stock;
 
+                    console.log(imgUrl)
                     let tmpProductId = `<li class="list-group-item" style="width: 110px">번호</li>
-                                        <li class="list-group-item" text="${productId}">A second item</li>`
+                                        <li class="list-group-item"> ${productId}</li>`
                     let tmpImgUrl = `<img src="${imgUrl}" alt="image" class="img-fluid rounded-start">`
                     let tmpTitle = `<li class="list-group-item" style="width: 110px">상품명</li>
-                                    <li class="list-group-item" text="${title}">A second item</li>`
+                                    <li class="list-group-item">${title}</li>`
                     let tmpPrice = `<li class="list-group-item" style="width: 110px">상품 가격</li>
-                                    <li class="list-group-item" text="${price}">A second item</li>`
+                                    <li class="list-group-item" >${price}</li>`
                     let tmpCategory = `<li class="list-group-item" style="width: 110px">카테고리</li>
-                                       <li class="list-group-item" text="${category}">A second item</li>`
+                                       <li class="list-group-item" >${category}</li>`
                     let tmpDelivery = `<li class="list-group-item" style="width: 110px">배송 상태</li>
-                                       <li class="list-group-item" text="${delivery}">A second item</li>`
+                                       <li class="list-group-item" >${delivery}</li>`
                     let tmpStock = `<li class="list-group-item" style="width: 110px">재고 수량</li>
-                                    <li class="list-group-item" text="${stock}">A second item</li>`
+                                    <li class="list-group-item" >${stock}</li>`
                     let orderButton = `<button class="btn btn-primary" type="button" onclick="orderProduct(${productId});" style="width: 400px;">주문하기</button>`
 
                     $('#productId').append(tmpProductId)

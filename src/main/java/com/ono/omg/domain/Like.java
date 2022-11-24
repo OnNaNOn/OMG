@@ -20,13 +20,13 @@ public class Like extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id")
-    private Account accountId;
+    private Account account;
 
     @Column(nullable = false, name ="productId")
     private Long productId;
 
     public Like(Long productId, Account account) {
         this.productId = productId;
-        this.accountId = account;
+        this.account = account;
     }
 }

@@ -86,6 +86,10 @@ public class WebSecurityConfig {
                 .antMatchers("/products/detail/{productId}").permitAll()
                 .antMatchers("/api/products/detail/{productId}").permitAll()
                 .antMatchers("/admin/management").permitAll()
+                .antMatchers("/actuator/**").permitAll()
+                .antMatchers("/endPoint1").permitAll()
+                .antMatchers("/endPoint2").permitAll()
+
 //                .antMatchers("/").permitAll()
 //                .antMatchers("/**").permitAll()
 //                .antMatchers("/admin/management").hasRole("ADMIN")

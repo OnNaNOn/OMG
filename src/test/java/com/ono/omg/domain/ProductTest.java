@@ -1,11 +1,15 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.repository.product.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -66,12 +70,10 @@ class ProductTest {
             Product product = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
 
             // when
-            for (int i = 0; i < 10; i++) {
-                product.decreaseStock(product.getStock());
-            }
+            Integer stock = product.decreaseStock(1);
 
             // then
-            assertThat(product.getStock()).isEqualTo(90);
+            assertThat(stock).isEqualTo(99);
         }
 
         @Test
@@ -81,7 +83,7 @@ class ProductTest {
             Product product = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 1, 2L);
 
             // when
-            product.decreaseStock(product.getStock());
+            product.decreaseStock(1);
 
             // then
             assertThat(product.getStock()).isEqualTo(0);

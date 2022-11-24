@@ -3,9 +3,11 @@ package com.ono.omg.service;
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
+import com.ono.omg.dto.request.ReviewRequestDto;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
+import com.ono.omg.repository.review.ReviewRepository;
 import com.ono.omg.repository.token.RefreshTokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,6 +57,9 @@ abstract class ServiceTest {
     protected RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
+    protected ReviewRepository reviewRepository;
+
+    @Autowired
     protected PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -102,5 +107,10 @@ abstract class ServiceTest {
     protected ProductReqDto createProductInfoWithLogin(String title, Integer stock) {
         return new ProductReqDto(title, 1000, stock,"카테고리",  "배송상태", "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/omg.jpg");
     }
+
+    protected ReviewRequestDto createReviewRequestDto(String reviewContent) {
+        return ReviewRequestDto.builder().reviewContent(reviewContent).build();
+    }
+
 
 }

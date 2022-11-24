@@ -1,11 +1,16 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.repository.order.OrderRepository;
+import com.ono.omg.repository.product.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,13 +52,12 @@ class OrderTest {
         public void 재고_감소_예외X() throws Exception {
             // given
             Product zeroStockProduct = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
-            Account givenAccount = new Account(new AccountRegisterRequestDto("jae", "pw", "pw"));
 
             // when
-            Order createOrder = new Order(givenAccount, zeroStockProduct, zeroStockProduct.getPrice());
+            Integer stock = zeroStockProduct.decreaseStock(1);
 
             // then
-            assertThat(createOrder.getProduct().getStock()).isEqualTo(99);
+            assertThat(stock).isEqualTo(99);
         }
 
         @Test
@@ -61,7 +65,6 @@ class OrderTest {
         public void 재고_감소_예외O() {
             // given
             Product zeroStockProduct = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 0, 2L);
-            Account givenAccount = new Account(new AccountRegisterRequestDto("jae", "pw", "pw"));
 
             // 1. when & then
 //        assertThatThrownBy(() -> new Order(givenAccount, zeroStockProduct, zeroStockProduct.getPrice()))
@@ -70,7 +73,7 @@ class OrderTest {
 
             // 2. when And then
             CustomCommonException exception = assertThrows(CustomCommonException.class, () -> {
-                new Order(givenAccount, zeroStockProduct, zeroStockProduct.getPrice());
+                zeroStockProduct.decreaseStock(1);
             });
             assertEquals("재고가 없습니다. 판매자에게 문의하세요", exception.getMessage());
         }

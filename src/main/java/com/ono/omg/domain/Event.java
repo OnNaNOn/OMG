@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -19,9 +20,8 @@ public class Event extends BaseEntity {
     @Column(name = "event_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "product_id")
+    private Long productId;
 
     @Column(name = "event_name")
     private String eventName;
@@ -33,4 +33,17 @@ public class Event extends BaseEntity {
 
     private String isDeleted;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime endedAt;
+
+    public Event(Long productId, String eventName, String content, String maxParticipant, String isDeleted, LocalDateTime createdAt, LocalDateTime endedAt) {
+        this.productId = productId;
+        this.eventName = eventName;
+        this.content = content;
+        this.maxParticipant = maxParticipant;
+        this.isDeleted = isDeleted;
+        this.createdAt = createdAt;
+        this.endedAt = endedAt;
+    }
 }

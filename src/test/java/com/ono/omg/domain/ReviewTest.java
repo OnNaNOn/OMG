@@ -48,7 +48,6 @@ class ReviewTest {
 
             // then
             assertThat(createReview.getReviewContent()).isEqualTo("================");
-
         }
 
         @Nested

@@ -2,6 +2,7 @@ package com.ono.omg.repository;
 
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.SearchResponseDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Page;

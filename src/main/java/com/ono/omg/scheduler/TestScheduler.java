@@ -16,7 +16,7 @@ public class TestScheduler {
 
 //    @Scheduled(cron = "0 45 10 21 * *")
 //    public void test() {
-//
+//dfdsaf
 //        Event event = new Event("에어팟", 5000, "가전제품", "일반 배송", 100,11L );
 //
 //        eventRepository.saveAndFlush(event);

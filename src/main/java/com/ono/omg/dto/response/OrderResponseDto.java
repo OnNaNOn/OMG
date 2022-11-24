@@ -26,6 +26,21 @@ public class OrderResponseDto {
 
     @Getter
     @NoArgsConstructor
+    public static class EventOrderResponseDto {
+        private Long orderId;
+        private Long eventId;
+        private String username;
+        private String eventTitle;
+
+        public EventOrderResponseDto(Long orderId, Long eventId, String username, String eventTitle) {
+            this.orderId = orderId;
+            this.eventId = eventId;
+            this.username = username;
+            this.eventTitle = eventTitle;
+        }
+    }
+    @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class createdOrdersResponseDto {
         /**
@@ -52,7 +67,6 @@ public class OrderResponseDto {
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
             this.imgUrl = product.getImgUrl();
-
         }
     }
 

@@ -30,6 +30,10 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "event_id")
+    private Event event;
+
     @Column(name = "total_price")
     private Integer totalPrice;
 
@@ -46,6 +50,12 @@ public class Order extends BaseEntity {
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
+    }
+
+    public Order(Account account, Event event) {
+//        decrease(event);
+        this.account = account;
+        this.event = event;
     }
 
     /**

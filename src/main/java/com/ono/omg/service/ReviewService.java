@@ -64,7 +64,7 @@ public class ReviewService {
 
 
     /**
-     * 리뷰 수정
+     * 리뷰 수정 (SJ: 반환 값을 변경했으면 좋겠습니다..!)
      */
     @Transactional
     public Long updateReview(Long reviewId, Account account, ReviewRequestDto requestDto) {
@@ -80,7 +80,7 @@ public class ReviewService {
 
 
     /**
-     * 리뷰 삭제
+     * 리뷰 삭제 (SJ: 반환 값을 변경했으면 좋겠습니다..!)
      */
     @Transactional
     public Long deleteReview(Long reviewId, Account account) {

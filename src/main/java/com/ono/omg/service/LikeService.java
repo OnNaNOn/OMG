@@ -35,19 +35,18 @@ public class LikeService {
 
     //상품 좋아요
     @Transactional
-    public String addLikes(long productId, Account account) {
+    public String addLikes(Long productId, Long accountId) {
 
-        accountRepository.findById(account.getId()).orElseThrow(
+        Account findAccount = accountRepository.findById(accountId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
 
         productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
-        Optional<Like> likes = likeRepository.findByProductIdAndAccountId(productId, account);
+        Optional<Like> likes = likeRepository.findByProductIdAndAccount(productId, findAccount);
 
         if (likes.isEmpty()) {
-            Like like = new Like(productId, account);
-            likeRepository.save(like);
+            likeRepository.save(new Like(productId, findAccount));
             return "좋아요 완료";
         } else {
             likeRepository.deleteByProductId(likes.get().getProductId());

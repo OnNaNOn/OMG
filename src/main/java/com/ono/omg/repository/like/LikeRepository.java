@@ -16,10 +16,10 @@ import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    Optional<Like> findByProductIdAndAccountId(Long id, Account account);
+    Optional<Like> findByProductIdAndAccount(Long id, Account account);
 
     void deleteByProductId(Long productId);
 
-    @Query("select l from Like l join fetch l.accountId a where a.id =:accountId")
+    @Query("select l from Like l join fetch l.account a where a.id =:accountId")
     List<Like>findDetailsList(Pageable pageable, @Param("accountId")Long accountId);
 }

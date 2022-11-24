@@ -27,7 +27,7 @@ class LikeTest {
 
             // when & then
             assertThat(like.getProductId()).isEqualTo(1L);
-            assertThat(like.getAccountId().getUsername()).isEqualTo(account.getUsername());
+            assertThat(like.getAccount().getUsername()).isEqualTo(account.getUsername());
         }
     }
 }

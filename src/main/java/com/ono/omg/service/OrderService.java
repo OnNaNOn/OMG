@@ -42,7 +42,7 @@ public class OrderService {
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
-     * 주문하기
+     * 주문하기 (Controller Lock - Service단에서 테스트 시 락 획득 실패로 동시성 문제 발생)
      */
     @Transactional
     public createdOrdersResponseDto productOrder(Long productId, Account account) {
@@ -67,7 +67,7 @@ public class OrderService {
         createdOrdersResponseDto responseDto;
         try {
             // 몇 초동안 점유할 것인지에 대한 설정
-            boolean available = lock.tryLock(5, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(2, 1, TimeUnit.SECONDS);
 
             // 점유하지 못한 경우
             if(!available) {

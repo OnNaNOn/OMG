@@ -13,10 +13,10 @@ permissions:
     group: ubuntu
 
 hooks:
-  AfterInstall:
-    - location: scripts/stop.sh
-      timeout: 100
-      runas: ubuntu
+#  AfterInstall:
+#    - location: scripts/stop.sh
+#      timeout: 100
+#      runas: ubuntu
   ApplicationStart:
     - location: scripts/run_new_was.sh
       timeout: 180
@@ -27,6 +27,6 @@ hooks:
     - location: scripts/switch.sh
       timeout: 180
       runas: ubuntu
-    - location: scripts/start.sh
-      timeout: 100
-      runas: ubuntu
+#    - location: scripts/start.sh
+#      timeout: 100
+#      runas: ubuntu

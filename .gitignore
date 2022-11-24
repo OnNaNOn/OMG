@@ -44,5 +44,6 @@ logs/**
 ### yml ###
 application-local.yml
 application-dev.yml
+application.yml
 
 

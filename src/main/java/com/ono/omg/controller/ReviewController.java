@@ -31,10 +31,9 @@ public class ReviewController {
      */
     @PostMapping("/{productId}/reviews")
     public ResponseDto<ReviewResponseDto> registerReview(@PathVariable Long productId,
-                                                         //@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                                         @AuthenticationPrincipal UserDetailsImpl userDetails,
                                                          @RequestBody ReviewRequestDto requestDto) {
-        //return ResponseDto.success(reviewService.registerReview(productId, userDetails, requestDto));
-        return ResponseDto.success(reviewService.registerReview(productId, requestDto));
+        return ResponseDto.success(reviewService.registerReview(productId, userDetails.getAccount(), requestDto));
     }
 
     /**
@@ -44,18 +43,16 @@ public class ReviewController {
     public ResponseDto<Long> updateReview(@PathVariable Long reviewId,
                                           @AuthenticationPrincipal UserDetailsImpl userDetails,
                                           @RequestBody ReviewRequestDto requestDto) {
-        return ResponseDto.success(reviewService.updateReview(reviewId, userDetails, requestDto));
+        return ResponseDto.success(reviewService.updateReview(reviewId, userDetails.getAccount(), requestDto));
     }
 
     /**
      * 리뷰 삭제
      */
     @DeleteMapping("/reviews/{reviewId}")
-    public ResponseDto<Long> deleteReview(@PathVariable Long reviewId
-//                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
-                                            ){
-//        return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails));
-        return ResponseDto.success(reviewService.deleteReview(reviewId));
+    public ResponseDto<Long> deleteReview(@PathVariable Long reviewId,
+                                          @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(reviewService.deleteReview(reviewId, userDetails.getAccount()));
     }
 
     /**

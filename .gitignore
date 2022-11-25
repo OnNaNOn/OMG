@@ -29,7 +29,7 @@ logs/**
 **/resources/application-**
 
 **/resources/application-test.yml
-
+**/logback-spring.xml
 
 ### NetBeans ###
 /nbproject/private/

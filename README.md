@@ -25,8 +25,7 @@
 
 ## ERD
 
-![Copy of ONO COM (1)](https://user-images.githubusercontent.com/64416833/202631453-b2fd0897-7404-40aa-bb17-ade1d40d5be3.png)
-
+![Copy of ONO COM (4)](https://user-images.githubusercontent.com/102216495/204067716-e3e65ea5-6b5a-421f-a6bb-608edd923e8d.png)
 </br>
 
 ## API

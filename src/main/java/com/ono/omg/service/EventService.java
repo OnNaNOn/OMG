@@ -62,8 +62,8 @@ public class EventService {
 
     @Transactional
     protected EventOrderResponseDto createEventOrderWithRedisson(Long eventId, Long accountId) {
-        Event findEvent = validateProduct(eventId);
-        Account findAccount = validateAccount(accountId);
+        Event findEvent = validProduct(eventId);
+        Account findAccount = validAccount(accountId);
 
         findEvent.decreaseEventStock(1);
         eventRepository.save(findEvent);
@@ -76,14 +76,14 @@ public class EventService {
     }
 
 
-    private Event validateProduct(Long eventId) {
+    private Event validProduct(Long eventId) {
         Event findEvent = eventRepository.findById(eventId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
         return findEvent;
     }
 
-    private Account validateAccount(Long accountId) {
+    private Account validAccount(Long accountId) {
         Account findAccount = accountRepository.findById(accountId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
         );

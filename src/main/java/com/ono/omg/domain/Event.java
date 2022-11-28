@@ -15,23 +15,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event extends BaseEntity {
 
-    /**
-     * SJ: 이벤트에 maxParticipant이 있는데 재고 stock과 어떻게 연결 시킬지도 고민 해보면 좋을 것 같음!!
-     */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
     private Long id;
 
-    @Column(name = "event_title")
-    private String eventTitle;
+    @Column(name = "product_id")
+    private Long productId;
 
-    @Column(name = "event_name")
-    private String eventName;
+    private String eventTitle;
 
     private String content;
 
+    private Integer productPrice;
+
     @Column(name = "max_participant")
-    private Long maxParticipant;
+    private Long maxParticipant; // Max Participant == Product Stock
 
     private String isDeleted;
 
@@ -39,21 +37,22 @@ public class Event extends BaseEntity {
 
     private LocalDateTime endedAt;
 
-    public Event(String eventTitle, String eventName, String content, Long maxParticipant, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public Event(Long productId, String eventTitle, String content, Integer productPrice, Long maxParticipant, LocalDateTime startedAt, LocalDateTime endedAt) {
+        this.productId = productId;
         this.eventTitle = eventTitle;
-        this.eventName = eventName;
         this.content = content;
+        this.productPrice = productPrice;
         this.maxParticipant = maxParticipant;
         this.isDeleted = "N";
         this.startedAt = startedAt;
         this.endedAt = endedAt;
     }
 
-    public Long decreaseEventStock(int Eventstock) {
-        if (this.maxParticipant - Eventstock < 0) {
+    public Long decreaseEventStock(int eventStock) {
+        if (this.maxParticipant - eventStock < 0) {
             throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
         }
-        this.maxParticipant -= Eventstock;
+        this.maxParticipant -= eventStock;
 
         if(this.maxParticipant == 0) {
         }

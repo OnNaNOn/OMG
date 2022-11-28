@@ -4,13 +4,13 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Event;
 import com.ono.omg.domain.Order;
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.response.OrderResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.EventOrderResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.event.EventRepository;
 import com.ono.omg.repository.order.OrderRepository;
+import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.redisson.api.RLock;
@@ -27,12 +27,11 @@ import java.util.concurrent.TimeUnit;
 public class EventService {
 
     private final EventRepository eventRepository;
+    private final AccountRepository accountRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     private final RedissonClient redissonClient;
-
-    private final AccountRepository accountRepository;
-
-    private final OrderRepository orderRepository;
 
     public EventOrderResponseDto eventOrder(Long eventId, Account account) {
         RLock lock = redissonClient.getLock(eventId.toString());
@@ -62,21 +61,27 @@ public class EventService {
 
     @Transactional
     protected EventOrderResponseDto createEventOrderWithRedisson(Long eventId, Long accountId) {
-        Event findEvent = validProduct(eventId);
+        Event findEvent = validEvent(eventId);
+        Product findProduct = validProduct(findEvent);
         Account findAccount = validAccount(accountId);
 
         findEvent.decreaseEventStock(1);
         eventRepository.save(findEvent);
-        System.out.println("findEvent.getmaxParticipant() = " + findEvent.getMaxParticipant());
+        System.out.println("findEvent.getMaxParticipant() = " + findEvent.getMaxParticipant());
 
-        Order savedOrder = orderRepository.save(new Order(findAccount, findEvent));
+        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, findEvent.getProductId(), findEvent.getProductPrice()));
 
-        return new EventOrderResponseDto(
-                savedOrder.getId(), findEvent.getId(), findAccount.getUsername(), findEvent.getEventTitle());
+        return new EventOrderResponseDto(savedOrder.getId(), findEvent.getId(), findAccount.getUsername(), findEvent.getEventTitle());
+    }
+
+    private Product validProduct(Event findEvent) {
+        return productRepository.findById(findEvent.getProductId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
+        );
     }
 
 
-    private Event validProduct(Long eventId) {
+    private Event validEvent(Long eventId) {
         Event findEvent = eventRepository.findById(eventId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );

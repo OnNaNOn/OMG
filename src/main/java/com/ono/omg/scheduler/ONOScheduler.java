@@ -6,23 +6,26 @@ import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.event.EventRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
 @Component
-public class TestScheduler {
+public class ONOScheduler {
 
-    @Autowired
-    EventRepository eventRepository;
+    private final EventRepository eventRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    ProductRepository productRepository;
+    public ONOScheduler(EventRepository eventRepository, ProductRepository productRepository) {
+        this.eventRepository = eventRepository;
+        this.productRepository = productRepository;
+    }
 
-    @Scheduled(cron = "0 41 20 21-30 * *")
+    @Scheduled(cron = "30 51 21 21-30 * *")
     public void test() {
+
+        productRepository.save(new Product("상품테스트", 10000, "카테고리", "빠름", 150, 1L));
 
         long rand = (long)(Math.random() * productRepository.count()) + 1;
 
@@ -31,7 +34,15 @@ public class TestScheduler {
         Product findProduct = productRepository.findById(rand).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
 
-        Event event = new Event(findProduct.getTitle(), "깜짝세일", "오늘만 특가예요", 100L, dateTime, dateTime.plusDays(1));
+        Event event = new Event(
+                findProduct.getId(),
+                "30일까지 9일간 매일 20시 41분에는 행사 상품이!!",
+                "상품은 무려 에어팟..!",
+                5000,
+                10000L,
+                dateTime, dateTime.plusDays(1)
+        );
+
         eventRepository.saveAndFlush(event);
     }
 }

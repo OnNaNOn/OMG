@@ -51,8 +51,6 @@ public class ConcurrentOrderServiceTest {
         productRepository.deleteAll();
     }
 
-
-
     @Test
     @DisplayName("productOrderRedisson( Redisson ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
     public void 단일_상품을_동시에_1000개의_주문() throws Exception {
@@ -91,8 +89,8 @@ public class ConcurrentOrderServiceTest {
     @DisplayName("productOrderWithPessimisticLock( 비관적 락 ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
     public void 단일_상품을_동시에_1000개의_주문_비관적_락() throws Exception {
         // given
-        final int PRODUCT_STOCK = 1000;
-        final int THREAD_COUNT = 20000; // PRODUCT_STOCK = 1000, THREAD_COUNT = 20000, FixedThreadPool = 32 ---> 13sec 715ms
+        final int PRODUCT_STOCK = 1030;
+        final int THREAD_COUNT = 1000; // PRODUCT_STOCK = 1000, THREAD_COUNT = 20000, FixedThreadPool = 32 ---> 13sec 715ms
         final int EXPECTED = PRODUCT_STOCK - THREAD_COUNT; // 1030 - 1000 = 30
 
         Account account = accountRepository.save(new Account(new AccountRegisterRequestDto("jae", "pw", "pw")));
@@ -121,5 +119,4 @@ public class ConcurrentOrderServiceTest {
         assertThat(orderRepository.findAll().size()).isEqualTo(PRODUCT_STOCK);
         assertThat(savedProduct.getStock()).isEqualTo(0);
     }
-
 }

@@ -28,7 +28,7 @@ public class EventController {
     private final EventService eventService;
 
     //동시성 제어주문 Redis > Redisson
-    @PostMapping("/{eventId}/confirm")
+    @PostMapping("/{eventId}/eventconfirm")
     public ResponseEntity<ResponseDto<EventOrderResponseDto>> eventOrder(@PathVariable Long eventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(eventService.eventOrder(eventId, userDetails.getAccount())), HttpStatus.OK);
     }

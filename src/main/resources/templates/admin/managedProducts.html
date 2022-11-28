@@ -101,6 +101,10 @@
             loadManagedProducts();
         });
 
+        function number_format(num){
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+        }
+
         function loadManagedProducts() {
             let token = localStorage.getItem("Authorization");
             console.log("token = " + token)
@@ -124,8 +128,12 @@
                     let totalElements = `${response.products.totalElements}`
                     let products = response.products.content;
 
+                    let format_totalPages = number_format(totalPages);
+                    let format_totalElements = number_format(totalElements);
+
                     // console.log(totalPages)
                     // console.log(totalElements)
+                    // console.log(response)
                     // console.log(products);
                     // console.log(response.products.totalPages);
                     // console.log(response.products.totalElements);
@@ -135,9 +143,9 @@
                      */
                     let tmpStr = `<ul class="list-group list-group-horizontal">
                                     <li class="list-group-item">전체 페이지 수</li>
-                                    <li class="list-group-item">${totalPages}</li>
+                                    <li class="list-group-item">${format_totalPages}</li>
                                     <li class="list-group-item">전체 상품수</li>
-                                    <li class="list-group-item">${totalElements}</li>
+                                    <li class="list-group-item">${format_totalElements}</li>
                                 </ul>`
                     $('#list-groups').append(tmpStr)
 

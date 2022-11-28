@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class EventController {
-    // 이벤트 상품 주문하기
 
+    // 이벤트 상품 주문하기
     private final EventService eventService;
 
     //동시성 제어주문 Redis > Redisson
-    @PostMapping("/{eventId}/eventconfirm")
+    @PostMapping("/event/{eventId}/confirm")
     public ResponseEntity<ResponseDto<EventOrderResponseDto>> eventOrder(@PathVariable Long eventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(eventService.eventOrder(eventId, userDetails.getAccount())), HttpStatus.OK);
     }

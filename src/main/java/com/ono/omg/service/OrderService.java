@@ -67,7 +67,7 @@ public class OrderService {
         createdOrdersResponseDto responseDto;
         try {
             // 몇 초동안 점유할 것인지에 대한 설정
-            boolean available = lock.tryLock(7, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(4, 1, TimeUnit.SECONDS);
 
             // 점유하지 못한 경우
             if(!available) {

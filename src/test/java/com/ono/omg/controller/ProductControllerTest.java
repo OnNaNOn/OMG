@@ -2,7 +2,6 @@ package com.ono.omg.controller;
 
 import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
-import com.ono.omg.dto.request.AccountRequestDto;
 import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -16,14 +15,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.ono.omg.dto.request.AccountRequestDto.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ActiveProfiles("test")
@@ -49,6 +45,7 @@ class ProductControllerTest {
         productRepository.save(new Product("상품", 1000, "카테고리", "배송상태", 100, account.getId()));
         productRepository.save(new Product("상품", 1000, "카테고리", "배송상태", 100, account.getId()));
         productRepository.save(new Product("상품", 1000, "카테고리", "배송상태", 100, account.getId()));
+
         mockMvc.perform(
                         get("/api/omg?page=0")
                                 .contentType(MediaType.APPLICATION_JSON)

@@ -30,10 +30,6 @@ public class Order extends BaseEntity {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
-    private Event event;
-
     @Column(name = "total_price")
     private Integer totalPrice;
 
@@ -43,30 +39,26 @@ public class Order extends BaseEntity {
     /**
      * SJ: 장바구니 ID
      */
-//    private Long cartId;
+    private Long cartId;
+    private Long eventId;
 
+    /**
+     * 일반 상품 주문
+     */
     public Order(Account account, Product product, Integer totalPrice) {
-//        decrease(product);
         this.account = account;
         this.product = product;
         this.totalPrice = totalPrice;
     }
 
-    public Order(Account account, Event event) {
-//        decrease(event);
-        this.account = account;
-        this.event = event;
-    }
-
     /**
-     * 재고 감소 (재고 없을 시 예외 발생)
+     * 이벤트 상품 주문
      */
-    public void decrease(Product product) {
-        int productStock = product.getStock();
-        if (productStock - 1 < 0) {
-            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
-        }
-        product.decreaseStock(productStock);
+    public Order(Account findAccount, Product product, Long eventId, int productPrice) {
+        this.account = findAccount;
+        this.eventId = eventId;
+        this.product = product;
+        this.totalPrice = productPrice;
     }
 
     /**

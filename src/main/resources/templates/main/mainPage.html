@@ -41,6 +41,10 @@
         loadMainPage();
     });
 
+    function number_format(num){
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    }
+
     function loadMainPage() {
         let givenPage = $("#givenPage").val();
 
@@ -54,24 +58,26 @@
 
                 console.log(response);
 
-
                 let totalPages = `${response.products.totalPages}`
                 let totalElements = `${response.products.totalElements}`
                 let products = response.products.content;
                 // console.log(totalPages)
                 // console.log(totalElements)
-                console.log(products);
+                // console.log(products);
                 // console.log(response.products.totalPages);
                 // console.log(response.products.totalElements);
+
+                let format_totalPages = number_format(totalPages);
+                let format_totalElements = number_format(totalElements);
 
                 /**
                  * 전체 페이지 수, 전체 상품수
                  */
                 let tmpStr = `<ul class="list-group list-group-horizontal">
                                     <li class="list-group-item">전체 페이지 수</li>
-                                    <li class="list-group-item">${totalPages}</li>
+                                    <li class="list-group-item">${format_totalPages}</li>
                                     <li class="list-group-item">전체 상품수</li>
-                                    <li class="list-group-item">${totalElements}</li>
+                                    <li class="list-group-item">${format_totalElements}</li>
                                 </ul>`
                 $('#list-groups').append(tmpStr)
 
@@ -85,7 +91,7 @@
                     let title = product.title;
                     let price = product.price;
                     let stock = product.stock;
-                    let category = product.catergory;
+                    let category = product.category;
                     let delivery = product.delivery;
 
                     let tmpProducts = `<tr>
@@ -175,12 +181,9 @@
             <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
         </div>
 
-        <ul class="list-group list-group-horizontal">
-            <li class="list-group-item">전체 페이지 수</li>
-            <li class="list-group-item" th:text="${max}">0</li>
-            <li class="list-group-item">전체 상품수</li>
-            <li class="list-group-item" th:text="${productsSize}">100</li>
-        </ul>
+        <div id="list-groups">
+            <!-- 전체 상품 수, 전체 페이지 수 -->
+        </div>
 
         <div>
             <table class="table table-striped">
@@ -208,7 +211,7 @@
             </ul>
         </div>
 
-        <form class="form-inline" id="frmSearch" action="/admin/management">
+        <form class="form-inline" id="frmSearch" action="/omg">
             <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
             <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
             <!--            <div class="row">-->

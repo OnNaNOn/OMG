@@ -38,14 +38,14 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.isSale
                 ))
                 .from(product)
-                .where(product.isSale.eq("Y"))
-                .orderBy(product.id.asc())
-//                .offset(pageable.getOffset())
+//                .where(product.isSale.eq("Y"))
+//                .orderBy(product.id.asc())
+                .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
 
-//        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-        return PageableExecutionUtils.getPage(results, pageable, () -> results.size());
+        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
+        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
     }
 
     /**

@@ -36,9 +36,6 @@ public class Order extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private OrderType orderType = OrderType.ORDER_OK;
 
-    /**
-     * SJ: 장바구니 ID
-     */
     private Long cartId;
     private Long eventId;
 

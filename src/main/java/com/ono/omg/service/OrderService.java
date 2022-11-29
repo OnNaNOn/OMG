@@ -111,6 +111,7 @@ public class OrderService {
 //        Product findProduct2 = validateProduct(productId);
         Product findProduct = productRepository.findByIdWithPessimisticLock(productId);
 
+
         findProduct.decreaseStock(1);
 //        productRepository.saveAndFlush(findProduct);
 

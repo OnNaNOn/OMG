@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 **/logs/**
 **/resources/application-**
+/logs
 
 **/resources/application-test.yml
 **/logback-spring.xml

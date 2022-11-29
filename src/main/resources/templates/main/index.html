@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .container {
+            max-width: 850px;
+            margin-top: 50px;
+        }
+
+        ul {
+            justify-content: center;
+        }
+
+        .search {
+            display: flex;
+            justify-content: center;
+
+            max-width: 570px;
+            background-color: #ffffffff;
+            border: 1px solid #ced4da;
+            border-radius: calc(0.5 * 44px);
+            color: #000000ff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #searchText {
+            max-width: 500px;
+            background-color: #ffffffff;
+            border-color: #ffffff;
+        }
+
+        .searchBtn {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: #808080;
+        }
+
+        input {
+            font-family: inherit;
+            font-size: inherit;
+            /*height: 100%;*/
+            outline: 0;
+            padding-inline-end: 44px;
+            padding-inline-start: 52px;
+            position: relative;
+            width: 100%;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadHomePage();
+        });
+
+        function loadHomePage() {
+            $.ajax({
+                type: "GET",
+                url: "/api/event",
+                headers: {'Content-Type': 'application/json'},
+                success: function (response, dd, xhr) {
+
+                    let products = response.data;
+
+                    // 상품 리스트
+                    for (let i = 0; i < products.length; i++) {
+                        let product = products[i];
+
+                        let productId = product.productId;
+                        let title = product.productName;
+                        let content = product.content;
+                        let stock = product.stock;
+                        let productPrice = product.productPrice;
+                        let startedAt = product.startedAt.replace('T', ' ').substring(0, 16);
+                        let endedAt = product.endedAt.replace('T', ' ').substring(0, 16); // 16 -> 19로 변경시 초까지 출력력
+                        let tmpProducts = `<tr>
+                                            <td><a href="/products/detail/${productId}">${title}</a></td>
+                                            <td>${content}</td>
+                                            <td>${stock}</td>
+                                            <td>${productPrice}</td>
+                                            <td>${startedAt}</td>
+                                            <td>${endedAt}</td>
+                                        </tr>`
+                        $('#products').append(tmpProducts)
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("error >>>> ")
+                }
+            });
+        }
+
+    </script>
+</head>
+
+
+</script>
+
+<body>
+<div class="container">
+    <div align="center" style="margin-bottom: 20px">
+        <h1><a href="/omg">ONO.COM</a></h1>
+    </div>
+
+    <form action="/omg/search" method="get" class="container search">
+        <input type="search" autocomplete="off" class="form-control" spellcheck="false" role="combobox"
+               placeholder="검색할 상품명 입력" aria-live="polite" name="q" id="searchText">
+        <button type="submit" class="btn btn-light searchBtn">Q</button>
+    </form>
+</div>
+
+
+
+<h2 style="margin: 50px; text-align: center">매일 14:00시에 에어팟 5000원에 100명에게!!</h2>
+
+
+<div class="container">
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>상품명</th>
+            <th>상품설명</th>
+            <th>이벤트 재고</th>
+            <th>이벤트 가격</th>
+            <th>이벤트 시작일</th>
+            <th>이벤트 종료일</th>
+        </tr>
+        </thead>
+        <tbody id="products">
+        <!-- 이벤트 항목 -->
+        </tbody>
+    </table>
+</div>
+<!--th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
+</body>
+</html>

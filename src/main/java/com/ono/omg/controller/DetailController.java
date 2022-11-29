@@ -17,7 +17,6 @@ public class DetailController {
 
     @GetMapping("/api/products/detail/{productId}")
     public detailProductResponseDto mainPage(@PathVariable Long productId) {
-        Product product = productRepository.detailProduct(productId);
-        return new detailProductResponseDto(product);
+        return new detailProductResponseDto(productRepository.detailProduct(productId));
     }
 }

@@ -18,7 +18,11 @@ import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import static com.ono.omg.dto.response.EventResponseDto.*;
 
 
 @Service
@@ -65,11 +69,11 @@ public class EventService {
         Product findProduct = validProduct(findEvent);
         Account findAccount = validAccount(accountId);
 
-        findEvent.decreaseEventStock(1);
-        eventRepository.save(findEvent);
-        System.out.println("findEvent.getMaxParticipant() = " + findEvent.getMaxParticipant());
+        findProduct.decreaseStock(1);
+        productRepository.save(findProduct);
+        System.out.println("findProduct.getStock() = " + findProduct.getStock());
 
-        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, findEvent.getProductId(), findEvent.getProductPrice()));
+        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, findEvent.getProductId(), findProduct.getPrice()));
 
         return new EventOrderResponseDto(savedOrder.getId(), findEvent.getId(), findAccount.getUsername(), findEvent.getEventTitle());
     }
@@ -96,5 +100,15 @@ public class EventService {
     }
 
 
+    public List<AllEventResponse> searchEvent() {
+        List<Event> events = eventRepository.findAll();
+        List<AllEventResponse> responseDto = new ArrayList<>();
 
+        for (Event event : events) {
+            Product findProduct = productRepository.findById(event.getProductId()).get();
+            responseDto.add(new AllEventResponse(event, findProduct));
+        }
+
+        return responseDto;
+    }
 }

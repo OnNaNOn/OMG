@@ -115,8 +115,8 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다.")
-    public void searchNot() throws Exception {
+    @DisplayName("searchMySQLFullTextSearchWithMatchAndRowLookup 메서드는 '스크'라는 키워드를 기준으로 검색한다. 커버링 인덱싱 도입")
+    public void searchMySQLFullTextSearchWithMatchAndRowLookup() throws Exception {
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
         SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
@@ -124,6 +124,22 @@ class ProductRepositoryTest extends RepositoryTest {
         // 전체 데이터의 양 17,400,000
         PageRequest pageable = PageRequest.of(1, 10); // 20 건의 결과      ==> 1110ms
 //        PageRequest pageable = PageRequest.ofSize(10);        // 385,608 건의 결과 ==> 44501ms
+
+        Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndRowLookup(searchRequestDto, pageable);
+
+        System.out.println("totalElements = " + results.getTotalElements());
+    }
+
+    @Test
+    @DisplayName("searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다.")
+    public void searchNot() throws Exception {
+        // given
+        String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
+        SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
+
+        // 전체 데이터의 양 17,400,000
+        PageRequest pageable = PageRequest.of(1, 10);
+//        PageRequest pageable = PageRequest.ofSize(10);
 
         Page<SearchResponseDto> results = productRepository.searchProduct(searchRequestDto, pageable);
 

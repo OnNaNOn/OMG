@@ -2,7 +2,6 @@ package com.ono.omg.dto.response;
 
 import lombok.*;
 
-
 @NoArgsConstructor
 @Getter
 public class CartResponseDto {

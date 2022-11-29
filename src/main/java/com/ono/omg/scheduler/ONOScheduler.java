@@ -22,27 +22,11 @@ public class ONOScheduler {
         this.productRepository = productRepository;
     }
 
-    @Scheduled(cron = "30 51 21 21-30 * *")
-    public void test() {
+    @Scheduled(cron = "0 0 14 * * *") // 21-30일까지 02시 13분 55초에 스케줄 동작 >> cron = "55 13 02 21-30 * *"
+    public void createEvent() {
+        Product savedProduct = productRepository.save(new Product("에어팟 프로2", 4990, "이벤트 상품", "초고속 배송", 5000, 1L));
+        LocalDateTime now = LocalDateTime.now();
 
-        productRepository.save(new Product("상품테스트", 10000, "카테고리", "빠름", 150, 1L));
-
-        long rand = (long)(Math.random() * productRepository.count()) + 1;
-
-        LocalDateTime dateTime = LocalDateTime.now();
-
-        Product findProduct = productRepository.findById(rand).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
-
-        Event event = new Event(
-                findProduct.getId(),
-                "30일까지 9일간 매일 20시 41분에는 행사 상품이!!",
-                "상품은 무려 에어팟..!",
-                5000,
-                10000L,
-                dateTime, dateTime.plusDays(1)
-        );
-
-        eventRepository.saveAndFlush(event);
+        eventRepository.saveAndFlush(new Event(savedProduct.getId(), "매일 매일 쏟아지는 에어팟!", "야 나두", now, now.plusDays(1)));
     }
 }

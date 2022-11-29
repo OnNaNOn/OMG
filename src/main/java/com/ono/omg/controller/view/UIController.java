@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,10 +56,16 @@ public class UIController {
         return "admin/managedProducts";
     }
 
-
-    //메인페이지
+    // home
     @GetMapping("/omg")
-    public String mainPage(@PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String home() {
+        return "main/index";
+    }
+
+    // 검색 페이지 (기존 상품 페이지)
+    @GetMapping("/omg/search")
+    public String mainPage(@RequestParam("q") String query, @PageableDefault(size = 10) Pageable pageable, Model model) {
+        model.addAttribute("query", query);
         model.addAttribute("nowPage", pageable.getPageNumber());
         return "main/mainPage";
     }
@@ -69,7 +76,7 @@ public class UIController {
         System.out.println("@@@@@@@@@@@@@@@" + productId); // ----> 찍힘
 
         model.addAttribute("productId", productId);
-        return "product/detailProduct";
+        return "detail/detailProduct";
     }
 
 //    /**

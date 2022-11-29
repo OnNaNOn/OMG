@@ -61,6 +61,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     public Page<SearchResponseDto> searchProduct(SearchRequestDto requestDto, Pageable pageable) {
         List<SearchResponseDto> results = queryFactory
                 .select(new QSearchResponseDto(
+                        product.id,
                         product.title,
                         product.price,
                         product.stock,
@@ -90,6 +91,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     public Page<SearchResponseDto> searchProductUsedFullTextSearch(SearchRequestDto requestDto, Pageable pageable) {
         List<SearchResponseDto> results = queryFactory
                 .select(new QSearchResponseDto(
+                                product.id,
                                 product.title,
                                 product.price,
                                 product.stock,
@@ -133,8 +135,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         }
 
         // 2) 1의 결과로 발생한 id로 실제 select절 조회
-        List<SearchResponseDto> results = queryFactory
+        JPAQuery<SearchResponseDto> rstQuery = queryFactory
                 .select(new QSearchResponseDto(
+                                product.id,
                                 product.title,
                                 product.price,
                                 product.stock,
@@ -146,10 +149,9 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         )
                 )
                 .from(product)
-                .where(product.id.in(ids))
-                .fetch();
+                .where(product.id.in(ids));
 
-        return new PageImpl<>(results, pageable, results.size());
+        return new PageImpl<>(rstQuery.fetch(), pageable, rstQuery.fetchCount());
     }
 
     private BooleanExpression titleMatch(String title) {

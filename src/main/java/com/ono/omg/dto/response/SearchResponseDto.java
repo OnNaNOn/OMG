@@ -10,6 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class SearchResponseDto {
+    private Long productId;
     private String title;
     private Integer price;
     private Integer stock;
@@ -21,7 +22,8 @@ public class SearchResponseDto {
 
     @Builder
     @QueryProjection
-    public SearchResponseDto(String title, Integer price, Integer stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+    public SearchResponseDto(Long productId, String title, Integer price, Integer stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
+        this.productId = productId;
         this.title = title;
         this.price = price;
         this.stock = stock;

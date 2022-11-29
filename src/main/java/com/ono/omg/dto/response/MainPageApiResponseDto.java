@@ -1,6 +1,5 @@
 package com.ono.omg.dto.response;
 
-import com.ono.omg.domain.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +9,8 @@ import org.springframework.data.domain.Page;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MainPageApiResponseDto {
-    private Page<Product> products;
+//    private Page<Product> products;
+    private Page<SearchResponseDto> products;
 
     private int totalPages;
     private long totalElements;

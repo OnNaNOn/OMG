@@ -23,39 +23,18 @@ public class Event extends BaseEntity {
     private Long productId;
 
     private String eventTitle;
-
     private String content;
 
-    private Integer productPrice;
-
-    @Column(name = "max_participant")
-    private Long maxParticipant; // Max Participant == Product Stock
-
     private String isDeleted;
-
     private LocalDateTime startedAt;
-
     private LocalDateTime endedAt;
 
-    public Event(Long productId, String eventTitle, String content, Integer productPrice, Long maxParticipant, LocalDateTime startedAt, LocalDateTime endedAt) {
+    public Event(Long productId, String eventTitle, String content, LocalDateTime startedAt, LocalDateTime endedAt) {
         this.productId = productId;
         this.eventTitle = eventTitle;
         this.content = content;
-        this.productPrice = productPrice;
-        this.maxParticipant = maxParticipant;
         this.isDeleted = "N";
         this.startedAt = startedAt;
         this.endedAt = endedAt;
-    }
-
-    public Long decreaseEventStock(int eventStock) {
-        if (this.maxParticipant - eventStock < 0) {
-            throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);
-        }
-        this.maxParticipant -= eventStock;
-
-        if(this.maxParticipant == 0) {
-        }
-        return this.maxParticipant;
     }
 }

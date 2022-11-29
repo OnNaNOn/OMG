@@ -81,11 +81,15 @@ public class WebSecurityConfig {
                 .antMatchers("/accounts/signup").permitAll()
                 .antMatchers( "/accounts/login").permitAll()
                 .antMatchers("/admin/login").permitAll()
+
                 .antMatchers("/omg").permitAll()
+                .antMatchers("/omg/search").permitAll()
                 .antMatchers("/api/omg").permitAll()
+                .antMatchers("/api/event").permitAll()
                 .antMatchers("/products/detail/{productId}").permitAll()
                 .antMatchers("/api/products/detail/{productId}").permitAll()
                 .antMatchers("/admin/management").permitAll()
+
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/endPoint1").permitAll()
                 .antMatchers("/endPoint2").permitAll()

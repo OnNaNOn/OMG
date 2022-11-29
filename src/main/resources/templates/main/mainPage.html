@@ -47,20 +47,28 @@
 
     function loadMainPage() {
         let givenPage = $("#givenPage").val();
+        let givenQuery = $("#givenQuery").val();
+
+        let params = "?page=" + givenPage;
+        params += "&q=" + givenQuery;
 
         $.ajax({
             type: "GET",
-            url: "/api/omg?page=" + givenPage,
+            url: "/api/omg" + params,
             headers: {'Content-Type': 'application/json'},
             // data: JSON.stringify(data),
             success: function (response, dd, xhr) {
                 $('#list-group').remove();
 
-                console.log(response);
+                if(response.totalElements == 0) {
+                    alert("존재하지 않는 상품입니다. 샘플 키워드는 [스크] 입니다");
+                    return;
+                }
 
                 let totalPages = `${response.products.totalPages}`
                 let totalElements = `${response.products.totalElements}`
                 let products = response.products.content;
+
                 // console.log(totalPages)
                 // console.log(totalElements)
                 // console.log(products);
@@ -87,7 +95,7 @@
                 for (let i = 0; i < products.length; i++) {
                     let product = products[i];
 
-                    let productId = product.id;
+                    let productId = product.productId;
                     let title = product.title;
                     let price = product.price;
                     let stock = product.stock;
@@ -130,6 +138,7 @@
                 });
             },
             error: function (xhr, status, error) {
+                alert("error >>>> ")
                 // let response = JSON.parse(xhr.responseText);
                 // alert("response.error.message");
                 // window.location.href = '/admin/login';
@@ -159,6 +168,7 @@
 <!--</script>-->
 
 <input type="hidden" id="givenPage" th:value="${nowPage}">
+<input type="hidden" id="givenQuery" th:value="${query}">
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -189,7 +199,7 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>ID</th>
+                    <th>상품번호</th>
                     <th>상품명</th>
                     <th>가격</th>
                     <th>카테고리</th>
@@ -211,8 +221,9 @@
             </ul>
         </div>
 
-        <form class="form-inline" id="frmSearch" action="/omg">
+        <form class="form-inline" id="frmSearch" action="/omg/search">
             <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+            <input type="hidden" id="query" name="q" th:value="${query}" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
             <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
             <!--            <div class="row">-->
             <!--                <div class="col-md-2" style="text-align:center">-->

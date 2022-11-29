@@ -12,4 +12,6 @@ public interface ProductRepositoryCustom {
 
     Page<SearchResponseDto> searchProduct(SearchRequestDto requestDto, Pageable pageable);
 
+    Page<SearchResponseDto> searchProductUsedFullTextSearch(SearchRequestDto requestDto, Pageable pageable);
+
 }

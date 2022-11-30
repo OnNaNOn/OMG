@@ -35,16 +35,9 @@ public class AdminController {
                                         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info("admin page login = " + userDetails.getAccount().getUsername());
 
+        validAccount(userDetails);
+
         PageRequest pageable = PageRequest.of(page, 10);
-
-        Account findAccount = accountRepository.findById(userDetails.getAccount().getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-        );
-
-        if (!findAccount.getAccountType().equals(AccountType.ROLE_ADMIN)) {
-            throw new CustomCommonException(ErrorCode.UNAUTHORIZED_USER);
-        }
-
         Page<AllProductManagementResponseDto> productStock = productRepository.findAllProductStock(pageable);
 
         int totalPages = productStock.getTotalPages();
@@ -58,5 +51,20 @@ public class AdminController {
         int endPage = Math.min(nowPage + 2, totalPages);
 
         return new AdminResponseDto(productStock, totalPages, totalElements, nowPage, startPage, endPage);
+    }
+
+    private Account validAccount(UserDetailsImpl userDetails) {
+        Account findAccount = accountRepository.findById(userDetails.getAccount().getId()).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+        );
+        hasAdminRoleAccount(findAccount);
+
+        return findAccount;
+    }
+
+    private void hasAdminRoleAccount(Account findAccount) {
+        if (!findAccount.getAccountType().equals(AccountType.ROLE_ADMIN)) {
+            throw new CustomCommonException(ErrorCode.UNAUTHORIZED_USER);
+        }
     }
 }

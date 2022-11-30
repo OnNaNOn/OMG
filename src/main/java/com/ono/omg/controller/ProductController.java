@@ -26,7 +26,6 @@ import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 public class ProductController {
     private final ProductService productService;
 
-
     // 상품등록
     @PostMapping("/products")
     public ResponseEntity<ResponseDto<String>> createProduct(@RequestBody ProductReqDto productReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {

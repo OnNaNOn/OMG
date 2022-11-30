@@ -2,8 +2,6 @@ package com.ono.omg.scheduler;
 
 import com.ono.omg.domain.Event;
 import com.ono.omg.domain.Product;
-import com.ono.omg.exception.CustomCommonException;
-import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.event.EventRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import org.springframework.scheduling.annotation.Scheduled;

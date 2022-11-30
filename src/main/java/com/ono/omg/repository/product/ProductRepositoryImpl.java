@@ -1,12 +1,10 @@
 package com.ono.omg.repository.product;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.domain.QProduct;
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.QProductResponseDto_AllProductManagementResponseDto;
 import com.ono.omg.dto.response.QSearchResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;

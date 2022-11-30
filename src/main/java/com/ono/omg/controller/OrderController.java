@@ -30,7 +30,7 @@ public class OrderController {
     private final RedissonClient redissonClient;
 
     /**
-     * 동시성 제어 With Redis - Redisson
+     * 동시성 제어 With Redis - Redisson >>>>>> 사용 X <<<<<<<
      */
     @PostMapping("/{productId}/confirm")
     public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
@@ -78,10 +78,9 @@ public class OrderController {
 
 //    /**
 //     * 주문내역 조회
-//    * */
+//    */
 //    @GetMapping("/orders")
 //    public ResponseDto<List<MyPageResponseDto>> getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
 //        return ResponseDto.success(orderService.getOrderList(userDetails));
 //    }
-
 }

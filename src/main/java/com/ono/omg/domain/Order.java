@@ -1,15 +1,11 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.domain.base.BaseEntity;
-import com.ono.omg.exception.CustomCommonException;
-import com.ono.omg.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

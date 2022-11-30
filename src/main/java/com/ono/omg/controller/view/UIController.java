@@ -1,12 +1,7 @@
 package com.ono.omg.controller.view;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.domain.Review;
-import com.ono.omg.dto.response.ProductResponseDto.detailProductResponseDto;
-import com.ono.omg.dto.response.ReviewResponseDto;
-import com.ono.omg.repository.account.AccountRepository;
 import com.ono.omg.repository.product.ProductRepository;
-import com.ono.omg.repository.review.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -29,8 +24,20 @@ public class UIController {
      * Controller > Service > Repository로 변경할 필요 있음
      */
     private final ProductRepository productRepository;
-    private final ReviewRepository reviewRepository;
-    private final AccountRepository accountRepository;
+
+    // home
+    @GetMapping("/omg")
+    public String home() {
+        return "main/index";
+    }
+
+    // 검색 페이지 (기존 상품 페이지)
+    @GetMapping("/omg/search")
+    public String mainPage(@RequestParam("q") String query, @PageableDefault(size = 10) Pageable pageable, Model model) {
+        model.addAttribute("query", query);
+        model.addAttribute("nowPage", pageable.getPageNumber());
+        return "main/mainPage";
+    }
 
     @GetMapping("/accounts/signup")
     public String register() {
@@ -49,61 +56,16 @@ public class UIController {
 
     @GetMapping("/admin/management")
     public String adminProductManagement(@PageableDefault(size = 10) Pageable pageable, Model model) {
-        System.out.println("UIController.adminProductManagement");
-        System.out.println("page = " + pageable.getPageNumber());
-
         model.addAttribute("nowPage", pageable.getPageNumber());
         return "admin/managedProducts";
-    }
-
-    // home
-    @GetMapping("/omg")
-    public String home() {
-        return "main/index";
-    }
-
-    // 검색 페이지 (기존 상품 페이지)
-    @GetMapping("/omg/search")
-    public String mainPage(@RequestParam("q") String query, @PageableDefault(size = 10) Pageable pageable, Model model) {
-        model.addAttribute("query", query);
-        model.addAttribute("nowPage", pageable.getPageNumber());
-        return "main/mainPage";
     }
 
     //상세페이지
     @GetMapping("/products/detail/{productId}")
     public String detailProductPage(@PathVariable Long productId, Model model) {
-        System.out.println("@@@@@@@@@@@@@@@" + productId); // ----> 찍힘
-
         model.addAttribute("productId", productId);
         return "detail/detailProduct";
     }
-
-//    /**
-//     * 관리자 재고 관리 페이지
-//     */
-//    @GetMapping("/admin/management")
-//    public String managedPage(@PageableDefault(size = 10) Pageable pageable, Model model) {
-//        Page<ProductResponseDto.AllProductManagementResponseDto> productStock = productRepository.findAllProductStock(pageable);
-//
-//        //페이지블럭 처리
-//        //1을 더해주는 이유는 pageable은 0부터라 1을 처리하려면 1을 더해서 시작해주어야 한다.
-//        int nowPage = productStock.getPageable().getPageNumber() + 1;
-//        //-1값이 들어가는 것을 막기 위해서 max값으로 두 개의 값을 넣고 더 큰 값을 넣어주게 된다.
-//        int startPage =  Math.max(nowPage - 2, 1);
-//        int endPage = Math.min(nowPage+2, productStock.getTotalPages());
-//
-//        model.addAttribute("products", productStock);
-//        model.addAttribute("nowPage",nowPage);
-//        model.addAttribute("startPage", startPage);
-//        model.addAttribute("endPage", endPage);
-//
-//        model.addAttribute("max", productStock.getTotalPages());
-//        model.addAttribute("productsSize", productStock.getTotalElements());
-//
-//        return "admin/managedProducts";
-//    }
-
 
     // 마이 페이지
     @GetMapping("/accounts/mypage")

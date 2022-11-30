@@ -162,27 +162,8 @@
             }
         });
     }
+
 </script>
-
-<!--<script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>-->
-<!--<script>-->
-<!--    function searchProduct() {-->
-
-<!--        $.ajax({-->
-<!--            type: "POST",-->
-<!--            url: "",-->
-<!--            headers: {'Content-Type': 'application/json'},-->
-<!--            data: JSON.stringify(data),-->
-<!--            success: function (response) {-->
-
-<!--            },-->
-<!--            error : function(xhr, status, error) {-->
-<!--                let response = JSON.parse(xhr.responseText);-->
-<!--                alert(response.error.message);-->
-<!--            }-->
-<!--        });-->
-<!--    }-->
-<!--</script>-->
 
 <input type="hidden" id="givenPage" th:value="${nowPage}">
 <input type="hidden" id="givenQuery" th:value="${query}">
@@ -225,7 +206,6 @@
         </tr>
         </thead>
         <tbody id="products">
-        <!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
 
         </tbody>
     </table>
@@ -240,15 +220,6 @@
 <form class="form-inline" id="frmSearch" action="/omg/search">
     <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
     <input type="hidden" id="query" name="q" th:value="${query}" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
-    <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
-    <!--            <div class="row">-->
-    <!--                <div class="col-md-2" style="text-align:center">-->
-    <!--                    <h4><strong>검색어</strong></h4>-->
-    <!--                </div>-->
-    <!--                <div class="col-md-10">-->
-    <!--                    <input type="text" class="form-control" name="searchWord" value="${searchWord}" maxlength="8"/>-->
-    <!--                </div>-->
-    <!--            </div>-->
 </form>
 </body>
 </html>

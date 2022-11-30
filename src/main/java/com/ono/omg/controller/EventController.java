@@ -2,7 +2,6 @@ package com.ono.omg.controller;
 
 
 import com.ono.omg.dto.common.ResponseDto;
-import com.ono.omg.dto.response.EventResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.EventOrderResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.EventService;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.EventResponseDto.*;
+import static com.ono.omg.dto.response.EventResponseDto.AllEventResponse;
 
 @RestController
 @Slf4j

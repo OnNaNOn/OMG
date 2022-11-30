@@ -1,7 +1,6 @@
 package com.ono.omg.controller;
 
-import com.ono.omg.domain.Product;
-import com.ono.omg.dto.response.ProductResponseDto.detailProductResponseDto;
+import com.ono.omg.dto.response.ProductResponseDto.DetailProductResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,7 @@ public class DetailController {
     private final ProductRepository productRepository;
 
     @GetMapping("/api/products/detail/{productId}")
-    public detailProductResponseDto mainPage(@PathVariable Long productId) {
-        return new detailProductResponseDto(productRepository.detailProduct(productId));
+    public DetailProductResponseDto mainPage(@PathVariable Long productId) {
+        return new DetailProductResponseDto(productRepository.detailProduct(productId));
     }
 }

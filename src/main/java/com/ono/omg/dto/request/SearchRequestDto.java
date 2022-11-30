@@ -19,6 +19,10 @@ public class SearchRequestDto {
     private String isDeleted;
     private String imgUrl;
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public SearchRequestDto(String title) {
         this.title = title;
     }

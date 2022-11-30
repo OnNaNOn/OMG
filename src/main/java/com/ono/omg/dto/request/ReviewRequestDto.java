@@ -1,6 +1,8 @@
 package com.ono.omg.dto.request;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter

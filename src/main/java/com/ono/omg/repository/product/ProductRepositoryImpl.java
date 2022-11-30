@@ -1,12 +1,10 @@
 package com.ono.omg.repository.product;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.domain.QProduct;
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.QProductResponseDto_AllProductManagementResponseDto;
 import com.ono.omg.dto.response.QSearchResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
@@ -51,6 +49,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .fetch();
 
         JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
+
         return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
     }
 
@@ -73,9 +72,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         )
                 )
                 .from(product)
-                .where(
-                        titleEq(requestDto.getTitle())
-                )
+                .where(titleEq(requestDto.getTitle()))
 //                .orderBy(product.modifiedAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -118,7 +115,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     }
 
     @Override
-    public Page<SearchResponseDto> searchProductUsedFullTextSearchAndRowLookup(SearchRequestDto requestDto, Pageable pageable) {
+    public Page<SearchResponseDto> searchProductUsedFullTextSearchAndCoveringIndex(SearchRequestDto requestDto, Pageable pageable) {
 
         // 1) 커버링 인덱스로 대상 조회
         List<Long> ids = queryFactory
@@ -151,7 +148,21 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .from(product)
                 .where(product.id.in(ids));
 
-        return new PageImpl<>(rstQuery.fetch(), pageable, rstQuery.fetchCount());
+        List<Long> countIds = queryFactory
+                .select(product.id)
+                .from(product)
+                .where(titleMatch(requestDto.getTitle()))
+                .offset(pageable.getOffset())
+                .limit(50)
+                .fetch();
+
+        Long count = queryFactory
+                .select(product.count())
+                .from(product)
+                .where(product.id.in(countIds))
+                .fetchFirst();
+
+        return new PageImpl<>(rstQuery.fetch(), pageable, count);
     }
 
     private BooleanExpression titleMatch(String title) {

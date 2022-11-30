@@ -1,16 +1,16 @@
 package com.ono.omg.dto.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 
 public class AccountRequestDto {
 
     @Getter
-    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    @ToString
     public static class AccountRegisterRequestDto {
 
         @NotEmpty(message = "username을 입력해주세요.")
@@ -30,7 +30,6 @@ public class AccountRequestDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    @ToString
     public static class AccountLoginRequestDto {
 
         @NotEmpty(message = "username을 입력해주세요.")

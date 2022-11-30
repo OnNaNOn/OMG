@@ -1,6 +1,5 @@
 package com.ono.omg.repository.order;
 
-import com.ono.omg.dto.response.OrderResponseDto;
 import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import org.springframework.data.domain.Pageable;
 

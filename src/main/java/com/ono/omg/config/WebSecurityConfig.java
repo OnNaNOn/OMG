@@ -94,12 +94,6 @@ public class WebSecurityConfig {
                 .antMatchers("/endPoint1").permitAll()
                 .antMatchers("/endPoint2").permitAll()
 
-//                .antMatchers("/").permitAll()
-//                .antMatchers("/**").permitAll()
-//                .antMatchers("/admin/management").hasRole("ADMIN")
-
-//                .antMatchers(HttpMethod.GET, "/product/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/product/{productId}/comment/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 

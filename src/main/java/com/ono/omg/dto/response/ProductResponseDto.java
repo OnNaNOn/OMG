@@ -1,8 +1,6 @@
 package com.ono.omg.dto.response;
 
 import com.ono.omg.domain.Product;
-import com.ono.omg.exception.CustomCommonException;
-import com.ono.omg.exception.ErrorCode;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,8 +16,8 @@ public class ProductResponseDto {
     @Getter
     public static class ProductResDto{
         private String title;
-        private int price;
-        private int stock;
+        private Integer price;
+        private Integer stock;
         private String category;
         private String delivery;
         private Long sellerId;
@@ -47,8 +45,8 @@ public class ProductResponseDto {
     public static class AllProductManagementResponseDto {
         private Long productId;           // 상품 번호
         private String title;             // 상품 명
-        private int price;                // 상품 가격
-        private int stock;                // 재고 현황
+        private Integer price;                // 상품 가격
+        private Integer stock;                // 재고 현황
         private String isSale;            // 판매 유무
         private String isNowEvent = "N";  // 이벤트 유무
 
@@ -72,10 +70,10 @@ public class ProductResponseDto {
     public static class MainPageResponseDto {
         private Long productId;
         private String title;
-        private int price;
+        private Integer price;
         private String category;
         private String delivery;
-        private int stock;
+        private Integer stock;
 
         public MainPageResponseDto(Product product) {
             this.productId = product.getId();
@@ -94,16 +92,16 @@ public class ProductResponseDto {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class detailProductResponseDto {
+    public static class DetailProductResponseDto {
         private Long productId;
         private String imgUrl;
         private String title;
-        private int price;
+        private Integer price;
         private String category;
         private String delivery;
-        private int stock;
+        private Integer stock;
 
-        public detailProductResponseDto(Product product) {
+        public DetailProductResponseDto(Product product) {
             this.productId = product.getId();
             this.imgUrl = product.getImgUrl();
             this.title = product.getTitle();
@@ -111,12 +109,9 @@ public class ProductResponseDto {
             this.category = product.getCategory();
             this.delivery = product.getDelivery();
             this.stock = product.getStock();
-
-            log.info("product.getImgUrl() = {}", product.getImgUrl());
         }
     }
 
-    @ToString
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor

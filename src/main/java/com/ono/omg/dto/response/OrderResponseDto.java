@@ -15,7 +15,6 @@ public class OrderResponseDto {
         private String imgUrl;
         private String title;
 
-
         @QueryProjection
         public MainPageOrdersResponseDto(Long productId, String imgUrl, String title) {
             this.productId = productId;
@@ -26,33 +25,26 @@ public class OrderResponseDto {
 
     @Getter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class EventOrderResponseDto {
         private Long orderId;
         private Long eventId;
         private String username;
         private String eventTitle;
-
-        public EventOrderResponseDto(Long orderId, Long eventId, String username, String eventTitle) {
-            this.orderId = orderId;
-            this.eventId = eventId;
-            this.username = username;
-            this.eventTitle = eventTitle;
-        }
     }
+
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class createdOrdersResponseDto {
-        /**
-         * 다중 상품인 경우 아래 두 필드는 List에 별도의 Dto로 담김
-         */
         private Long orderId;
+        private Long productId;
+
         private Integer getTotalPrice;
         private String username;
         private Integer stock;
 
-        private Long productId;
-        private int price;
+        private Integer price;
         private String category;
         private String delivery;
         private String imgUrl;
@@ -74,12 +66,8 @@ public class OrderResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class cancelOrderResponseDto {
-        /**
-         * 다중 상품인 경우 아래 두 필드는 List에 별도의 Dto로 담김
-         */
         private Long productId;
         private String productName;
-
         private String orderStatus;
     }
 }

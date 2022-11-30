@@ -64,6 +64,10 @@
             loadHomePage();
         });
 
+        function number_format(num){
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
+        }
+
         function loadHomePage() {
             $.ajax({
                 type: "GET",
@@ -80,10 +84,11 @@
                         let productId = product.productId;
                         let title = product.productName;
                         let content = product.content;
-                        let stock = product.stock;
-                        let productPrice = product.productPrice;
+                        let stock = number_format(product.stock);
+                        let productPrice = number_format(product.productPrice);
                         let startedAt = product.startedAt.replace('T', ' ').substring(0, 16);
                         let endedAt = product.endedAt.replace('T', ' ').substring(0, 16); // 16 -> 19로 변경시 초까지 출력력
+
                         let tmpProducts = `<tr>
                                             <td><a href="/products/detail/${productId}">${title}</a></td>
                                             <td>${content}</td>
@@ -127,7 +132,7 @@
 
 <div class="container">
 
-    <table class="table table-striped">
+    <table class="table">
         <thead>
         <tr>
             <th>상품명</th>

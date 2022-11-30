@@ -24,13 +24,43 @@
 
         .search {
             display: flex;
-            background: yellow;
-            float: right;
+            justify-content: center;
+
+            max-width: 570px;
+            background-color: #ffffffff;
+            border: 1px solid #ced4da;
+            border-radius: calc(0.5 * 44px);
+            color: #000000ff;
+        }
+
+        #searchText {
+            max-width: 500px;
+            background-color: #ffffffff;
+            border-color: #ffffff;
+        }
+
+        .searchBtn {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: #808080;
+        }
+
+        input {
+            font-family: inherit;
+            font-size: inherit;
+            /*height: 100%;*/
+            outline: 0;
+            padding-inline-end: 44px;
+            padding-inline-start: 52px;
+            position: relative;
+            width: 100%;
         }
 
         a {
             text-decoration: none;
         }
+
+
     </style>
 <body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -61,33 +91,18 @@
                 $('#list-group').remove();
 
                 if(response.totalElements == 0) {
+                    $('.productDesc').remove();
+
+                    let isEmpty = `<h4 align="center">해당 상품이 존재하지 않습니다.</h4>`
+                    $('#products').append(isEmpty)
+
                     alert("존재하지 않는 상품입니다. 샘플 키워드는 [스크] 입니다");
                     return;
                 }
 
                 let totalPages = `${response.products.totalPages}`
-                let totalElements = `${response.products.totalElements}`
+                // let totalElements = `${response.products.totalElements}`
                 let products = response.products.content;
-
-                // console.log(totalPages)
-                // console.log(totalElements)
-                // console.log(products);
-                // console.log(response.products.totalPages);
-                // console.log(response.products.totalElements);
-
-                let format_totalPages = number_format(totalPages);
-                let format_totalElements = number_format(totalElements);
-
-                /**
-                 * 전체 페이지 수, 전체 상품수
-                 */
-                let tmpStr = `<ul class="list-group list-group-horizontal">
-                                    <li class="list-group-item">전체 페이지 수</li>
-                                    <li class="list-group-item">${format_totalPages}</li>
-                                    <li class="list-group-item">전체 상품수</li>
-                                    <li class="list-group-item">${format_totalElements}</li>
-                                </ul>`
-                $('#list-groups').append(tmpStr)
 
                 /**
                  * 상품 리스트
@@ -95,10 +110,10 @@
                 for (let i = 0; i < products.length; i++) {
                     let product = products[i];
 
-                    let productId = product.productId;
+                    let productId = number_format(product.productId);
                     let title = product.title;
-                    let price = product.price;
-                    let stock = product.stock;
+                    let price = number_format(product.price);
+                    let stock = number_format(product.stock);
                     let category = product.category;
                     let delivery = product.delivery;
 
@@ -119,14 +134,16 @@
                 var curPage = Number($("#startPage").val())
 
                 window.pagObj = $('#pagination').twbsPagination({
-                    totalPages: totalPages,     // 전체 페이지
+                    totalPages: totalPages + 2,     // 전체 페이지
                     startPage: curPage, // 시작(현재) 페이지
                     initiateStartPageClick: false,
                     visiblePages: 5,    // 최대로 보여줄 페이지
                     prev: "‹",          // Previous Button Label
                     next: "›",          // Next Button Label
-                    first: '«',         // First Button Label
-                    last: '»',          // Last Button Label
+                    first: '',         // First Button Label
+                    last: '',          // Last Button Label
+                    // first: '«',         // First Button Label
+                    // last: '»',          // Last Button Label
                     onPageClick: function (event, page) { // Page Click event
                         console.info("current page : " + page);
 
@@ -180,61 +197,58 @@
                 style="margin-left: 30px">마이페이지
         </button>
     </div>
+</div>
 
-    <div class="container">
-        <div align="center">
-            <h1>ONO.COM</h1>
-        </div>
-
-        <div class="search">
-            <input type="text" class="form-control" id="searchText">
-            <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
-        </div>
-
-        <div id="list-groups">
-            <!-- 전체 상품 수, 전체 페이지 수 -->
-        </div>
-
-        <div>
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th>상품번호</th>
-                    <th>상품명</th>
-                    <th>가격</th>
-                    <th>카테고리</th>
-                    <th>배송상태</th>
-                    <th>재고수량</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody id="products">
-                <!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
-
-                </tbody>
-            </table>
-        </div>
-
-        <div class="paging-div">
-            <ul class="pagination" id="pagination">
-
-            </ul>
-        </div>
-
-        <form class="form-inline" id="frmSearch" action="/omg/search">
-            <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
-            <input type="hidden" id="query" name="q" th:value="${query}" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
-            <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
-            <!--            <div class="row">-->
-            <!--                <div class="col-md-2" style="text-align:center">-->
-            <!--                    <h4><strong>검색어</strong></h4>-->
-            <!--                </div>-->
-            <!--                <div class="col-md-10">-->
-            <!--                    <input type="text" class="form-control" name="searchWord" value="${searchWord}" maxlength="8"/>-->
-            <!--                </div>-->
-            <!--            </div>-->
-        </form>
+<div class="container">
+    <div align="center" style="margin-bottom: 20px">
+        <h1><a href="/omg">ONO.COM</a></h1>
     </div>
-</div> <!-- container -->
+
+    <form action="/omg/search" method="get" class="container search">
+        <input type="search" autocomplete="off" class="form-control" spellcheck="false" role="combobox"
+               placeholder="검색할 상품명 입력" aria-live="polite" name="q" id="searchText">
+        <button type="submit" class="btn btn-light searchBtn">Q</button>
+    </form>
+</div>
+
+<div class="container productBox">
+    <table class="table">
+        <thead class="productDesc">
+        <tr>
+            <th>상품번호</th>
+            <th>상품명</th>
+            <th>가격</th>
+            <th>카테고리</th>
+            <th>배송상태</th>
+            <th>재고수량</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody id="products">
+        <!--                   th:href="@{/detail/{itemId}(itemId=${item.id})}"-->
+
+        </tbody>
+    </table>
+</div>
+
+<div class="paging-div">
+    <ul class="pagination" id="pagination">
+
+    </ul>
+</div>
+
+<form class="form-inline" id="frmSearch" action="/omg/search">
+    <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+    <input type="hidden" id="query" name="q" th:value="${query}" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+    <!--            <input type="hidden" id="visiblePages" name="visiblePages" value="">&lt;!&ndash; 페이징을 위한 hidden타입 추가 &ndash;&gt;-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-md-2" style="text-align:center">-->
+    <!--                    <h4><strong>검색어</strong></h4>-->
+    <!--                </div>-->
+    <!--                <div class="col-md-10">-->
+    <!--                    <input type="text" class="form-control" name="searchWord" value="${searchWord}" maxlength="8"/>-->
+    <!--                </div>-->
+    <!--            </div>-->
+</form>
 </body>
 </html>

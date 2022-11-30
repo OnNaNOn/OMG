@@ -116,7 +116,7 @@ class ProductRepositoryTest extends RepositoryTest {
 
     @Test
     @DisplayName("searchMySQLFullTextSearchWithMatchAndRowLookup 메서드는 '스크'라는 키워드를 기준으로 검색한다. 커버링 인덱싱 도입")
-    public void searchMySQLFullTextSearchWithMatchAndRowLookup() throws Exception {
+    public void searchMySQLFullTextSearchWithMatchAndCoveringIndex() throws Exception {
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
         SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
@@ -125,7 +125,7 @@ class ProductRepositoryTest extends RepositoryTest {
         PageRequest pageable = PageRequest.of(1, 10); // 20 건의 결과      ==> 1110ms
 //        PageRequest pageable = PageRequest.ofSize(10);        // 385,608 건의 결과 ==> 44501ms
 
-        Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndRowLookup(searchRequestDto, pageable);
+        Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndCoveringIndex(searchRequestDto, pageable);
 
         System.out.println("totalElements = " + results.getTotalElements());
     }

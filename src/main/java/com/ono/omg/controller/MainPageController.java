@@ -47,7 +47,8 @@ public class MainPageController {
         SearchRequestDto searchRequestDto = new SearchRequestDto(q);
         PageRequest pageable = PageRequest.of(page, 10);
 
-        Page<SearchResponseDto> products = productRepository.searchProductUsedFullTextSearchAndRowLookup(searchRequestDto, pageable);
+        Page<SearchResponseDto> products = productRepository.searchProductUsedFullTextSearchAndCoveringIndex(searchRequestDto, pageable);
+
         int totalPages = products.getTotalPages();
         long totalElements = products.getTotalElements();
 

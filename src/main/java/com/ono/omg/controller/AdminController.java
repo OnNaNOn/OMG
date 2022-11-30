@@ -44,6 +44,7 @@ public class AdminController {
         if (!findAccount.getAccountType().equals(AccountType.ROLE_ADMIN)) {
             throw new CustomCommonException(ErrorCode.UNAUTHORIZED_USER);
         }
+
         Page<AllProductManagementResponseDto> productStock = productRepository.findAllProductStock(pageable);
 
         int totalPages = productStock.getTotalPages();

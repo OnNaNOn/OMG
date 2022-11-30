@@ -65,10 +65,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.price,
                         product.stock,
                         product.category,
-                        product.delivery,
-                        product.sellerId,
-                        product.isDeleted,
-                        product.imgUrl
+                        product.delivery
+//                        ,
+//                        product.sellerId,
+//                        product.isDeleted,
+//                        product.imgUrl
                         )
                 )
                 .from(product)
@@ -93,10 +94,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                                 product.price,
                                 product.stock,
                                 product.category,
-                                product.delivery,
-                                product.sellerId,
-                                product.isDeleted,
-                                product.imgUrl
+                                product.delivery
+//                        ,
+//                                product.sellerId,
+//                                product.isDeleted,
+//                                product.imgUrl
                         )
                 )
                 .from(product)
@@ -132,37 +134,27 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         }
 
         // 2) 1의 결과로 발생한 id로 실제 select절 조회
-        JPAQuery<SearchResponseDto> rstQuery = queryFactory
+        List<SearchResponseDto> results = queryFactory
                 .select(new QSearchResponseDto(
                                 product.id,
                                 product.title,
                                 product.price,
                                 product.stock,
                                 product.category,
-                                product.delivery,
-                                product.sellerId,
-                                product.isDeleted,
-                                product.imgUrl
+                                product.delivery
                         )
                 )
                 .from(product)
-                .where(product.id.in(ids));
-
-        List<Long> countIds = queryFactory
-                .select(product.id)
-                .from(product)
-                .where(titleMatch(requestDto.getTitle()))
-                .offset(pageable.getOffset())
-                .limit(50)
+                .where(product.id.in(ids))
                 .fetch();
 
         Long count = queryFactory
                 .select(product.count())
                 .from(product)
-                .where(product.id.in(countIds))
+                .where(product.id.in(ids))
                 .fetchFirst();
 
-        return new PageImpl<>(rstQuery.fetch(), pageable, count);
+        return new PageImpl<>(results, pageable, count);
     }
 
     private BooleanExpression titleMatch(String title) {
@@ -175,10 +167,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         return booleanTemplate.gt(0);
     }
 
-
     private BooleanExpression titleEq(String productTitle) {
         return StringUtils.hasText(productTitle) ? product.title.eq(productTitle) : null;
     }
-
-
 }

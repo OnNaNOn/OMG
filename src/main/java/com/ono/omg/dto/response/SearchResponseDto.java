@@ -19,7 +19,6 @@ public class SearchResponseDto {
     private String imgUrl;
 
     @Builder
-    @QueryProjection
     public SearchResponseDto(Long productId, String title, Integer price, Integer stock, String category, String delivery, Long sellerId, String isDeleted, String imgUrl) {
         this.productId = productId;
         this.title = title;
@@ -30,5 +29,15 @@ public class SearchResponseDto {
         this.sellerId = sellerId;
         this.isDeleted = isDeleted;
         this.imgUrl = imgUrl;
+    }
+
+    @QueryProjection
+    public SearchResponseDto(Long productId, String title, Integer price, Integer stock, String category, String delivery) {
+        this.productId = productId;
+        this.title = title;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
+        this.delivery = delivery;
     }
 }

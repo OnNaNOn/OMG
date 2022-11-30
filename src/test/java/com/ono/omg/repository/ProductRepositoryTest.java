@@ -50,23 +50,6 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다.")
-    public void searchByProductName() throws Exception {
-        // given
-        findAllProductHasStock();
-
-        PageRequest pageable = PageRequest.ofSize(5);
-        SearchRequestDto givenProductName = new SearchRequestDto("항해1");
-
-        // when
-        Page<SearchResponseDto> searchProducts = productRepository.searchProduct(givenProductName, pageable);
-
-        // then
-        assertThat(searchProducts.getNumberOfElements()).isEqualTo(1);
-        assertThat(searchProducts.getContent().get(0).getTitle()).isEqualTo("항해1");
-    }
-
-    @Test
     @DisplayName("searchByProductNameButNull 메서드는 상품명에 대해 검색한다. 단, 일치하는 값은 없다.")
     public void searchByProductNameButNull() throws Exception {
         // given
@@ -99,15 +82,32 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("searchMySQLFullTextSearchWithMatch 메서드는 '스크'라는 키워드를 기준으로 검색한다. 385,608 건의 결과 ==> 44501ms")
+    @DisplayName("42699ms :: searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다. 단순 QueryDSL-JPA만 사용")
+    public void searchByProductName() throws Exception {
+        // given
+        // findAllProductHasStock();
+
+        String keyword = "스크";
+        PageRequest pageable = PageRequest.of(1, 10);
+        SearchRequestDto givenProductName = new SearchRequestDto(keyword);
+
+        // when
+        Page<SearchResponseDto> results = productRepository.searchProduct(givenProductName, pageable);
+
+        // then
+//        assertThat(searchProducts.getNumberOfElements()).isEqualTo(1);
+//        assertThat(searchProducts.getContent().get(0).getTitle()).isEqualTo("스크");
+
+        System.out.println("totalElements = " + results.getTotalElements());
+    }
+
+    @Test
+    @DisplayName("1112ms :: searchMySQLFullTextSearchWithMatch 메서드는 '스크'라는 키워드를 기준으로 검색한다.")
     public void searchMySQLFullTextSearchWithMatch() throws Exception {
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
         SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
-
-        // 전체 데이터의 양 17,400,000
-        PageRequest pageable = PageRequest.of(1, 10); // 20 건의 결과      ==> 1110ms
-//        PageRequest pageable = PageRequest.ofSize(10);        // 385,608 건의 결과 ==> 44501ms
+        PageRequest pageable = PageRequest.of(1, 10);
 
         Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearch(searchRequestDto, pageable);
 
@@ -115,33 +115,14 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("searchMySQLFullTextSearchWithMatchAndRowLookup 메서드는 '스크'라는 키워드를 기준으로 검색한다. 커버링 인덱싱 도입")
+    @DisplayName("1086ms :: searchMySQLFullTextSearchWithMatchAndCoveringIndex 메서드는 '스크'라는 키워드를 기준으로 검색한다. 커버링 인덱싱 도입")
     public void searchMySQLFullTextSearchWithMatchAndCoveringIndex() throws Exception {
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
         SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
-
-        // 전체 데이터의 양 17,400,000
-        PageRequest pageable = PageRequest.of(1, 10); // 20 건의 결과      ==> 1110ms
-//        PageRequest pageable = PageRequest.ofSize(10);        // 385,608 건의 결과 ==> 44501ms
+        PageRequest pageable = PageRequest.of(1, 10);
 
         Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndCoveringIndex(searchRequestDto, pageable);
-
-        System.out.println("totalElements = " + results.getTotalElements());
-    }
-
-    @Test
-    @DisplayName("searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다.")
-    public void searchNot() throws Exception {
-        // given
-        String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
-        SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
-
-        // 전체 데이터의 양 17,400,000
-        PageRequest pageable = PageRequest.of(1, 10);
-//        PageRequest pageable = PageRequest.ofSize(10);
-
-        Page<SearchResponseDto> results = productRepository.searchProduct(searchRequestDto, pageable);
 
         System.out.println("totalElements = " + results.getTotalElements());
     }

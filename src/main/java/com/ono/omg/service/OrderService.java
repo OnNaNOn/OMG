@@ -206,7 +206,7 @@ public class OrderService {
     /**
      * 상품 검색
      * */
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<SearchResponseDto> searchOrders(SearchRequestDto requestDto, Pageable pageable) {
         return productRepository.searchProduct(requestDto, pageable);
     }

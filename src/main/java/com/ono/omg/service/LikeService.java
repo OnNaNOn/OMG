@@ -58,6 +58,7 @@ public class LikeService {
     /**
      * 좋아요 조회
      * */
+    @Transactional(readOnly = true)
     public List<MainPageOrdersResponseDto> likesDetails(UserDetailsImpl userDetails) {
         Long accountId = userDetails.getAccount().getId();
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "modifiedAt");

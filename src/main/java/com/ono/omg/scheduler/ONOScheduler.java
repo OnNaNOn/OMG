@@ -20,7 +20,7 @@ public class ONOScheduler {
         this.productRepository = productRepository;
     }
 
-    @Scheduled(cron = "0 0 14 * * *") // 21-30일까지 02시 13분 55초에 스케줄 동작 >> cron = "55 13 02 21-30 * *"
+    @Scheduled(cron = "0 59 11 * * *") // 21-30일까지 02시 13분 55초에 스케줄 동작 >> cron = "55 13 02 21-30 * *"
     public void createEvent() {
         Product savedProduct = productRepository.save(new Product("에어팟 프로2", 4990, "이벤트 상품", "초고속 배송", 5000, 1L));
         LocalDateTime now = LocalDateTime.now();

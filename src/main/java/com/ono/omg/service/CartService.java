@@ -57,6 +57,7 @@ public class CartService {
     /**
      * 장바구니 조회
      * */
+    @Transactional(readOnly = true)
     public List<CartResponseDto> getCartList(UserDetailsImpl userDetails) {
         Long accountId = userDetails.getAccount().getId();
 

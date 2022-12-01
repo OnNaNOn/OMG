@@ -100,6 +100,7 @@ public class ReviewService {
     /**
      * 리뷰 조회
      */
+    @Transactional(readOnly = true)
     public List<ReviewResponseDto> getReviewList(Long productId) {
         List<ReviewResponseDto> dtoList = new ArrayList<>();
         List<Review> allReview = reviewRepository.findAllByProductId(productId);
@@ -138,6 +139,7 @@ public class ReviewService {
     /**
      * 리뷰 등록내역 조회
      * */
+    @Transactional(readOnly = true)
     public List<MainPageOrdersResponseDto> reviewDetails(UserDetailsImpl userDetails) {
         Long accountId = userDetails.getAccount().getId();
         Pageable pageable = PageRequest.of(0, 10, Sort.Direction.DESC, "modifiedAt");

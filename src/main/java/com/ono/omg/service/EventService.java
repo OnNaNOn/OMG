@@ -100,6 +100,7 @@ public class EventService {
     }
 
 
+    @Transactional(readOnly = true)
     public List<AllEventResponse> searchEvent() {
         List<Event> events = eventRepository.findAll();
         List<AllEventResponse> responseDto = new ArrayList<>();

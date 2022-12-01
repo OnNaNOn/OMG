@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +34,21 @@ public class UIController {
 
     // 검색 페이지 (기존 상품 페이지)
     @GetMapping("/omg/search")
-    public String mainPage(@RequestParam("q") String query, @PageableDefault(size = 10) Pageable pageable, Model model) {
+    public String mainPage(@RequestParam(name = "q", required = false) String query,
+                           @RequestParam(name = "useSearch", required = false) String useSearch,
+                           @PageableDefault(size = 10) Pageable pageable,
+                           Model model) {
+
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(URI.create("/"));
+//        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+
+        if(!StringUtils.hasText(query)) {
+            return "redirect:/omg";
+        }
+
         model.addAttribute("query", query);
+        model.addAttribute("useSearch", useSearch);
         model.addAttribute("nowPage", pageable.getPageNumber());
         return "main/mainPage";
     }

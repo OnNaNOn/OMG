@@ -82,7 +82,7 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("42699ms :: searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다. 단순 QueryDSL-JPA만 사용")
+    @DisplayName("1m 24sec :: searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다. 단순 QueryDSL-JPA만 사용")
     public void searchByProductName() throws Exception {
         // given
         // findAllProductHasStock();
@@ -102,7 +102,7 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("1112ms :: searchMySQLFullTextSearchWithMatch 메서드는 '스크'라는 키워드를 기준으로 검색한다.")
+    @DisplayName("1080ms :: searchMySQLFullTextSearchWithMatch 메서드는 '스크'라는 키워드를 기준으로 검색한다.")
     public void searchMySQLFullTextSearchWithMatch() throws Exception {
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑

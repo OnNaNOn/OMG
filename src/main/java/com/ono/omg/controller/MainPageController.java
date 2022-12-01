@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,7 +20,11 @@ public class MainPageController {
     private final ProductRepository productRepository;
 
     @GetMapping("/api/omg")
-    public MainPageApiResponseDto home(@RequestParam(name = "q") SearchRequestDto title, @RequestParam(name = "page") Integer page) {
+    public MainPageApiResponseDto home(@RequestParam(name = "q") SearchRequestDto title,
+                                       @RequestParam(name = "page") Integer page,
+                                       @RequestParam(name = "useSearch", required = false) String useSearch) {
+
+        System.out.println("givenUseSearchBtn = " + useSearch);
         PageRequest pageable = PageRequest.of(page, 10);
         
         return toMainPageApiResponseDto(productRepository.searchProductUsedFullTextSearchAndCoveringIndex(title, pageable));

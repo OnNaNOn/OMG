@@ -45,6 +45,7 @@ public class ProductService {
     public String createProduct(ProductReqDto productReqDto, Account account) {
         validAccount(account);
 
+
         Product product = new Product(productReqDto, account);
         productRepository.save(product);
         return "상품 등록 완료";

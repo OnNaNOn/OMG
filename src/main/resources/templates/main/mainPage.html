@@ -82,7 +82,7 @@
 
         let params = "?page=" + givenPage;
         params += "&q=" + givenQuery;
-        params += "&useSearch=" + givenUseSearch;
+        // params += "&useSearch=" + givenUseSearch;
 
         $.ajax({
             type: "GET",
@@ -168,7 +168,7 @@
 
 <input type="hidden" id="givenPage" th:value="${nowPage}">
 <input type="hidden" id="givenQuery" th:value="${query}">
-<input type="hidden" id="givenUseSearch" th:value="${useSearch}">
+<!--<input type="hidden" id="givenUseSearch" th:value="${useSearch}">-->
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">

@@ -21,10 +21,8 @@ public class MainPageController {
 
     @GetMapping("/api/omg")
     public MainPageApiResponseDto home(@RequestParam(name = "q") SearchRequestDto title,
-                                       @RequestParam(name = "page") Integer page,
-                                       @RequestParam(name = "useSearch", required = false) String useSearch) {
+                                       @RequestParam(name = "page") Integer page) {
 
-        System.out.println("givenUseSearchBtn = " + useSearch);
         PageRequest pageable = PageRequest.of(page, 10);
         
         return toMainPageApiResponseDto(productRepository.searchProductUsedFullTextSearchAndCoveringIndex(title, pageable));

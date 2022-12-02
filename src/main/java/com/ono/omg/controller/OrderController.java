@@ -63,8 +63,15 @@ public class OrderController {
      * 동시성 제어 With Pessimistic Lock
      */
     @PostMapping("/v1/{productId}/confirm")
-    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
+    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId,
+                                                                                 @AuthenticationPrincipal UserDetailsImpl account) {
         return ResponseDto.success(orderService.productOrderWithPessimisticLock(productId, account.getAccount().getId()));
+    }
+
+    @PostMapping("/v2/{productId}/confirm")
+    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithRedisson(@PathVariable Long productId,
+                                                                          @AuthenticationPrincipal UserDetailsImpl account) {
+        return ResponseDto.success(orderService.productOrderRedisson(productId, account.getAccount()));
     }
 
     /**

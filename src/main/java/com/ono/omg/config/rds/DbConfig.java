@@ -1,4 +1,4 @@
-package com.ono.omg.db;
+package com.ono.omg.config.rds;
 
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;

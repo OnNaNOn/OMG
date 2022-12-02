@@ -1,8 +1,7 @@
-package com.ono.omg.db;
+package com.ono.omg.config.rds;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.Map;

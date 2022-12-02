@@ -67,9 +67,10 @@ public class OrderService {
         createdOrdersResponseDto responseDto;
         try {
             // 몇 초동안 점유할 것인지에 대한 설정
-            boolean available = lock.tryLock(4, 1, TimeUnit.SECONDS);
+            boolean available = lock.tryLock(30, 10, TimeUnit.SECONDS);
 
-            // 점유하지 못한 경우
+            // 점유하지 못한 경우 >> 100 개 요청 >> 41개
+            // 942 >> 45개
             if(!available) {
                 System.out.println("lock 획득 실패");
                 throw new RuntimeException("락 획득 실패");
@@ -131,26 +132,6 @@ public class OrderService {
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
         );
         return findProduct;
-    }
-
-    /**
-     * SJ: 지워도 괜찮은지요??
-     */
-    @Transactional
-    public void testDecrease(Long productId, Account account) {
-        Product findProduct = validateProduct(productId);
-
-        Account findAccount = validateAccount(account.getId());
-
-        /**
-         * 아래 문장을 Order 생성자에서 실행되도록 변경
-         */
-//        findProduct.decrease();
-
-        // 상품에 대한 주문은 여러개도 발생할 수 있다..?
-        Order savedOrder = new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice()));
-//        productRepository.saveAndFlush(findProduct);
-//        orderRepository.saveAndFlush(savedOrder);
     }
 
     /**

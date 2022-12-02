@@ -1,4 +1,4 @@
-package com.ono.omg.scheduler;
+package com.ono.omg.utils;
 
 import com.ono.omg.domain.Event;
 import com.ono.omg.domain.Product;

@@ -30,7 +30,7 @@ out/
 /logs
 
 **/resources/application-test.yml
-**/logback-spring.xml
+#**/logback-spring.xml
 
 ### NetBeans ###
 /nbproject/private/

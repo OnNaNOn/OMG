@@ -26,10 +26,10 @@ Faker.seed() # 초기 seed 설정
 # address: 주소
 
 # dummy data count
-repeat_count = 10
+repeat_count = 100
 
-account_id = [randint(1, 10000) for i in range(repeat_count)]
-product_id = [randint(1, 50000) for i in range(repeat_count)]
+account_id = [randint(1, 100) for i in range(repeat_count)]
+product_id = [randint(1, 100) for i in range(repeat_count)]
 # orderPrice는 연관관계 설정이 필요할 것 같음. 추후 수정하거나 묵인하고 진행하거나 택1 필요함.
 total_price = [((((randint(1000, 1000000)) % 100) * 1000) + 1000) for i in range(repeat_count)]
 orderType = [random.choice(['주문 취소', '주문 완료', '상품 준비','배송 시작','수령 완료']) for i in range(repeat_count)]
@@ -55,7 +55,8 @@ records = df.to_dict(orient='records')
 # print(records)
 
 # <...> 부분은 본인 DB 정보
-engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
+# 로컬용
+# engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
 
 with engine.connect() as conn:
     metadata = db.MetaData()

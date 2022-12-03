@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -64,49 +63,21 @@ public class AccountService {
                 () -> new CustomCommonException(ErrorCode.DUPLICATE_USERNAME)
         );
 
-        /**
-         * 탈퇴한 회원
-         */
-        if(findAccount.getIsDeleted().equals("Y")) {
-            throw new CustomCommonException(ErrorCode.UNREGISTER_USER);
-        }
+        // 탈퇴한 회원
+        isUnregisterUser(findAccount);
 
-        if(!passwordEncoder.matches(accountLoginRequestDto.getPassword(), findAccount.getPassword())){
-            throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
-        }
+        // 비밀번호 일치
+        isSameLoginPasswordAndSavePassword(accountLoginRequestDto, findAccount);
 
-        /**
-         * 관리자 번호와 일치할 시 관리자 등급으로 변경
-         */
-        String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
-        System.out.println("adminSecretKey = " + adminSecretKey);
-
-        if (hasAdminAuthorized(adminSecretKey)) {
-            findAccount.upgradeAdmin();
-            accountRepository.save(findAccount);
-        }
-        // 로직을 한 개 더 만들어야 하나?
+        // 관리자 번호와 일치할 시 관리자 등급으로 변경
+        validateAdminSecretKey(accountLoginRequestDto, findAccount);
 
         TokenDto tokenDto = jwtUtil.createAllToken(accountLoginRequestDto.getUsername());
-        Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUsername(findAccount.getUsername());
 
-        if(findRefreshToken.isPresent()) {
-            refreshTokenRepository.save(findRefreshToken.get().updateToken(tokenDto.getRefreshToken()));
-        } else { // Refresh Token이 없는 경우
-            RefreshToken newRefreshToken = new RefreshToken(tokenDto.getRefreshToken(), findAccount.getUsername());
-            refreshTokenRepository.save(newRefreshToken);
-        }
+        createAndSaveToken(findAccount, tokenDto);
         addTokenHeader(response, tokenDto);
-//        addTokenCookie(response, tokenDto);
 
         return new AccountLoginResponseDto(findAccount);
-    }
-
-    private void addTokenCookie(HttpServletResponse response, TokenDto tokenDto) {
-        Cookie cookie = new Cookie(JwtUtil.ACCESS_TOKEN, tokenDto.getAccessToken());
-        cookie.setMaxAge((int) JwtUtil.ACCESS_TIME);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
     }
 
     @Transactional
@@ -117,6 +88,38 @@ public class AccountService {
         findAccount.deleteAccount();
 
         return new UnregisterUser(findAccount.getUsername());
+    }
+
+    private void createAndSaveToken(Account findAccount, TokenDto tokenDto) {
+        Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUsername(findAccount.getUsername());
+
+        if(findRefreshToken.isPresent()) {
+            refreshTokenRepository.save(findRefreshToken.get().updateToken(tokenDto.getRefreshToken()));
+        } else { // Refresh Token이 없는 경우
+            refreshTokenRepository.save(new RefreshToken(tokenDto.getRefreshToken(), findAccount.getUsername()));
+        }
+    }
+
+    private void validateAdminSecretKey(AccountLoginRequestDto accountLoginRequestDto, Account findAccount) {
+        String adminSecretKey = accountLoginRequestDto.getAdminSecretKey();
+        log.info("adminSecretKey = " + adminSecretKey);
+
+        if (hasAdminAuthorized(adminSecretKey)) {
+            findAccount.upgradeAdmin();
+            accountRepository.save(findAccount);
+        }
+    }
+
+    private void isSameLoginPasswordAndSavePassword(AccountLoginRequestDto accountLoginRequestDto, Account findAccount) {
+        if(!passwordEncoder.matches(accountLoginRequestDto.getPassword(), findAccount.getPassword())){
+            throw new CustomCommonException(ErrorCode.NOT_EQUAL_PASSWORD);
+        }
+    }
+
+    private void isUnregisterUser(Account findAccount) {
+        if(findAccount.getIsDeleted().equals("Y")) {
+            throw new CustomCommonException(ErrorCode.UNREGISTER_USER);
+        }
     }
 
     private boolean hasAdminAuthorized(String adminSecretKey) {

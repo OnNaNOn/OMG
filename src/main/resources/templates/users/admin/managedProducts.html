@@ -124,9 +124,9 @@
                 success: function (response, dd, xhr) {
                     $('#list-group').remove();
 
-                    let totalPages = `${response.products.totalPages}`
-                    let totalElements = `${response.products.totalElements}`
-                    let products = response.products.content;
+                    let totalPages = `${response.data.products.totalPages}`
+                    let totalElements = `${response.data.products.totalElements}`
+                    let products = response.data.products.content;
 
                     let format_totalPages = number_format(totalPages);
                     let format_totalElements = number_format(totalElements);
@@ -210,6 +210,7 @@
             });
 
         }
+
     </script>
 
 
@@ -239,6 +240,12 @@
             <input type="text" class="form-control" id="searchText">
             <button type="button" onclick="searchProduct()" style="width: 100px; height: 40px">검색</button>
         </div>
+
+        <!-- 이벤트 등록 페이지  -->
+        <div>
+            <button type="button" onclick="location.href='/admin/event'" class="btn btn-primary">이벤트 등록</button>
+        </div>
+
 
         <div id="list-groups">
             <!-- 전체 상품 수, 전체 페이지 수 -->

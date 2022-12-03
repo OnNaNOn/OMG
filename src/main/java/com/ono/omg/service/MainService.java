@@ -1,30 +1,26 @@
-package com.ono.omg.controller;
+package com.ono.omg.service;
 
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.MainPageApiResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
 import com.ono.omg.repository.product.ProductRepository;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
-@RestController
-@RequiredArgsConstructor
+@Service
 @Slf4j
-public class MainPageController {
+public class MainService {
     private final ProductRepository productRepository;
 
-    @GetMapping("/api/omg")
-    public MainPageApiResponseDto home(@RequestParam(name = "q") SearchRequestDto title,
-                                       @RequestParam(name = "page") Integer page) {
+    public MainService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
+    public MainPageApiResponseDto home(String title, Integer page) {
         PageRequest pageable = PageRequest.of(page, 10);
-        
+
         return toMainPageApiResponseDto(productRepository.searchProductUsedFullTextSearchAndCoveringIndex(title, pageable));
     }
 

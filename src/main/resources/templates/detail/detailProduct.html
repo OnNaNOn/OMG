@@ -66,13 +66,13 @@
                     $('#list-group').remove();
                     console.log(response);      //여기까지 잘 넘어온다.
 
-                    let productId = response.productId;
-                    let imgUrl = response.imgUrl;
-                    let title = response.title;
-                    let price = response.price;
-                    let category = response.category;
-                    let delivery = response.delivery;
-                    let stock = response.stock;
+                    let productId = response.data.productId;
+                    let imgUrl = response.data.imgUrl;
+                    let title = response.data.title;
+                    let price = response.data.price;
+                    let category = response.data.category;
+                    let delivery = response.data.delivery;
+                    let stock = response.data.stock;
 
                     console.log(imgUrl)
                     let tmpProductId = `<li class="list-group-item" style="width: 110px">번호</li>

@@ -10,8 +10,6 @@ public enum OrderType {
 
     private String status;
 
-    private OrderType() {}
-
     OrderType(String status) {
         this.status = status;
     }

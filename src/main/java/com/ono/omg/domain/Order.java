@@ -33,6 +33,7 @@ public class Order extends BaseEntity {
     private OrderType orderType = OrderType.ORDER_OK;
 
     private Long cartId;
+
     private Long eventId;
 
     /**

@@ -31,7 +31,7 @@ public class Account extends BaseEntity {
     }
 
     /**
-     * 관리자 번호로 로그인 시 admin으로 등급업
+     * 관리자 번호로 로그인 시 admin 으로 등급업
      */
     public void upgradeAdmin() {
         this.accountType = AccountType.ROLE_ADMIN;

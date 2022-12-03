@@ -24,13 +24,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class CartService {
+
     private final CartRepository cartRepository;
     private final AccountRepository accountRepository;
     private final ProductRepository productRepository;
-    /**
-     * sy
-     * 장바구니 조회 -> querydsl
-     * */
 
     /**
      * 상품 장바구니 담기
@@ -57,7 +54,6 @@ public class CartService {
     /**
      * 장바구니 조회
      * */
-    @Transactional(readOnly = true)
     public List<CartResponseDto> getCartList(UserDetailsImpl userDetails) {
         Long accountId = userDetails.getAccount().getId();
 

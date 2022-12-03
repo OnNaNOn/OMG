@@ -30,7 +30,42 @@ public class OrderController {
     private final RedissonClient redissonClient;
 
     /**
-     * 동시성 제어 With Redis - Redisson >>>>>> 사용 X <<<<<<<
+     * 동시성 제어 - Pessimistic Lock
+     */
+    @PostMapping("/v1/{productId}/confirm")
+    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId,
+                                                                                 @AuthenticationPrincipal UserDetailsImpl account) {
+        return ResponseDto.success(orderService.productOrderWithPessimisticLock(productId, account.getAccount().getId()));
+    }
+
+    /**
+     * 동시성 제어 - Redisson
+     */
+    @PostMapping("/v2/{productId}/confirm")
+    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithRedisson(@PathVariable Long productId,
+                                                                          @AuthenticationPrincipal UserDetailsImpl account) {
+        return ResponseDto.success(orderService.productOrderRedisson(productId, account.getAccount()));
+    }
+
+    /**
+     * 주문 취소
+     */
+    @PostMapping("/{orderId}/cancel")
+    public ResponseDto<cancelOrderResponseDto> cancelOrder(@PathVariable Long orderId,
+                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseDto.success(orderService.cancel(orderId, userDetails.getAccount()));
+    }
+
+//    /**
+//     * 주문내역 조회
+//    */
+//    @GetMapping("/orders")
+//    public ResponseDto<List<MyPageResponseDto>> getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+//        return ResponseDto.success(orderService.getOrderList(userDetails));
+//    }
+
+    /**
+     * 동시성 제어 With Redis - Redisson >>>>>> Controller에서 락이 발생하므로 사용 X <<<<<<<
      */
     @PostMapping("/{productId}/confirm")
     public ResponseDto<createdOrdersResponseDto> CreatedOrder(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl account) {
@@ -58,36 +93,4 @@ public class OrderController {
         }
         return ResponseDto.success(createdOrdersResponseDto);
     }
-
-    /**
-     * 동시성 제어 With Pessimistic Lock
-     */
-    @PostMapping("/v1/{productId}/confirm")
-    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId,
-                                                                                 @AuthenticationPrincipal UserDetailsImpl account) {
-        return ResponseDto.success(orderService.productOrderWithPessimisticLock(productId, account.getAccount().getId()));
-    }
-
-    @PostMapping("/v2/{productId}/confirm")
-    public ResponseDto<createdOrdersResponseDto> CreatedOrderWithRedisson(@PathVariable Long productId,
-                                                                          @AuthenticationPrincipal UserDetailsImpl account) {
-        return ResponseDto.success(orderService.productOrderRedisson(productId, account.getAccount()));
-    }
-
-    /**
-     * 주문 취소
-     */
-    @PostMapping("/{orderId}/cancel")
-    public ResponseDto<cancelOrderResponseDto> cancelOrder(@PathVariable Long orderId,
-                                                           @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(orderService.cancel(orderId, userDetails.getAccount()));
-    }
-
-//    /**
-//     * 주문내역 조회
-//    */
-//    @GetMapping("/orders")
-//    public ResponseDto<List<MyPageResponseDto>> getOrderList(@AuthenticationPrincipal UserDetailsImpl userDetails){
-//        return ResponseDto.success(orderService.getOrderList(userDetails));
-//    }
 }

@@ -22,30 +22,30 @@ import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/products")
 public class ProductController {
     private final ProductService productService;
 
     // 상품등록
-    @PostMapping("/products")
+    @PostMapping
     public ResponseEntity<ResponseDto<String>> createProduct(@RequestBody ProductReqDto productReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.createProduct(productReqDto, userDetails.getAccount())), HttpStatus.OK);
     }
 
     // 상품수정
-    @PatchMapping("/products/{productId}")
+    @PatchMapping("/{productId}")
     public ResponseEntity<ResponseDto<String>> updateProduct(@PathVariable Long productId, @RequestBody ProductReqDto productReqDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.updateProduct(productId, productReqDto, userDetails.getAccount())), HttpStatus.OK);
     }
 
     //상품삭제
-    @DeleteMapping("/products/{productId}")
+    @DeleteMapping("/{productId}")
     public ResponseEntity<ResponseDto<String>> deleteProduct(@PathVariable Long productId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.deleteProduct(productId, userDetails.getAccount())), HttpStatus.OK);
     }
 
     //상품조회
-    @GetMapping("/products/{productId}")
+    @GetMapping("/{productId}")
     public ResponseEntity<ResponseDto<ProductResDto>> searchProduct(@PathVariable Long productId) {
         return new ResponseEntity<>(ResponseDto.success(productService.searchProduct(productId)), HttpStatus.OK);
     }
@@ -53,10 +53,8 @@ public class ProductController {
     /**
      * 상품 등록내역 조회
      * */
-    @GetMapping("/products/details")
+    @GetMapping("/details")
     public ResponseEntity<ResponseDto<List<MainPageOrdersResponseDto>>> registerDetailsProduct(@PageableDefault(size = 10) Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(productService.registerDetailsProduct(pageable, userDetails.getAccount())), HttpStatus.OK);
     }
-
-
 }

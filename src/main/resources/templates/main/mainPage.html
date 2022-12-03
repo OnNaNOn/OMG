@@ -78,7 +78,7 @@
     function loadMainPage() {
         let givenPage = $("#givenPage").val();
         let givenQuery = $("#givenQuery").val();
-        let givenUseSearch = $("#givenUseSearch").val();
+        // let givenUseSearch = $("#givenUseSearch").val();
 
         let params = "?page=" + givenPage;
         params += "&q=" + givenQuery;
@@ -91,7 +91,9 @@
             success: function (response, dd, xhr) {
                 $('#list-group').remove();
 
-                if(response.totalElements == 0) {
+                console.log(response);
+
+                if(response.data.totalElements == 0) {
                     $('.productDesc').remove();
 
                     let isEmpty = `<h4 align="center">해당 상품이 존재하지 않습니다.</h4>`
@@ -101,9 +103,9 @@
                     return;
                 }
 
-                let totalPages = `${response.products.totalPages}`
+                let totalPages = `${response.data.products.totalPages}`
                 // let totalElements = `${response.products.totalElements}`
-                let products = response.products.content;
+                let products = response.data.products.content;
 
                 /**
                  * 상품 리스트

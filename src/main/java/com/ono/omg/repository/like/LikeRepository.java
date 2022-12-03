@@ -21,5 +21,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     void deleteByProductId(Long productId);
 
     @Query("select l from Like l join fetch l.account a where a.id =:accountId")
-    List<Like>findDetailsList(Pageable pageable, @Param("accountId")Long accountId);
+    List<Like> findDetailsList(Pageable pageable, @Param("accountId")Long accountId);
 }

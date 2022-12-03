@@ -45,6 +45,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         product.isSale
                 ))
                 .from(product)
+                .where(product.isSale.eq("Y"))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

@@ -37,7 +37,6 @@ public class Review extends BaseEntity {
         this.isDeleted = "N";
     }
 
-
     /**
      *비즈니스 로직
      */

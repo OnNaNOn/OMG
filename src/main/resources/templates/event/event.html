@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <style>
+        .container {
+            max-width: 550px;
+            margin-top: 50px;
+        }
+
+        .btn {
+            width: 525px;
+            margin-top: 15px;
+        }
+
+        ul {
+            justify-content: center;
+        }
+
+        .search {
+            display: flex;
+            justify-content: center;
+
+            max-width: 570px;
+            background-color: #ffffffff;
+            border: 1px solid #ced4da;
+            border-radius: calc(0.5 * 44px);
+            color: #000000ff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        #searchText {
+            max-width: 500px;
+            background-color: #ffffffff;
+            border-color: #ffffff;
+        }
+
+        .searchBtn {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            color: #808080;
+        }
+
+        input {
+            font-family: inherit;
+            font-size: inherit;
+            /*height: 100%;*/
+            outline: 0;
+            padding-inline-end: 44px;
+            padding-inline-start: 52px;
+            position: relative;
+            width: 100%;
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            loadEventRegisterPage();
+        });
+
+        function loadEventRegisterPage() {
+            let token = localStorage.getItem("Authorization");
+            console.log("token = " + token)
+
+            if (token == null) {
+                alert("토큰이 존재하지 않습니다. 로그인 해주세요.");
+                window.location.href = '/admin/login';
+            }
+        }
+
+        function registerEvent() {
+            let token = localStorage.getItem("Authorization");
+            console.log("token = " + token)
+
+            if (token == null) {
+                alert("토큰이 존재하지 않습니다. 로그인 해주세요.");
+                window.location.href = '/admin/login';
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/management?page=" + givenPage,
+                headers: {'Content-Type': 'application/json', 'Authorization': token},
+                // data: JSON.stringify(data),
+                success: function (response, dd, xhr) {
+                    $('#list-group').remove();
+
+                    let totalPages = `${response.data.products.totalPages}`
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+
+
+<div class="container">
+    <div align="center" style="margin-bottom: 20px">
+        <h1><a href="/omg">ONO.COM</a></h1>
+    </div>
+</div>
+
+
+<!-- Product >>   String title, int price, String category, String delivery, int stock, Long sellerId               -->
+<!-- Event   >>   Long productId, String eventTitle, String content, LocalDateTime startedAt, LocalDateTime endedAt -->
+<!-- title, price, stock, // eventTitle, content, startedAt, endedAt -->
+
+<div class="container">
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">이벤트 명</label>
+        <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlTextarea1" class="form-label">이벤트 설명</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">상품명</label>
+        <input type="email" class="form-control" id="exampleFormControlInput3" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">상품 가격</label>
+        <input type="email" class="form-control" id="exampleFormControlInput5" placeholder="name@example.com">
+    </div>
+    <div class="mb-3">
+        <label for="exampleFormControlInput1" class="form-label">이벤트 상품 수량</label>
+        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+    </div>
+
+    <div style="float: left">
+        <label for="exampleFormControlInput1" class="form-label">이벤트 시작일</label>
+        <input type="password" class="form-control" id="inputPassword1" placeholder="Password" style="width: 260px; margin-right: 5px">
+    </div>
+    <div style="float: left">
+        <label for="exampleFormControlInput1" class="form-label">이벤트 종료일</label>
+        <input type="password" class="form-control" id="inputPassword2" placeholder="Password" style="width: 260px">
+    </div>
+
+<button type="button" class="btn btn-primary" onclick="registerEvent()">등록하기</button>
+</div>
+
+
+</body>
+
+</html>

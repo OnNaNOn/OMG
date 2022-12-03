@@ -79,8 +79,13 @@ public class WebSecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers("/accounts/signup").permitAll()
+                .antMatchers("/api/accounts/signup").permitAll()
+
                 .antMatchers( "/accounts/login").permitAll()
+                .antMatchers( "/api/accounts/login").permitAll()
                 .antMatchers("/admin/login").permitAll()
+
+                .antMatchers("/admin/event").permitAll()
 
                 .antMatchers("/omg").permitAll()
                 .antMatchers("/omg/search").permitAll()

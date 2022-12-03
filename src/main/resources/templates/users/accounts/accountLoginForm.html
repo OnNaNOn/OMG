@@ -27,7 +27,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/accounts/login",
+                url: "/api/accounts/login",
                 headers: {'Content-Type': 'application/json'},
                 data: JSON.stringify(data),
                 success: function (response, dd, xhr) {

@@ -12,6 +12,7 @@ import com.ono.omg.repository.like.LikeRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.security.user.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,23 +27,18 @@ import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikeService {
-
-
     private final LikeRepository likeRepository;
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
-
 
     //상품 좋아요
     @Transactional
     public String addLikes(Long productId, Long accountId) {
 
-        Account findAccount = accountRepository.findById(accountId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
-
-        productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+        Account findAccount = validateAccount(accountId);
+        validateProduct(productId);
 
         Optional<Like> likes = likeRepository.findByProductIdAndAccount(productId, findAccount);
 
@@ -53,6 +49,17 @@ public class LikeService {
             likeRepository.deleteByProductId(likes.get().getProductId());
             return "좋아요가 취소되었습니다";
         }
+    }
+
+    private void validateProduct(Long productId) {
+        productRepository.findById(productId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
+    }
+
+    private Account validateAccount(Long accountId) {
+        Account findAccount = accountRepository.findById(accountId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
+        return findAccount;
     }
 
     /**

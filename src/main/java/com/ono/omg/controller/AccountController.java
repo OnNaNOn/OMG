@@ -18,10 +18,8 @@ import static com.ono.omg.dto.response.AccountResponseDto.*;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/accounts")
+@RequestMapping("/api/accounts")
 public class AccountController {
-
-//    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final AccountService accountService;
 
     /**
@@ -36,7 +34,8 @@ public class AccountController {
      * 로그인
      */
     @PostMapping("/login")
-    public ResponseDto<AccountLoginResponseDto> login(@RequestBody AccountLoginRequestDto accountLoginRequestDto, HttpServletResponse response) {
+    public ResponseDto<AccountLoginResponseDto> login(@RequestBody @Valid AccountLoginRequestDto accountLoginRequestDto,
+                                                      HttpServletResponse response) {
         return ResponseDto.success(accountService.login(accountLoginRequestDto, response));
     }
 

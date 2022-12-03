@@ -122,7 +122,7 @@ class ProductRepositoryTest extends RepositoryTest {
         SearchRequestDto searchRequestDto = new SearchRequestDto(keyword);
         PageRequest pageable = PageRequest.of(1, 10);
 
-        Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndCoveringIndex(searchRequestDto, pageable);
+        Page<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndCoveringIndex(keyword, pageable);
 
         System.out.println("totalElements = " + results.getTotalElements());
     }

@@ -31,8 +31,8 @@ public class OrderRepositoryImpl implements OrderRepositoryCustom {
                         product.title
                 ))
                 .from(order)
-                .join(order.product, product)
-                .join(order.account, account)
+                .innerJoin(order.product, product)
+                .innerJoin(order.account, account)
                 .where(account.id.eq(id))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

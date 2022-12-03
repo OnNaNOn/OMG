@@ -34,7 +34,7 @@
             $.ajax({
                 type: "POST",
                 headers: {'Content-Type': 'application/json'},
-                url: "/accounts/login",
+                url: "/api/accounts/login",
                 data: JSON.stringify(data),
                 success: function (response, dd, xhr) {
                     if (response.data.accountType != "ROLE_ADMIN") {

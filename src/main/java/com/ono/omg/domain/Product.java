@@ -79,7 +79,6 @@ public class Product extends BaseEntity {
         return rand;
     }
 
-
     public void updateProduct(ProductReqDto productReqDto) {
         this.title = productReqDto.getTitle();
         this.price = productReqDto.getPrice();

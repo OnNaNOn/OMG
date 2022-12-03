@@ -26,29 +26,33 @@ import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementRe
 abstract class RepositoryTest {
 
     @Autowired
-    AccountRepository accountRepository;
+    protected AccountRepository accountRepository;
 
     @Autowired
-    CartRepository cartRepository;
+    protected CartRepository cartRepository;
 
     @Autowired
-    LikeRepository likeRepository;
+    protected LikeRepository likeRepository;
 
     @Autowired
-    OrderRepository orderRepository;
+    protected OrderRepository orderRepository;
 
     @Autowired
-    ProductRepository productRepository;
+    protected ProductRepository productRepository;
 
     @Autowired
-    ReviewRepository reviewRepository;
+    protected ReviewRepository reviewRepository;
 
     @Autowired
-    RefreshTokenRepository refreshTokenRepository;
+    protected RefreshTokenRepository refreshTokenRepository;
 
     protected Account saveAccount(String username) {
         Account account = new Account(new AccountRegisterRequestDto(username, "pw", "pw"));
         return accountRepository.save(account);
+    }
+
+    protected Product createProduct(String title, Integer stock) {
+        return new Product(title, 1000, "카테고리", "배송상태", stock, (long) stock);
     }
 
     protected Order saveOrders() {

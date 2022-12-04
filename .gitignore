@@ -47,4 +47,7 @@ out/
 **/application-dev.yml
 **/application.yml
 
+### Custom ###
+**/http/**
+*.http
 

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ActiveProfiles;
@@ -36,6 +37,7 @@ import static org.mockito.BDDMockito.given;
 //        ReviewController.class
 })
 @ActiveProfiles("test")
+@EnableJpaAuditing
 public abstract class ControllerTest {
     // SAVE, UPDATE, FIND, REMOVE
 

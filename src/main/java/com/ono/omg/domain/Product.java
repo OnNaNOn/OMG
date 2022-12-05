@@ -15,37 +15,22 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
     private Long id;
 
-    @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
     private Integer price;
-
-    @Column(nullable = false)
     private String category;
-
-    @Column(nullable = false)
     private String delivery;
-
-    @Column(nullable = false)
     private Integer stock;
+    private String isDeleted;
+    private String isSale; // 재고가 0이거나 판매 종료된 상품에 대한 YN 필드
+    private String imgUrl;
 
-    @Column(nullable = false, name = "seller")
+    @Column(name = "seller")
     private Long sellerId;
 
-    @Column(nullable = false)
-    private String isDeleted;
-
-    // 재고가 0이거나 판매 종료된 상품에 대한 YN 필드
-    private String isSale;
-
-    @Column(nullable = false)
-    private String imgUrl;
 
     public Product(ProductReqDto productReqDto, Account account) {
         this.title = productReqDto.getTitle();

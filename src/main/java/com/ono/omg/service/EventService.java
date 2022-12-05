@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.ono.omg.dto.request.EventRequestDto.*;
 import static com.ono.omg.dto.response.EventResponseDto.*;
 
 
@@ -102,7 +103,7 @@ public class EventService {
 
     @Transactional(readOnly = true)
     public List<AllEventResponse> searchEvent() {
-        List<Event> events = eventRepository.findAll();
+        List<Event> events = eventRepository.findBySoldTypeIsTrue();
         List<AllEventResponse> responseDto = new ArrayList<>();
 
         for (Event event : events) {
@@ -111,5 +112,31 @@ public class EventService {
         }
 
         return responseDto;
+    }
+
+    @Transactional
+    public AllEventResponse createEvent(CreateEventDto createEventDto, Account account) {
+        Product saveProduct = productRepository.save(new Product(
+                createEventDto.getProductName(),
+                createEventDto.getProductPrice(),
+                "이벤트",
+                "초고속 배송",
+                createEventDto.getProductStock(),
+                account.getId()
+                )
+        );
+
+        Event saveEvent = eventRepository.save(new Event(
+                saveProduct.getId(),
+                createEventDto.getEventName(),
+                createEventDto.getEventDesc(),
+                createEventDto.getStartDate().plusHours(9),
+                createEventDto.getStartDate().plusDays(1).minusHours(9)
+        ));
+
+        System.out.println("getStartedAt = " + saveEvent.getStartedAt());
+        System.out.println("getEndedAt = " + saveEvent.getEndedAt());
+
+        return new AllEventResponse(saveEvent, saveProduct);
     }
 }

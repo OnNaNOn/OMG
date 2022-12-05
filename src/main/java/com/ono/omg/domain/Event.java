@@ -23,7 +23,7 @@ public class Event extends BaseEntity {
     private String eventTitle;
     private String content;
 
-    private String isDeleted;
+    private String soldType;
     private LocalDateTime startedAt;
     private LocalDateTime endedAt;
 
@@ -31,8 +31,16 @@ public class Event extends BaseEntity {
         this.productId = productId;
         this.eventTitle = eventTitle;
         this.content = content;
-        this.isDeleted = "N";
+        this.soldType = "N";
         this.startedAt = startedAt;
         this.endedAt = endedAt;
+    }
+
+    public void changeSoldTypeIsTrue() {
+        this.soldType = "Y";
+    }
+
+    public void changeSoldTypeIsFalse() {
+        this.soldType = "N";
     }
 }

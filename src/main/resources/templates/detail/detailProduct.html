@@ -113,10 +113,11 @@
             // alert(pid);
             $.ajax({
                 type: "POST",
-                url: "/api/" + pid + "/confirm",
+                url: "/api/v1/" + pid + "/confirm",
                 headers: {'Content-Type': 'application/json', 'Authorization': token},
                 // data: JSON.stringify(data),
                 success: function (response) {
+                    console.log("response >> " + response);
                     alert("주문을 완료했습니다.");
                     location.reload();
                 },

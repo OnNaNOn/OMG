@@ -35,6 +35,7 @@ public class OrderController {
     @PostMapping("/v1/{productId}/confirm")
     public ResponseDto<createdOrdersResponseDto> CreatedOrderWithPessimisticLock(@PathVariable Long productId,
                                                                                  @AuthenticationPrincipal UserDetailsImpl account) {
+        log.info("OrderController.CreatedOrderWithPessimisticLock");
         return ResponseDto.success(orderService.productOrderWithPessimisticLock(productId, account.getAccount().getId()));
     }
 

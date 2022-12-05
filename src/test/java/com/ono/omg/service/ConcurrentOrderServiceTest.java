@@ -63,7 +63,7 @@ public class ConcurrentOrderServiceTest {
         productRepository.deleteAll();
     }
 
-    @Test
+//    @Test
     @DisplayName("productOrderRedisson( Redisson ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
     public void 단일_상품을_동시에_100개의_주문() throws Exception {
         // given
@@ -96,7 +96,7 @@ public class ConcurrentOrderServiceTest {
         assertThat(orderRepository.findAll().size()).isEqualTo(THREAD_COUNT);
     }
 
-    @Test
+//    @Test
     @DisplayName("productOrderWithPessimisticLock( 비관적 락 ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
     public void 단일_상품을_동시에_1000개의_주문_비관적_락() throws Exception {
         // given

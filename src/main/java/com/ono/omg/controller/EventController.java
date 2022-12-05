@@ -2,6 +2,7 @@ package com.ono.omg.controller;
 
 
 import com.ono.omg.dto.common.ResponseDto;
+import com.ono.omg.dto.request.EventRequestDto;
 import com.ono.omg.dto.response.OrderResponseDto.EventOrderResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.EventService;
@@ -10,10 +11,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.ono.omg.dto.request.EventRequestDto.*;
 import static com.ono.omg.dto.response.EventResponseDto.AllEventResponse;
 
 @RestController
@@ -26,7 +29,7 @@ public class EventController {
     private final EventService eventService;
 
     //동시성 제어주문 Redis > Redisson
-    @PostMapping("/event/{eventId}/confirm")
+//    @PostMapping("/event/{eventId}/confirm")
     public ResponseEntity<ResponseDto<EventOrderResponseDto>> eventOrder(@PathVariable Long eventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new ResponseEntity<>(ResponseDto.success(eventService.eventOrder(eventId, userDetails.getAccount())), HttpStatus.OK);
     }
@@ -34,5 +37,11 @@ public class EventController {
     @GetMapping("/event")
     public ResponseDto<List<AllEventResponse>> findEvents() {
         return ResponseDto.success(eventService.searchEvent());
+    }
+
+    @PostMapping("/event")
+    public ResponseEntity<AllEventResponse> createEvent(@RequestBody CreateEventDto createEventDto,
+                                                        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return ResponseEntity.ok(eventService.createEvent(createEventDto, userDetails.getAccount()));
     }
 }

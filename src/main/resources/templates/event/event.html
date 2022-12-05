@@ -23,31 +23,8 @@
             justify-content: center;
         }
 
-        .search {
-            display: flex;
-            justify-content: center;
-
-            max-width: 570px;
-            background-color: #ffffffff;
-            border: 1px solid #ced4da;
-            border-radius: calc(0.5 * 44px);
-            color: #000000ff;
-        }
-
         a {
             text-decoration: none;
-        }
-
-        #searchText {
-            max-width: 500px;
-            background-color: #ffffffff;
-            border-color: #ffffff;
-        }
-
-        .searchBtn {
-            background-color: #ffffff;
-            border-color: #ffffff;
-            color: #808080;
         }
 
         input {
@@ -68,6 +45,7 @@
     <script>
         $(document).ready(function () {
             loadEventRegisterPage();
+            setDate();
         });
 
         function loadEventRegisterPage() {
@@ -89,17 +67,43 @@
                 window.location.href = '/admin/login';
             }
 
+            let sendData = {
+                "eventName": $("#eventName").val(),
+                "eventDesc": $("#eventDesc").val(),
+                "productName": $("#productName").val(),
+                "productPrice": $("#productPrice").val(),
+                "productStock": $("#productStock").val(),
+                "startDate": $("#startDate").val(),
+            }
+
             $.ajax({
                 type: "POST",
-                url: "/admin/management?page=" + givenPage,
+                url: "/api/event",
                 headers: {'Content-Type': 'application/json', 'Authorization': token},
-                // data: JSON.stringify(data),
+                data: JSON.stringify(sendData),
                 success: function (response, dd, xhr) {
                     $('#list-group').remove();
 
                     let totalPages = `${response.data.products.totalPages}`
                 }
             });
+        }
+    </script>
+    <script>
+        function setDate() {
+            var now_utc = Date.now() // 지금 날짜를 밀리초로
+
+            // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+            let nowDate = new Date().getTimezoneOffset();
+
+            var timeOff = nowDate * (60 * 60 * 24 * 48); // 분단위를 밀리초로 변환
+
+            // new Date(now_utc-timeOff).toISOString()은 '2022-05-11T18:09:38.134Z'를 반환
+            var minDay = new Date(now_utc-nowDate).toISOString().split("T")[0];
+            var maxDay = new Date(now_utc-timeOff).toISOString().split("T")[0];
+
+            document.getElementById("startDate").setAttribute("min", minDay);
+            document.getElementById("startDate").setAttribute("max", maxDay);
         }
     </script>
 </head>
@@ -117,39 +121,34 @@
 <!-- Product >>   String title, int price, String category, String delivery, int stock, Long sellerId               -->
 <!-- Event   >>   Long productId, String eventTitle, String content, LocalDateTime startedAt, LocalDateTime endedAt -->
 <!-- title, price, stock, // eventTitle, content, startedAt, endedAt -->
-
 <div class="container">
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">이벤트 명</label>
-        <input type="email" class="form-control" id="exampleFormControlInput2" placeholder="name@example.com">
+        <label for="eventName" class="form-label">이벤트 명</label>
+        <input type="text" id="eventName" name="eventName" class="form-control" placeholder="축! 수료">
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlTextarea1" class="form-label">이벤트 설명</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        <label for="eventDesc" class="form-label">이벤트 설명</label>
+        <textarea class="form-control" id="eventDesc" name="eventDesc" rows="2"></textarea>
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">상품명</label>
-        <input type="email" class="form-control" id="exampleFormControlInput3" placeholder="name@example.com">
+        <label for="productName" class="form-label">상품명</label>
+        <input type="text" class="form-control" id="productName" name="productName" placeholder="항해99">
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">상품 가격</label>
-        <input type="email" class="form-control" id="exampleFormControlInput5" placeholder="name@example.com">
+        <label for="productPrice" class="form-label">상품 가격</label>
+        <input type="text" class="form-control" id="productPrice" name="productPrice" placeholder="99,999">
     </div>
     <div class="mb-3">
-        <label for="exampleFormControlInput1" class="form-label">이벤트 상품 수량</label>
-        <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        <label for="productStock" class="form-label">이벤트 상품 수량</label>
+        <input type="text" class="form-control" id="productStock" placeholder="9,999">
+    </div>
+    <div class="mb-3">
+        <label for="startDate" class="form-label">이벤트 시작일</label>
+        <input type="date" value="2022-12-01" class="form-control" id="startDate" name="startDate">
+<!--        <input type="datetime-local" class="form-control" id="startDate">-->
     </div>
 
-    <div style="float: left">
-        <label for="exampleFormControlInput1" class="form-label">이벤트 시작일</label>
-        <input type="password" class="form-control" id="inputPassword1" placeholder="Password" style="width: 260px; margin-right: 5px">
-    </div>
-    <div style="float: left">
-        <label for="exampleFormControlInput1" class="form-label">이벤트 종료일</label>
-        <input type="password" class="form-control" id="inputPassword2" placeholder="Password" style="width: 260px">
-    </div>
-
-<button type="button" class="btn btn-primary" onclick="registerEvent()">등록하기</button>
+<button type="button" class="btn btn-primary" onclick="registerEvent()">등록 하기</button>
 </div>
 
 

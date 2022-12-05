@@ -36,22 +36,22 @@ public class UIController {
     // 검색 페이지 (기존 상품 페이지)
     @GetMapping("/accounts/signup")
     public String register() {
-        return "/users/accounts/accountRegisterForm";
+        return "users/accounts/accountRegisterForm";
     }
 
     @GetMapping("/accounts/login")
     public String accountsLoginForm() {
-        return "/users/accounts/accountLoginForm";
+        return "users/accounts/accountLoginForm";
     }
 
     @GetMapping("/admin/login")
     public String adminLoginForm() {
-        return "/users/accounts/adminLoginForm";
+        return "users/accounts/adminLoginForm";
     }
 
     @GetMapping("/admin/event")
     public String eventRegisterForm() {
-        return "/event/event";
+        return "event/event";
     }
 
     @GetMapping("/omg/search")
@@ -76,7 +76,7 @@ public class UIController {
     @GetMapping("/admin/management")
     public String adminProductManagement(@PageableDefault(size = 10) Pageable pageable, Model model) {
         model.addAttribute("nowPage", pageable.getPageNumber());
-        return "/users/admin/managedProducts";
+        return "users/admin/managedProducts";
     }
 
     //상세페이지
@@ -98,7 +98,7 @@ public class UIController {
 
         model.addAttribute("products", responseDto);
 
-        return "/users/mypage/accountPrivatePage";
+        return "users/mypage/accountPrivatePage";
     }
 
 //    //리뷰 조회

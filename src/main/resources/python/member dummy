@@ -25,12 +25,12 @@ Faker.seed() # 초기 seed 설정
 # address: 주소
 
 # dummy data count
-repeat_count = 10000
+repeat_count = 100
 
 accountType = [random.choice(['ROLE_STANDARD', 'ROLE_SUBSCRIBE', 'ROLE_ADMIN']) for i in range(repeat_count)]
 username = [fake.name() for i in range(repeat_count)]
 password = [fake.password() for i in range(repeat_count)]
-deletedType = 'DELETE_NO'
+is_deleted = 'N'
 created_at = [fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
 modified_at =[fake.date_between(start_date = '-1y', end_date ='today') for i in range(repeat_count)]
 
@@ -39,7 +39,7 @@ df = pd.DataFrame()
 df['account_type'] = accountType
 df['username'] = username
 df['password'] = password
-df['deleted_type'] = deletedType
+df['is_deleted'] = is_deleted
 df['created_at'] = modified_at
 df['modified_at'] = modified_at
 
@@ -51,7 +51,8 @@ records = df.to_dict(orient='records')
 # print(records)
 
 # <...> 부분은 본인 DB 정보
-engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
+# 로컬용
+# engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
 
 with engine.connect() as conn:
     metadata = db.MetaData()

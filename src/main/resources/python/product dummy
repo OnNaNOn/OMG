@@ -192,7 +192,7 @@ categoryId = []
 titleId = []
 
 # dummy data count
-repeat_count = 50000
+repeat_count = 200000
 
 # title = [fake.bs() for i in range(repeat_count)]
 price = [(randint(1000, 100000)%1000)*100 for i in range(repeat_count)]
@@ -258,7 +258,10 @@ records = df.to_dict(orient='records')
 # print(records)
 
 # <...> 부분은 본인 DB 정보
-engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
+# 로컬용
+# engine = create_engine("mysql+mysqldb://root:1234@127.0.0.1:3306/melocal?charset=utf8mb4")
+
+
 
 with engine.connect() as conn:
     metadata = db.MetaData()

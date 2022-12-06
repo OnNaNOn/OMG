@@ -16,4 +16,4 @@ hooks:
   ApplicationStart:
     - location: deploy.sh
       timeout: 80
-      runas: root     # 이것을 ubuntu로 해놓아서 거의 2일동안 삽질을 했습니다... (해당 셸 스크립트 명령을 실행할 수 있는 권한이 있는지 잘 판단해야 합니다. ㅠㅠ)
+      runas: ubuntu     # 이것을 ubuntu로 해놓아서 거의 2일동안 삽질을 했습니다... (해당 셸 스크립트 명령을 실행할 수 있는 권한이 있는지 잘 판단해야 합니다. ㅠㅠ)

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MainController {
     private final MainService mainService;
 
+
     @GetMapping("/api/omg")
     public ResponseDto<MainPageApiResponseDto> home(@RequestParam(name = "q") SearchRequestDto title,
                                                     @RequestParam(name = "page") Integer page) {

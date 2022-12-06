@@ -34,6 +34,10 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         this.queryFactory = queryFactory;
     }
 
+    /**
+     * findAllProductStock:: 성능 개선 없이 단순 QueryDSL 만 사용
+     * ㄴ 현재 관리자 페이지에 쓰이고 있음
+     */
     @Override
     public Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable) {
         List<AllProductManagementResponseDto> results = queryFactory
@@ -57,7 +61,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     /**
      * 상품검색
-     * */
+     * ㄴ OrderService.searchOrders()에 쓰이고 있음
+     */
     @Override
     public Page<SearchResponseDto> searchProduct(SearchRequestDto requestDto, Pageable pageable) {
         List<SearchResponseDto> results = queryFactory
@@ -138,10 +143,14 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .fetch();
 
         int size = queryFactory
-                .selectFrom(product)
-                .where(product.id.in(ids))
+                .select(product.id)
+                .from(product)
+                .where(titleMatch(title))
                 .fetch().size();
 
+        if(size % 10 > 0) {
+            size++;
+        }
         return new PageImpl<>(results, pageable, size);
     }
 

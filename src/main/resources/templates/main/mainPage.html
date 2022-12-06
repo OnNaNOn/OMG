@@ -134,10 +134,12 @@
                 /**
                  * 페이징
                  */
-                var curPage = Number($("#startPage").val())
+                var curPage = Number($("#startPage").val());
+
+                let endPage = `${response.data.endPage}`;
 
                 window.pagObj = $('#pagination').twbsPagination({
-                    totalPages: totalPages + 2,     // 전체 페이지
+                    totalPages: endPage,     // 전체 페이지
                     startPage: curPage, // 시작(현재) 페이지
                     initiateStartPageClick: false,
                     visiblePages: 5,    // 최대로 보여줄 페이지

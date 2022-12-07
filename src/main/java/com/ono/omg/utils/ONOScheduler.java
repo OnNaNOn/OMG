@@ -34,6 +34,7 @@ public class ONOScheduler {
         eventRepository.saveAndFlush(new Event(savedProduct.getId(), "매일 매일 쏟아지는 에어팟!", "야 나두", now, now.plusDays(1)));
     }
 
+    
     /**
      *
      */

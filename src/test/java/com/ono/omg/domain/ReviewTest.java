@@ -49,26 +49,24 @@ class ReviewTest {
             // then
             assertThat(createReview.getReviewContent()).isEqualTo("================");
         }
+    }
 
-        @Nested
-        @DisplayName("Delete 메서드는")
-        class Delete {
+    @Nested
+    @DisplayName("Delete 메서드는")
+    class Delete {
 
-            @Test
-            @DisplayName("댓글을 삭제한다. 단, YN 필드만 Y로 변경한다.")
-            public void 댓글_삭제() throws Exception {
-                // given
-                Product givenProduct = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
-                Review createReview = new Review(givenProduct, "댓글입니다.", 10L);
+        @Test
+        @DisplayName("댓글을 삭제한다. 단, YN 필드만 Y로 변경한다.")
+        public void 댓글_삭제() throws Exception {
+            // given
+            Product givenProduct = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
+            Review createReview = new Review(givenProduct, "댓글입니다.", 10L);
 
-                // when
-                createReview.deleteReview();
+            // when
+            createReview.deleteReview();
 
-                // then
-                assertThat(createReview.getIsDeleted().equals("Y")).isTrue();
-            }
-
+            // then
+            assertThat(createReview.getIsDeleted().equals("Y")).isTrue();
         }
-
     }
 }

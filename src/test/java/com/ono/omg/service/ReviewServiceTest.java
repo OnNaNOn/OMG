@@ -8,12 +8,14 @@ import com.ono.omg.dto.response.ReviewResponseDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static com.ono.omg.dto.request.ReviewRequestDto.*;
 import static org.assertj.core.api.Assertions.*;
 
+@ActiveProfiles("test")
 @DisplayName("ReviewServiceTest 의")
 class ReviewServiceTest extends ServiceTest {
 

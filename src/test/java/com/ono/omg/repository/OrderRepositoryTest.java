@@ -4,11 +4,15 @@ import com.ono.omg.domain.Order;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
 import static com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import static org.assertj.core.api.Assertions.assertThat;
+
+
+@ActiveProfiles("test")
 
 @DisplayName("OrderRepository 의")
 class OrderRepositoryTest extends RepositoryTest {

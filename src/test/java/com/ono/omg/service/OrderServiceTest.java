@@ -6,9 +6,11 @@ import com.ono.omg.domain.Product;
 import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @DisplayName("OrderServiceTest 의")
 class OrderServiceTest extends ServiceTest {
 

@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+@ActiveProfiles("test")
 @DisplayName("ProductRepository 의")
 class ProductRepositoryTest extends RepositoryTest {
 

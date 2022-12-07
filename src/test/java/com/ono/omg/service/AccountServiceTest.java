@@ -6,6 +6,7 @@ import com.ono.omg.exception.CustomCommonException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountLoginRequestDto;
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
@@ -15,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ActiveProfiles("test")
 @DisplayName("AccountServiceTest 의")
 class AccountServiceTest extends ServiceTest {
 

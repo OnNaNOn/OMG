@@ -7,6 +7,7 @@ import com.ono.omg.exception.CustomCommonException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@ActiveProfiles("test")
 @DisplayName("ProductServiceTest 의")
 class ProductServiceTest extends ServiceTest {
 

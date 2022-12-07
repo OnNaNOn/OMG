@@ -14,9 +14,9 @@ public class EventResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AllEventResponse {
-
         private Long productId;
         private Long eventId;
+        private String eventName;
         private String productName;
         private String content;
         private Integer productPrice;
@@ -27,6 +27,7 @@ public class EventResponseDto {
         public AllEventResponse(Event event, Product product) {
             this.productId = product.getId();
             this.eventId = event.getId();
+            this.eventName = event.getEventTitle();
             this.productName = product.getTitle();
             this.content = event.getContent();
             this.productPrice = product.getPrice();

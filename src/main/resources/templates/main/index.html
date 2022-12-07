@@ -55,6 +55,12 @@
             position: relative;
             width: 100%;
         }
+
+        .hTag {
+            text-align: center;
+            font-style : italic;
+            font-weight : bold;
+        }
     </style>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -83,6 +89,7 @@
                     for (let i = 0; i < products.length; i++) {
                         let product = products[i];
 
+                        let eventName = product.eventName;
                         let productId = product.productId;
                         let title = product.productName;
                         let content = product.content;
@@ -91,9 +98,10 @@
                         let startedAt = product.startedAt.replace('T', ' ').substring(0, 16);
                         let endedAt = product.endedAt.replace('T', ' ').substring(0, 16); // 16 -> 19로 변경시 초까지 출력력
 
-                        let tmpProducts = `<tr>
+                        let tmpProducts = `<tr align="center">
+                                            <td>${eventName}</td>
+                                            <!--  이벤트 설명을 이벤트 정보 페이지로 이동 시키기 <td>${content}</a> -->
                                             <td><a href="/products/detail/${productId}">${title}</a></td>
-                                            <td>${content}</td>
                                             <td>${stock}</td>
                                             <td>${productPrice}</td>
                                             <td>${startedAt}</td>
@@ -130,16 +138,18 @@
 
 
 
-<h2 style="margin: 50px; text-align: center">매일 14:00시에 에어팟 5000원에 100명에게!!</h2>
+<h2 class="hTag" style="margin: 30px;">지금까지 이런 이벤트는 없었다.</h2>
+<h3 class="hTag" style="margin-bottom: 50px;">이것은 판매인가 나눔인가</h3>
 
 
 <div class="container">
 
     <table class="table">
         <thead>
-        <tr>
+        <tr align="center">
+            <th>이벤트명</th>
+<!--            <th>이벤트 설명</th>-->
             <th>상품명</th>
-            <th>상품설명</th>
             <th>이벤트 재고</th>
             <th>이벤트 가격</th>
             <th>이벤트 시작일</th>

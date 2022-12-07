@@ -118,6 +118,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .select(product.id)
                 .from(product)
                 .where(titleMatch(title))
+                .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

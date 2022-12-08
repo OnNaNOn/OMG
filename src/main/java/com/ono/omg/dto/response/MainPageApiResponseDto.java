@@ -11,10 +11,6 @@ import org.springframework.data.domain.Page;
 public class MainPageApiResponseDto {
 //    private Page<Product> products;
     private Page<SearchResponseDto> products;
-
-    private int totalPages;
-    private long totalElements;
-
     private int nowPage;
     private int startPage;
     private int endPage;

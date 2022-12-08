@@ -70,6 +70,14 @@
             loadHomePage();
         });
 
+        function validateSearchText() {
+            if($("#searchText").val().length <= 1) {
+                alert("검색어는 2글자 이상이어야 합니다.");
+                return false;
+            }
+            return true;
+        }
+
         function number_format(num){
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
         }
@@ -128,7 +136,7 @@
         <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 
-    <form action="/omg/search" method="get" class="container search">
+    <form action="/omg/search" method="get" onsubmit="return validateSearchText();" class="container search">
         <input type="search" autocomplete="off" class="form-control" spellcheck="false" role="combobox"
                placeholder="검색할 상품명 입력" aria-live="polite" name="q" id="searchText">
 <!--        <input type="hidden" value="true" name="useSearch">-->

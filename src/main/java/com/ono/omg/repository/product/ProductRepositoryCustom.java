@@ -5,6 +5,8 @@ import com.ono.omg.dto.response.SearchResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 
 public interface ProductRepositoryCustom {
@@ -15,4 +17,6 @@ public interface ProductRepositoryCustom {
     Page<SearchResponseDto> searchProductUsedFullTextSearch(SearchRequestDto requestDto, Pageable pageable);
 
     Page<SearchResponseDto> searchProductUsedFullTextSearchAndCoveringIndex(String title, Pageable pageable);
+
+    List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long productId, String title, Integer pageSize);
 }

@@ -41,6 +41,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -74,6 +75,9 @@ dependencies {
     // querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    // aop
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     // p6spy
 //    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'

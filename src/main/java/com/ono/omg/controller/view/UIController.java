@@ -1,12 +1,12 @@
 package com.ono.omg.controller.view;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ono.omg.domain.Product;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +26,7 @@ public class UIController {
      * Controller > Service > Repository로 변경할 필요 있음
      */
     private final ProductRepository productRepository;
+    private final ObjectMapper objectMapper;
 
     // home
     @GetMapping("/omg")
@@ -55,10 +56,7 @@ public class UIController {
     }
 
     @GetMapping("/omg/search")
-    public String mainPage(@RequestParam(name = "q", required = false) String query,
-                           @PageableDefault(size = 10) Pageable pageable,
-                           Model model) {
-
+    public String mainPage(@RequestParam(name = "q", required = false) String query, Model model) {
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.setLocation(URI.create("/"));
 //        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
@@ -66,10 +64,7 @@ public class UIController {
         if(!StringUtils.hasText(query)) {
             return "redirect:/omg";
         }
-
         model.addAttribute("query", query);
-        model.addAttribute("nowPage", pageable.getPageNumber());
-
         return "main/mainPage";
     }
 

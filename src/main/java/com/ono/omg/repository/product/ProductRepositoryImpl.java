@@ -12,16 +12,13 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.support.Querydsl;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static com.ono.omg.domain.QProduct.product;
 import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
@@ -118,7 +115,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 .select(product.id)
                 .from(product)
                 .where(titleMatch(title))
-                .orderBy(product.id.desc())
+//                .orderBy(product.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -153,6 +150,38 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             size++;
         }
         return new PageImpl<>(results, pageable, size);
+    }
+
+    /**
+     * searchProductUsedFullTextSearchAndNoOffset
+     * @param productId
+     * @param title
+     * @param pageSize
+     * @return
+     */
+    @Override
+    public List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long productId, String title, Integer pageSize) {
+        return queryFactory
+                .select(new QSearchResponseDto(
+                                product.id,
+                                product.title,
+                                product.price,
+                                product.stock,
+                                product.category,
+                                product.delivery
+                        )
+                )
+                .from(product)
+                .where(gtProductId(productId), titleMatch(title))
+                .limit(pageSize)
+                .fetch();
+    }
+
+    private BooleanExpression gtProductId(Long productId) {
+        if (productId == null) {
+            return null;
+        }
+        return product.id.gt(productId);
     }
 
     private BooleanExpression titleMatch(String title) {

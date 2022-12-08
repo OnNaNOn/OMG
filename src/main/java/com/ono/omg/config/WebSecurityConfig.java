@@ -86,10 +86,12 @@ public class WebSecurityConfig {
                 .antMatchers("/admin/login").permitAll()
 
                 .antMatchers("/admin/event").permitAll()
+                .antMatchers("/api/v2/omg").permitAll()
+
 
                 .antMatchers("/omg").permitAll()
                 .antMatchers("/omg/search").permitAll()
-                .antMatchers("/api/omg").permitAll()
+                .antMatchers("/api/v1/omg").permitAll()
                 .antMatchers("/api/event").permitAll()
                 .antMatchers("/products/detail/{productId}").permitAll()
                 .antMatchers("/api/products/detail/{productId}").permitAll()

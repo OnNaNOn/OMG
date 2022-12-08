@@ -14,16 +14,6 @@
             margin-top: 50px;
         }
 
-        .addBtnBox {
-            text-align: center;
-        }
-
-        .addBtn {
-            width: 800px;
-            margin-bottom: 50px;
-            margin-right: 30px;
-        }
-
         ul {
             justify-content: center;
         }
@@ -78,34 +68,32 @@
 <script type="text/javascript" src="/js/jquery.twbsPagination.js"></script>
 <script>
     $(document).ready(function () {
-        moreList();
+        loadMainPage();
     });
 
-    function validateSearchText() {
-        if($("#searchText").val().length <= 1) {
-            alert("검색어는 2글자 이상이어야 합니다.");
-            return false;
-        }
-        return true;
+    function number_format(num){
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g,',');
     }
 
-    function number_format(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    }
-
-
-    function moreList() {
+    function loadMainPage() {
+        let givenPage = $("#givenPage").val();
         let givenQuery = $("#givenQuery").val();
-        let last = $("#last").val();
+        // let givenUseSearch = $("#givenUseSearch").val();
+
+        let params = "?page=" + givenPage;
+        params += "&q=" + givenQuery;
+        // params += "&useSearch=" + givenUseSearch;
 
         $.ajax({
             type: "GET",
-            url: "/api/v2/omg?start=" + last + "&q=" + givenQuery,
+            url: "/api/omg" + params,
             headers: {'Content-Type': 'application/json'},
             success: function (response, dd, xhr) {
+                $('#list-group').remove();
+
                 console.log(response);
 
-                if (response.length == 0) {
+                if(response.data.totalElements == 0) {
                     $('.productDesc').remove();
 
                     let isEmpty = `<h4 align="center">해당 상품이 존재하지 않습니다.</h4>`
@@ -115,14 +103,17 @@
                     return;
                 }
 
+                let totalPages = `${response.data.products.totalPages}`
+                // let totalElements = `${response.products.totalElements}`
+                let products = response.data.products.content;
+
                 /**
                  * 상품 리스트
                  */
-                for (let i = 0; i < response.length; i++) {
-                    let product = response[i];
+                for (let i = 0; i < products.length; i++) {
+                    let product = products[i];
 
-                    let productId = product.productId;
-                    let formatProductId = number_format(product.productId);
+                    let productId = number_format(product.productId);
                     let title = product.title;
                     let price = number_format(product.price);
                     let stock = number_format(product.stock);
@@ -130,28 +121,58 @@
                     let delivery = product.delivery;
 
                     let tmpProducts = `<tr>
-                                            <td><a href="/products/detail/${productId}">${formatProductId}</a></td>
+                                            <td><a href="/products/detail/${productId}">${productId}</a></td>
                                             <td><a href="/products/detail/${productId}">${title}</a></td>
                                             <td>${price}</td>
                                             <td>${category}</td>
                                             <td>${delivery}</td>
                                             <td>${stock}</td>
                                         </tr>`
-
                     $('#products').append(tmpProducts)
-                    $('#last').val(productId); // offset where condition
                 }
+
+                /**
+                 * 페이징
+                 */
+                var curPage = Number($("#startPage").val());
+
+                let endPage = `${response.data.endPage}`;
+
+                window.pagObj = $('#pagination').twbsPagination({
+                    totalPages: endPage,     // 전체 페이지
+                    startPage: curPage, // 시작(현재) 페이지
+                    initiateStartPageClick: false,
+                    visiblePages: 5,    // 최대로 보여줄 페이지
+                    prev: "‹",          // Previous Button Label
+                    next: "›",          // Next Button Label
+                    first: '',         // First Button Label
+                    last: '',          // Last Button Label
+                    // first: '«',         // First Button Label
+                    // last: '»',          // Last Button Label
+                    onPageClick: function (event, page) { // Page Click event
+                        console.info("current page : " + page);
+
+                        $('#startPage').text(page);
+                        var chg = $('#startPage').val(page);
+                    }
+                }).on('page', function (event, page) {
+                    $("#frmSearch").submit();
+                });
             },
             error: function (xhr, status, error) {
-                alert("error");
+                alert("error >>>> ")
+                // let response = JSON.parse(xhr.responseText);
+                // alert("response.error.message");
+                // window.location.href = '/admin/login';
             }
         });
     }
 
 </script>
 
-<input type="hidden" id="last" value="0">
+<input type="hidden" id="givenPage" th:value="${nowPage}">
 <input type="hidden" id="givenQuery" th:value="${query}">
+<!--<input type="hidden" id="givenUseSearch" th:value="${useSearch}">-->
 
 <div class="container">
     <div class="btn-group" role="group" aria-label="Basic example">
@@ -170,7 +191,7 @@
         <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 
-    <form action="/omg/search" method="get" onsubmit="return validateSearchText();" class="container search">
+    <form action="/omg/search" method="get" class="container search">
         <input type="search" autocomplete="off" class="form-control" spellcheck="false" role="combobox"
                placeholder="검색할 상품명 입력" aria-live="polite" name="q" id="searchText">
         <button type="submit" class="btn btn-light searchBtn">Q</button>
@@ -196,9 +217,15 @@
     </table>
 </div>
 
-<div class="addBtnBox">
-    <button id="addBtn" type="button" class="btn btn-secondary addBtn" onclick="moreList();">더보기</button>
+<div class="paging-div">
+    <ul class="pagination" id="pagination">
+
+    </ul>
 </div>
 
+<form class="form-inline" id="frmSearch" action="/omg/search">
+    <input type="hidden" id="startPage" name="page" th:value="${nowPage} + 1" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+    <input type="hidden" id="query" name="q" th:value="${query}" value="1"><!-- 페이징을 위한 hidden타입 추가 -->
+</form>
 </body>
 </html>

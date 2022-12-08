@@ -8,9 +8,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 public class MainService {
     private final ProductRepository productRepository;
 
@@ -18,6 +20,7 @@ public class MainService {
         this.productRepository = productRepository;
     }
 
+    @Transactional(readOnly = true)
     public MainPageApiResponseDto home(String title, Integer page) {
         PageRequest pageable = PageRequest.of(page, 10);
 

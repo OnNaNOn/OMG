@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 public class EventTimeInterceptor implements HandlerInterceptor {
@@ -27,9 +28,9 @@ public class EventTimeInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("========== START ==========");
         String requestURI = request.getRequestURI();
-        log.info(requestURI);
+//        log.info(requestURI);
+//        log.info("========== START ==========");
 
         if (!requestURI.contains("confirm")) {
             return true;
@@ -38,9 +39,14 @@ public class EventTimeInterceptor implements HandlerInterceptor {
         Long productId = Long.valueOf(requestURI.split("/")[3]);
         log.info("productId = {}", productId);
 
-        Event event = eventRepository.findByProductId(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_EVENT)
-        );
+
+        Optional<Event> findEvent = eventRepository.findByProductId(productId);
+
+        if(findEvent.isEmpty()) {
+            return true;
+        }
+
+        Event event = findEvent.get();
 
         String start = event.getStartedAt().toString().substring(0, 13);
         String now = LocalDateTime.now().toString().substring(0, 13);
@@ -70,7 +76,7 @@ public class EventTimeInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("========== END ==========");
+//        log.info("========== END ==========");
     }
 
     @Override

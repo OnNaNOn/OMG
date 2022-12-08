@@ -24,6 +24,7 @@ import static java.util.stream.Collectors.toList;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
 
     private final ProductRepository productRepository;
@@ -83,7 +84,6 @@ public class ProductService {
     }
 
     //상품조회
-    @Transactional(readOnly = true)
     public ProductResDto searchProduct(Long productId) {
         Product product = validProduct(productId);
 
@@ -93,7 +93,6 @@ public class ProductService {
     /**
      * 마이페이지에서 로그인한 사용자가 등록한 상품 내역 조회
      * */
-    @Transactional(readOnly = true)
     public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, Account account) {
         Account findAccount = accountRepository.findById(account.getId()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
@@ -121,6 +120,4 @@ public class ProductService {
         return productRepository.findById(productId).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT));
     }
-
-
 }

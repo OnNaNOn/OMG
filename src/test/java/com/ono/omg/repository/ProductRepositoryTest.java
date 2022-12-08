@@ -22,7 +22,7 @@ class ProductRepositoryTest extends RepositoryTest {
     @Autowired
     JPAQueryFactory queryFactory;
 
-    @Test
+//    @Test
     @DisplayName("findAllProductStock 는 재고가 있는 모든 상품에 대해 조회한다.")
     public void findAllProductStock() throws Exception {
         // given
@@ -47,7 +47,7 @@ class ProductRepositoryTest extends RepositoryTest {
         assertThat(products2.getTotalElements()).isEqualTo(2);
     }
 
-    @Test
+//    @Test
     @DisplayName("searchByProductNameButNull 메서드는 상품명에 대해 검색한다. 단, 일치하는 값은 없다.")
     public void searchByProductNameButNull() throws Exception {
         // given
@@ -64,7 +64,7 @@ class ProductRepositoryTest extends RepositoryTest {
         assertThat(searchProducts.getNumberOfElements()).isEqualTo(0);
     }
 
-    @Test
+//    @Test
     @DisplayName("searchProductRequestDtoIsNull 메서드는 모든 입력값에 대해 NULL 을 입력했을 때에 대해 검색한다.")
     public void searchProductRequestDtoIsNull() throws Exception {
         // given
@@ -83,7 +83,7 @@ class ProductRepositoryTest extends RepositoryTest {
         assertThat(searchProducts.getNumberOfElements()).isEqualTo(3);
     }
 
-    @Test
+//    @Test
     @DisplayName("1m 24sec :: searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다. 단순 QueryDSL-JPA만 사용")
     public void searchByProductName() throws Exception {
         // given

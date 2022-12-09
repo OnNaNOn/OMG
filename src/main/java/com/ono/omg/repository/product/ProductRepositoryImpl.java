@@ -110,6 +110,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     @Override
     public Page<SearchResponseDto> searchProductUsedFullTextSearchAndCoveringIndex(String title, Pageable pageable) {
 
+        
         // 1) 커버링 인덱스로 대상 조회
         List<Long> ids = queryFactory
                 .select(product.id)

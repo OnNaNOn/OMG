@@ -64,15 +64,6 @@ public class Product extends BaseEntity {
         return rand;
     }
 
-    public void updateProduct(ProductReqDto productReqDto) {
-        this.title = productReqDto.getTitle();
-        this.price = productReqDto.getPrice();
-        this.stock = productReqDto.getStock();
-        this.category = productReqDto.getCategory();
-        this.delivery = productReqDto.getDelivery();
-        this.imgUrl = productReqDto.getImgUrl();
-    }
-
     public Integer decreaseStock(int stock) {
         if (this.stock - stock < 0) {
             throw new CustomCommonException(ErrorCode.OUT_OF_STOCK);

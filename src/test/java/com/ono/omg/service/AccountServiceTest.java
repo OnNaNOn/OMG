@@ -1,6 +1,5 @@
 package com.ono.omg.service;
 
-import com.ono.omg.domain.Account;
 import com.ono.omg.domain.AccountType;
 import com.ono.omg.exception.CustomCommonException;
 import org.junit.jupiter.api.DisplayName;

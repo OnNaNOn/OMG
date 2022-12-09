@@ -9,7 +9,6 @@ import org.springframework.data.domain.Page;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MainPageApiResponseDto {
-//    private Page<Product> products;
     private Page<SearchResponseDto> products;
     private int nowPage;
     private int startPage;

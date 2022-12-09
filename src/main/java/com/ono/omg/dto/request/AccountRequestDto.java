@@ -45,5 +45,4 @@ public class AccountRequestDto {
             this.password = password;
         }
     }
-
 }

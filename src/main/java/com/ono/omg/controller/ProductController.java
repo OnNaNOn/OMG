@@ -2,20 +2,16 @@ package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-import static com.ono.omg.dto.response.ProductResponseDto.*;
+import static com.ono.omg.dto.response.ProductResponseDto.DetailProductResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.ProductResDto;
 
 @RestController
 @RequiredArgsConstructor

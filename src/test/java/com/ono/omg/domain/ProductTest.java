@@ -1,15 +1,11 @@
 package com.ono.omg.domain;
 
 import com.ono.omg.dto.request.ProductReqDto;
-import com.ono.omg.repository.product.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -41,28 +37,6 @@ class ProductTest {
     @Nested
     @DisplayName("Update 메서드는")
     class Update {
-
-        @Test
-        @DisplayName("상품을 입력한 데이터로 업데이트 한다.")
-        public void 상품_수정() throws Exception {
-            // given
-            Product product = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
-            String basicImgUrl = "https://jaesa-bucket.s3.ap-northeast-2.amazonaws.com/omg.jpg";
-            ProductReqDto updateProduct = new ProductReqDto("당근", 1000, 10, "채소", "빠른 배송", basicImgUrl);
-
-            // when
-            product.updateProduct(updateProduct);
-
-            // then
-            assertThat(product.getTitle()).isEqualTo("당근");
-            assertThat(product.getPrice()).isEqualTo(1000);
-            assertThat(product.getImgUrl()).isEqualTo(basicImgUrl);
-            assertThat(product.getCategory()).isEqualTo("채소");
-            assertThat(product.getDelivery()).isEqualTo("빠른 배송");
-            assertThat(product.getStock()).isEqualTo(10);
-            assertThat(product.getSellerId()).isEqualTo(2L);
-        }
-
         @Test
         @DisplayName("상품이 판매되면 재고가 한 개씩 깎인다.")
         public void 상품_판매() throws Exception {
@@ -90,5 +64,4 @@ class ProductTest {
             assertThat(product.getIsSale()).isEqualTo("N");
         }
     }
-
 }

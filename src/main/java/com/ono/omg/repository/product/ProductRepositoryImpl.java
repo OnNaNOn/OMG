@@ -1,18 +1,15 @@
 package com.ono.omg.repository.product;
 
-import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.QSearchResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 

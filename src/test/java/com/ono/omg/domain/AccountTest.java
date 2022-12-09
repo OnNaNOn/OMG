@@ -39,7 +39,6 @@ public class AccountTest {
     @Nested
     @DisplayName("Update 메서드는 ")
     class Update {
-
         @DisplayName("사용자의 권한을 관리자(ROLE_ADMIN)로 변경한다.")
         @Test
         public void 사용자_관리자로_변경() throws Exception {

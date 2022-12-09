@@ -21,7 +21,10 @@ public class MainService {
         this.productRepository = productRepository;
     }
 
-    @Transactional(readOnly = true)
+    public List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long start, String title, int pageSize) {
+        return productRepository.searchProductUsedFullTextSearchAndNoOffset(start, title, pageSize);
+    }
+
     public MainPageApiResponseDto home(String title, Integer page) {
         PageRequest pageable = PageRequest.of(page, 10);
 
@@ -34,9 +37,5 @@ public class MainService {
         int endPage = Math.min(nowPage + 2, products.getTotalPages());
 
         return new MainPageApiResponseDto(products, nowPage, startPage, endPage);
-    }
-
-    public List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long start, String title, int pageSize) {
-        return productRepository.searchProductUsedFullTextSearchAndNoOffset(start, title, pageSize);
     }
 }

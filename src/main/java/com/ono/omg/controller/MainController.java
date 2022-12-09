@@ -4,7 +4,6 @@ import com.ono.omg.dto.common.ResponseDto;
 import com.ono.omg.dto.request.SearchRequestDto;
 import com.ono.omg.dto.response.MainPageApiResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
-import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.service.MainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

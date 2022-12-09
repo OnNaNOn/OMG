@@ -9,7 +9,6 @@ import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.repository.token.RefreshTokenRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -47,9 +46,6 @@ abstract class ServiceTest {
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
-
-    @Autowired
-    protected RedissonClient redissonClient;
 
     @BeforeEach
     public void beforeEach() {

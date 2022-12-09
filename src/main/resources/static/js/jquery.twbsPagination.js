@@ -6,6 +6,9 @@
  * Released under Apache 2.0 license
  * http://apache.org/licenses/LICENSE-2.0.html
  */
+
+/* 시작
+
 (function ($, window, document, undefined) {
 
     'use strict';
@@ -361,4 +364,9 @@
 
     $.fn.twbsPagination.version = "1.4.2";
 
-})(window.jQuery, window, document);
+})(window.jQuery, window, document)
+
+끝
+
+*/
+;

@@ -1,16 +1,9 @@
 package com.ono.omg.utils;
 
-import com.ono.omg.domain.Event;
-import com.ono.omg.domain.Product;
-import com.ono.omg.repository.event.EventRepository;
-import com.ono.omg.repository.product.ProductRepository;
 import com.ono.omg.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 @Slf4j
@@ -22,15 +15,17 @@ public class ONOScheduler {
         this.schedulerService = schedulerService;
     }
 
-
     /**
-     *
+     * 매일 20시마다 다음날(오늘 + 1)이 시작일인 이벤트를 열기
      */
     @Scheduled(cron = "0 0 20 * * *")
     public void openEvent() {
         log.info("Change Open Event = {}", schedulerService.openEvent());
     }
 
+    /**
+     * 매일 01시마다 전날(오늘 -1)이 종료일인 이벤트를 닫기
+     */
     @Scheduled(cron = "0 0 01 * * *")
     public void closeEvent() {
         log.info("Change Close Event = {}", schedulerService.closeEvent());

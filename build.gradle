@@ -36,25 +36,44 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.projectlombok:lombok:1.18.22'
-    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
+    // swagger
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+
+    // querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    // Promethus
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
+    // redisson
+//    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+    // p6spy
+//    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
+    //Actuator
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
 
     compileOnly 'org.projectlombok:lombok'
     compileOnly("org.springframework.boot:spring-boot-devtools")
 
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     annotationProcessor 'org.projectlombok:lombok'
+
     testAnnotationProcessor 'org.projectlombok:lombok' // 추가
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -63,31 +82,12 @@ dependencies {
     // mockito
     testImplementation 'org.mockito:mockito-inline:4.8.0'
 
-    // swagger
-    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
-
-//    // redisson
-//    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
-
-    // querydsl
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-
-    // p6spy
-//    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
-
-    //Actuator
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    // Promethus
-    implementation 'io.micrometer:micrometer-registry-prometheus'
-
     //jwt
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
 }
-
 tasks.named('test') {
     useJUnitPlatform()
     // 위에서 작성한 snippetsDir 디렉토리를 test의 output으로 구성하는 설정 -> 스니펫 조각들이 build/generated-snippets로 출력

@@ -32,6 +32,52 @@ public class OrderService {
 
 //    private final RedissonClient redissonClient;
 
+    /**
+     * 주문하기 (@Lock - 비관적 락)
+     */
+    @Transactional
+    public createdOrdersResponseDto productOrderWithPessimisticLock(Long productId, Long accountId) {
+        Account findAccount = validateAccount(accountId);
+//        Product findProduct2 = validateProduct(productId);
+        Product findProduct = productRepository.findByIdWithPessimisticLock(productId);
+
+
+        findProduct.decreaseStock(1);
+//        productRepository.saveAndFlush(findProduct);
+
+        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice())));
+        return new createdOrdersResponseDto(savedOrder.getId(), savedOrder.getTotalPrice(), findAccount.getUsername(), findProduct);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SearchResponseDto> searchOrders(SearchRequestDto requestDto, Pageable pageable) {
+        return productRepository.searchProduct(requestDto, pageable);
+    }
+
+    private Account validateAccount(Long accountId) {
+        Account findAccount = accountRepository.findById(accountId).orElseThrow(
+                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
+        );
+        return findAccount;
+    }
+
+    public List<MainPageOrdersResponseDto> findAllOrders(Pageable pageable, Account account) {
+        List<MainPageOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(pageable, account.getId());
+
+        return findOrders;
+    }
+
+    /**
+     * 주문에 상품이 여러개일 경우를 대비해 별도의 메서드로 분리
+     */
+    private Integer getTotalOrderPrice(int price) {
+        return price;
+    }
+
+    /**
+     * 상품 검색
+     * */
+
 
 //    /**
 //     * 주문하기 (Redis - Redisson)
@@ -77,56 +123,11 @@ public class OrderService {
 //                savedOrder.getId(), savedOrder.getTotalPrice(), findAccount.getUsername(), findProduct
 //        );
 //    }
-
-    /**
-     * 주문하기 (@Lock - 비관적 락)
-     */
-    @Transactional
-    public createdOrdersResponseDto productOrderWithPessimisticLock(Long productId, Long accountId) {
-        Account findAccount = validateAccount(accountId);
-//        Product findProduct2 = validateProduct(productId);
-        Product findProduct = productRepository.findByIdWithPessimisticLock(productId);
-
-
-        findProduct.decreaseStock(1);
-//        productRepository.saveAndFlush(findProduct);
-
-        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice())));
-        return new createdOrdersResponseDto(savedOrder.getId(), savedOrder.getTotalPrice(), findAccount.getUsername(), findProduct);
-    }
-
-    private Account validateAccount(Long accountId) {
-        Account findAccount = accountRepository.findById(accountId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-        );
-        return findAccount;
-    }
-
+//
 //    private Product validateProduct(Long productId) {
 //        Product findProduct = productRepository.findById(productId).orElseThrow(
 //                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
 //        );
 //        return findProduct;
 //    }
-
-    /**
-     * 주문에 상품이 여러개일 경우를 대비해 별도의 메서드로 분리
-     */
-    private Integer getTotalOrderPrice(int price) {
-        return price;
-    }
-
-    public List<MainPageOrdersResponseDto> findAllOrders(Pageable pageable, Account account) {
-        List<MainPageOrdersResponseDto> findOrders = orderRepository.findOrdersParticularAccount(pageable, account.getId());
-
-        return findOrders;
-    }
-
-    /**
-     * 상품 검색
-     * */
-    @Transactional(readOnly = true)
-    public Page<SearchResponseDto> searchOrders(SearchRequestDto requestDto, Pageable pageable) {
-        return productRepository.searchProduct(requestDto, pageable);
-    }
 }

@@ -2,21 +2,17 @@ package com.ono.omg.controller;
 
 
 import com.ono.omg.dto.common.ResponseDto;
-import com.ono.omg.dto.request.EventRequestDto;
-import com.ono.omg.dto.response.OrderResponseDto.EventOrderResponseDto;
 import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static com.ono.omg.dto.request.EventRequestDto.*;
+import static com.ono.omg.dto.request.EventRequestDto.CreateEventDto;
 import static com.ono.omg.dto.response.EventResponseDto.AllEventResponse;
 
 @RestController

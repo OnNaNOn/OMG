@@ -94,5 +94,4 @@ class OrderTest {
             assertThat(createOrder.getOrderType()).isEqualTo(OrderType.ORDER_CANCEL);
         }
     }
-
 }

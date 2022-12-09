@@ -58,6 +58,22 @@
             }
         }
 
+        function setDate() {
+            let now_utc = Date.now() // 지금 날짜를 밀리초로
+
+            // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
+            let nowDate = new Date().getTimezoneOffset();
+
+            let timeOff = nowDate * (60 * 60 * 24 * 48); // 분단위를 밀리초로 변환
+
+            // new Date(now_utc-timeOff).toISOString()은 '2022-05-11T18:09:38.134Z'를 반환
+            let minDay = new Date(now_utc - nowDate).toISOString().split("T")[0];
+            let maxDay = new Date(now_utc - timeOff).toISOString().split("T")[0];
+
+            document.getElementById("startDate").setAttribute("min", minDay);
+            document.getElementById("startDate").setAttribute("max", maxDay);
+        }
+
         function registerEvent() {
             let token = localStorage.getItem("Authorization");
             console.log("token = " + token)
@@ -82,45 +98,20 @@
                 headers: {'Content-Type': 'application/json', 'Authorization': token},
                 data: JSON.stringify(sendData),
                 success: function (response, dd, xhr) {
-                    $('#list-group').remove();
-
-                    let totalPages = `${response.data.products.totalPages}`
+                    alert("이벤트가 등록되었습니다.");
+                    window.location.href = '/omg';
                 }
             });
         }
     </script>
-    <script>
-        function setDate() {
-            var now_utc = Date.now() // 지금 날짜를 밀리초로
-
-            // getTimezoneOffset()은 현재 시간과의 차이를 분 단위로 반환
-            let nowDate = new Date().getTimezoneOffset();
-
-            var timeOff = nowDate * (60 * 60 * 24 * 48); // 분단위를 밀리초로 변환
-
-            // new Date(now_utc-timeOff).toISOString()은 '2022-05-11T18:09:38.134Z'를 반환
-            var minDay = new Date(now_utc-nowDate).toISOString().split("T")[0];
-            var maxDay = new Date(now_utc-timeOff).toISOString().split("T")[0];
-
-            document.getElementById("startDate").setAttribute("min", minDay);
-            document.getElementById("startDate").setAttribute("max", maxDay);
-        }
-    </script>
 </head>
-
 <body>
-
 
 <div class="container">
     <div align="center" style="margin-bottom: 20px">
         <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 </div>
-
-
-<!-- Product >>   String title, int price, String category, String delivery, int stock, Long sellerId               -->
-<!-- Event   >>   Long productId, String eventTitle, String content, LocalDateTime startedAt, LocalDateTime endedAt -->
-<!-- title, price, stock, // eventTitle, content, startedAt, endedAt -->
 <div class="container">
     <div class="mb-3">
         <label for="eventName" class="form-label">이벤트 명</label>
@@ -145,13 +136,10 @@
     <div class="mb-3">
         <label for="startDate" class="form-label">이벤트 시작일</label>
         <input type="date" value="2022-12-01" class="form-control" id="startDate" name="startDate">
-<!--        <input type="datetime-local" class="form-control" id="startDate">-->
+        <!--        <input type="datetime-local" class="form-control" id="startDate">-->
     </div>
 
-<button type="button" class="btn btn-primary" onclick="registerEvent()">등록 하기</button>
+    <button type="button" class="btn btn-primary" onclick="registerEvent()">등록 하기</button>
 </div>
-
-
 </body>
-
 </html>

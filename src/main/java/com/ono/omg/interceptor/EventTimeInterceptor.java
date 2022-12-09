@@ -3,8 +3,6 @@ package com.ono.omg.interceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ono.omg.domain.Event;
 import com.ono.omg.dto.common.ResponseDto;
-import com.ono.omg.exception.CustomCommonException;
-import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.event.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

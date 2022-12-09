@@ -12,8 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 
 @ActiveProfiles("test")
 @DisplayName("ProductRepository 의")

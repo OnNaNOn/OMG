@@ -1,19 +1,21 @@
 package com.ono.omg.controller;
 
 import com.ono.omg.dto.common.ResponseDto;
-import com.ono.omg.security.user.UserDetailsImpl;
 import com.ono.omg.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import static com.ono.omg.dto.request.AccountRequestDto.AccountLoginRequestDto;
 import static com.ono.omg.dto.request.AccountRequestDto.AccountRegisterRequestDto;
-import static com.ono.omg.dto.response.AccountResponseDto.*;
+import static com.ono.omg.dto.response.AccountResponseDto.AccountLoginResponseDto;
+import static com.ono.omg.dto.response.AccountResponseDto.AccountRegisterResponseDto;
 
 @RestController
 @RequiredArgsConstructor

@@ -38,12 +38,4 @@ public class AccountController {
                                                       HttpServletResponse response) {
         return ResponseDto.success(accountService.login(accountLoginRequestDto, response));
     }
-
-    /**
-     * 회원 탈퇴
-     */
-    @DeleteMapping("/unregister")
-    public ResponseDto<UnregisterUser> eraseAccount(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return ResponseDto.success(accountService.unregister(userDetails.getAccount()));
-    }
 }

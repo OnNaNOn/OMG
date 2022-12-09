@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -23,66 +22,66 @@ class ProductRepositoryTest extends RepositoryTest {
     @Autowired
     JPAQueryFactory queryFactory;
 
-//    @Test
-    @DisplayName("findAllProductStock 는 재고가 있는 모든 상품에 대해 조회한다.")
-    public void findAllProductStock() throws Exception {
-        // given
-        productRepository.deleteAll();
-        findAllProductHasStock();
+////    @Test
+//    @DisplayName("findAllProductStock 는 재고가 있는 모든 상품에 대해 조회한다.")
+//    public void findAllProductStock() throws Exception {
+//        // given
+//        productRepository.deleteAll();
+//        findAllProductHasStock();
+//
+//        PageRequest pageable = PageRequest.ofSize(5);
+//        Page<AllProductManagementResponseDto> products1 = productRepository.findAllProductStock(pageable);
+//        AllProductManagementResponseDto findIndexZeroProduct = products1.getContent().get(0);
+//
+//        // when
+//        productRepository.findById(findIndexZeroProduct.getProductId()).ifPresent(
+//                product -> {
+//                    product.decreaseStock(product.getStock());
+//                    productRepository.save(product);
+//                }
+//        );
+//        Page<AllProductManagementResponseDto> products2 = productRepository.findAllProductStock(pageable);
+//
+//        // then
+//        assertThat(products1.getTotalElements()).isEqualTo(3);
+//        assertThat(products2.getTotalElements()).isEqualTo(2);
+//    }
 
-        PageRequest pageable = PageRequest.ofSize(5);
-        Page<AllProductManagementResponseDto> products1 = productRepository.findAllProductStock(pageable);
-        AllProductManagementResponseDto findIndexZeroProduct = products1.getContent().get(0);
-
-        // when
-        productRepository.findById(findIndexZeroProduct.getProductId()).ifPresent(
-                product -> {
-                    product.decreaseStock(product.getStock());
-                    productRepository.save(product);
-                }
-        );
-        Page<AllProductManagementResponseDto> products2 = productRepository.findAllProductStock(pageable);
-
-        // then
-        assertThat(products1.getTotalElements()).isEqualTo(3);
-        assertThat(products2.getTotalElements()).isEqualTo(2);
-    }
-
-//    @Test
-    @DisplayName("searchByProductNameButNull 메서드는 상품명에 대해 검색한다. 단, 일치하는 값은 없다.")
-    public void searchByProductNameButNull() throws Exception {
-        // given
-        productRepository.deleteAll();
-        findAllProductHasStock();
-
-        PageRequest pageable = PageRequest.ofSize(5);
-        SearchRequestDto givenProductName = new SearchRequestDto("항해");
-
-        // when
-        Page<SearchResponseDto> searchProducts = productRepository.searchProduct(givenProductName, pageable);
-
-        // then
-        assertThat(searchProducts.getNumberOfElements()).isEqualTo(0);
-    }
-
-//    @Test
-    @DisplayName("searchProductRequestDtoIsNull 메서드는 모든 입력값에 대해 NULL 을 입력했을 때에 대해 검색한다.")
-    public void searchProductRequestDtoIsNull() throws Exception {
-        // given
-        productRepository.deleteAll();
-        findAllProductHasStock();
-
-        String keyword = null;
-
-        PageRequest pageable = PageRequest.ofSize(5);
-        SearchRequestDto givenProductName = new SearchRequestDto(keyword);
-
-        // when
-        Page<SearchResponseDto> searchProducts = productRepository.searchProduct(givenProductName, pageable);
-
-        // then
-        assertThat(searchProducts.getNumberOfElements()).isEqualTo(3);
-    }
+////    @Test
+//    @DisplayName("searchByProductNameButNull 메서드는 상품명에 대해 검색한다. 단, 일치하는 값은 없다.")
+//    public void searchByProductNameButNull() throws Exception {
+//        // given
+//        productRepository.deleteAll();
+//        findAllProductHasStock();
+//
+//        PageRequest pageable = PageRequest.ofSize(5);
+//        SearchRequestDto givenProductName = new SearchRequestDto("항해");
+//
+//        // when
+//        Page<SearchResponseDto> searchProducts = productRepository.searchProduct(givenProductName, pageable);
+//
+//        // then
+//        assertThat(searchProducts.getNumberOfElements()).isEqualTo(0);
+//    }
+//
+////    @Test
+//    @DisplayName("searchProductRequestDtoIsNull 메서드는 모든 입력값에 대해 NULL 을 입력했을 때에 대해 검색한다.")
+//    public void searchProductRequestDtoIsNull() throws Exception {
+//        // given
+//        productRepository.deleteAll();
+//        findAllProductHasStock();
+//
+//        String keyword = null;
+//
+//        PageRequest pageable = PageRequest.ofSize(5);
+//        SearchRequestDto givenProductName = new SearchRequestDto(keyword);
+//
+//        // when
+//        Page<SearchResponseDto> searchProducts = productRepository.searchProduct(givenProductName, pageable);
+//
+//        // then
+//        assertThat(searchProducts.getNumberOfElements()).isEqualTo(3);
+//    }
 
     @Test
     @DisplayName("1m 24sec :: searchProduct 메서드는 상품명에 대해 검색하는데 일치하는 값이 존재한다. 단순 QueryDSL-JPA만 사용")

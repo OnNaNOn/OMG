@@ -45,16 +45,4 @@ public class AccountResponseDto {
             this.modifiedAt = account.getModifiedAt();
         }
     }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class UnregisterUser {
-        private String username;
-        private String msg = "그동안 온앤온(ONO) 서비스를 이용해주셔서 감사합니다.";
-
-        public UnregisterUser(String username) {
-            this.username = username;
-        }
-    }
 }

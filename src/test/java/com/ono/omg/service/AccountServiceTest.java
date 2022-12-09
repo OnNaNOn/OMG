@@ -87,25 +87,6 @@ class AccountServiceTest extends ServiceTest {
     }
 
     @Test
-    @DisplayName("login 메서드에 탈퇴한 사용자가 접근하는 경우 예외를 발생시킨다.")
-    public void 탈퇴한_사용자_로그인() throws Exception {
-        // given
-        MockHttpServletResponse mockResponse = new MockHttpServletResponse();
-        Account account = accountRepository.save(createAccount("jae"));
-        account.deleteAccount();
-
-        AccountLoginRequestDto UnregisterUserLoginInfo = new AccountLoginRequestDto(account.getUsername(), account.getPassword());
-
-        // when
-        CustomCommonException exception = assertThrows(CustomCommonException.class, () -> {
-            accountService.login(UnregisterUserLoginInfo, mockResponse);
-        });
-
-        // then
-        assertThat("탈퇴한 회원입니다.").isEqualTo(exception.getMessage());
-    }
-
-    @Test
     @DisplayName("login 메서드는 저장된 비밀번호와 일치하지 않는 경우 예외가 발생한다.")
     public void 로그인시_비밀번호_불일치() throws Exception {
         // given
@@ -119,30 +100,5 @@ class AccountServiceTest extends ServiceTest {
 
         // then
         assertThat("비밀번호가 일치하지 않습니다.").isEqualTo(exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("unregister 메서드에 탈퇴한 사용자가 접근하는 경우 예외를 발생시킨다.")
-    public void 존재하지_않는_사용자의_회원_탈퇴() throws Exception {
-        // given & when
-        CustomCommonException exception = assertThrows(CustomCommonException.class, () -> {
-            accountService.unregister(createAccount("jae"));
-        });
-
-        // then
-        assertThat("존재하지 않는 사용자입니다.").isEqualTo(exception.getMessage());
-    }
-
-    @Test
-    @DisplayName("unregister 메서드는 회원 탈퇴 기능을 수행한다.")
-    public void 회원_탈퇴() throws Exception {
-        // given
-        Account account = createAccount("jae");
-
-        // when
-        account.deleteAccount();
-
-        // then
-        assertThat(account.getIsDeleted()).isEqualTo("Y");
     }
 }

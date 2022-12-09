@@ -37,10 +37,4 @@ public class Account extends BaseEntity {
         this.accountType = AccountType.ROLE_ADMIN;
     }
 
-    /**
-     * 회원 탈퇴
-     */
-    public void deleteAccount() {
-        isDeleted = "Y";
-    }
 }

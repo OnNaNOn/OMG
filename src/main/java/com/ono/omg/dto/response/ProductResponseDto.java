@@ -37,30 +37,6 @@ public class ProductResponseDto {
     }
 
     /**
-     * 관리자 전용 상품 관리 페이지 DTO
-     */
-    @Getter
-    @NoArgsConstructor
-    @ToString
-    public static class AllProductManagementResponseDto {
-        private Long productId;           // 상품 번호
-        private String title;             // 상품 명
-        private Integer price;                // 상품 가격
-        private Integer stock;                // 재고 현황
-        private String isSale;            // 판매 유무
-        private String isNowEvent = "N";  // 이벤트 유무
-
-        @QueryProjection
-        public AllProductManagementResponseDto(Long productId, String title, int price, int stock, String isSale) {
-            this.productId = productId;
-            this.title = title;
-            this.price = price;
-            this.stock = stock;
-            this.isSale = isSale;
-        }
-    }
-
-    /**
      * 메인 페이지 상품 정보 DTO
      */
     @Getter
@@ -74,15 +50,6 @@ public class ProductResponseDto {
         private String category;
         private String delivery;
         private Integer stock;
-
-        public MainPageResponseDto(Product product) {
-            this.productId = product.getId();
-            this.title = product.getTitle();
-            this.price = product.getPrice();
-            this.category = product.getCategory();
-            this.delivery = product.getDelivery();
-            this.stock = product.getStock();
-        }
     }
 
     /**

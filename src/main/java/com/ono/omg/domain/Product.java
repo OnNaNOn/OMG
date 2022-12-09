@@ -84,8 +84,4 @@ public class Product extends BaseEntity {
         }
         return this.stock;
     }
-
-    public void isDeleted() {
-        this.isDeleted = "Y";
-    }
 }

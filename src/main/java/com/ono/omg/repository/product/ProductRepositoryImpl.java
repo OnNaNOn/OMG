@@ -173,6 +173,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                 )
                 .from(product)
                 .where(gtProductId(productId), titleMatch(title))
+                .orderBy(product.id.desc())
                 .limit(pageSize)
                 .fetch();
     }

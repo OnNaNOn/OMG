@@ -80,16 +80,6 @@ public class AccountService {
         return new AccountLoginResponseDto(findAccount);
     }
 
-    @Transactional
-    public UnregisterUser unregister(Account account) {
-        Account findAccount = accountRepository.findByUsername(account.getUsername()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-        );
-        findAccount.deleteAccount();
-
-        return new UnregisterUser(findAccount.getUsername());
-    }
-
     private void createAndSaveToken(Account findAccount, TokenDto tokenDto) {
         Optional<RefreshToken> findRefreshToken = refreshTokenRepository.findByUsername(findAccount.getUsername());
 

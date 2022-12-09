@@ -4,6 +4,7 @@ import com.ono.omg.domain.Account;
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.ProductReqDto;
 import com.ono.omg.dto.response.OrderResponseDto.MainPageOrdersResponseDto;
+import com.ono.omg.dto.response.ProductResponseDto;
 import com.ono.omg.exception.CustomCommonException;
 import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.account.AccountRepository;
@@ -31,15 +32,6 @@ public class ProductService {
 
     private final AccountRepository accountRepository;
 
-    public List<MainPageResponseDto> findAllSavedProducts() {
-        List<Product> products = productRepository.findAll();
-        List<MainPageResponseDto> responseDto = new ArrayList<>();
-
-        for (Product product : products) {
-            responseDto.add(new MainPageResponseDto(product));
-        }
-        return responseDto;
-    }
 
     // 상품등록
     @Transactional
@@ -51,38 +43,6 @@ public class ProductService {
         return "상품 등록 완료";
     }
 
-    // 상품수정
-    @Transactional
-    public String updateProduct(Long productId, ProductReqDto productReqDto, Account account) {
-        validAccount(account);
-
-        /**
-         * validSeller는 없어도 될 것 같습니다!
-         */
-//        validSeller(account);
-
-        Product product = validProduct(productId);
-
-        product.updateProduct(productReqDto);
-        return "상품 수정 완료";
-    }
-
-
-    //상품삭제
-    @Transactional
-    public String deleteProduct(Long productId, Account account) {
-        validAccount(account);
-        /**
-         * 위와 동
-         */
-//        validSeller(account);
-        Product product = validProduct(productId);
-
-        product.isDeleted();
-
-        return "상품 삭제 완료";
-    }
-
     //상품조회
     public ProductResDto searchProduct(Long productId) {
         Product product = validProduct(productId);
@@ -90,30 +50,15 @@ public class ProductService {
         return new ProductResDto(product);
     }
 
-    /**
-     * 마이페이지에서 로그인한 사용자가 등록한 상품 내역 조회
-     * */
-    public List<MainPageOrdersResponseDto> registerDetailsProduct(Pageable pageable, Account account) {
-        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-        );
-
-        List<Product> registerProductList = productRepository.findRegisterProductList(pageable, findAccount.getId());
-
-        return registerProductList.stream()
-                .map((o)-> new MainPageOrdersResponseDto(o.getId(), o.getImgUrl(), o.getTitle()))
-                .collect(toList());
+    //상품조회
+    public ProductResponseDto.DetailProductResponseDto mainPage(Long productId) {
+        return new ProductResponseDto.DetailProductResponseDto(productRepository.detailProduct(productId));
     }
 
 
     private Account validAccount(Account account) {
         return accountRepository.findByUsername(account.getUsername()).orElseThrow(
                 () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    private Product validSeller(Account account) {
-        return productRepository.findBySellerId(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_SELLER));
     }
 
     private Product validProduct(Long productId) {

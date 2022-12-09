@@ -2,7 +2,6 @@ package com.ono.omg.repository.product;
 
 import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.SearchRequestDto;
-import com.ono.omg.dto.response.QProductResponseDto_AllProductManagementResponseDto;
 import com.ono.omg.dto.response.QSearchResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ono.omg.domain.QProduct.product;
-import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
@@ -31,30 +29,30 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         this.queryFactory = queryFactory;
     }
 
-    /**
-     * findAllProductStock:: 성능 개선 없이 단순 QueryDSL 만 사용
-     * ㄴ 현재 관리자 페이지에 쓰이고 있음
-     */
-    @Override
-    public Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable) {
-        List<AllProductManagementResponseDto> results = queryFactory
-                .select(new QProductResponseDto_AllProductManagementResponseDto(
-                        product.id,
-                        product.title,
-                        product.price,
-                        product.stock,
-                        product.isSale
-                ))
-                .from(product)
-                .where(product.isSale.eq("Y"))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-
-        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
-    }
+//    /**
+//     * findAllProductStock:: 성능 개선 없이 단순 QueryDSL 만 사용
+//     * ㄴ 현재 관리자 페이지에 쓰이고 있음
+//     */
+//    @Override
+//    public Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable) {
+//        List<AllProductManagementResponseDto> results = queryFactory
+//                .select(new QProductResponseDto_AllProductManagementResponseDto(
+//                        product.id,
+//                        product.title,
+//                        product.price,
+//                        product.stock,
+//                        product.isSale
+//                ))
+//                .from(product)
+//                .where(product.isSale.eq("Y"))
+//                .offset(pageable.getOffset())
+//                .limit(pageable.getPageSize())
+//                .fetch();
+//
+//        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
+//
+//        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
+//    }
 
     /**
      * 상품검색
@@ -109,6 +107,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     @Override
     public Page<SearchResponseDto> searchProductUsedFullTextSearchAndCoveringIndex(String title, Pageable pageable) {
+
 
         // 1) 커버링 인덱스로 대상 조회
         List<Long> ids = queryFactory

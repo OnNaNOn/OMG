@@ -53,24 +53,5 @@ public class AccountTest {
             assertThat(account.getAccountType()).isEqualTo(AccountType.ROLE_ADMIN);
         }
     }
-
-    @DisplayName("Delete 메서드는")
-    @Nested
-    class Delete {
-
-        @Test
-        @DisplayName("회원을 탈퇴한다. 단, YN 필드를 Y로 변경시킨다.")
-        public void 회원_탈퇴() throws Exception {
-            // given
-            Account account = new Account(new AccountRegisterRequestDto("jae", passwordEncoder.encode("pw"), passwordEncoder.encode("pw")));
-
-            // when
-            account.deleteAccount();
-
-            // then
-            assertThat(account.getIsDeleted()).isEqualTo("Y");
-        }
-
-    }
 }
 

@@ -63,38 +63,38 @@ public class ConcurrentOrderServiceTest {
         productRepository.deleteAll();
     }
 
-//    @Test
-    @DisplayName("productOrderRedisson( Redisson ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
-    public void 단일_상품을_동시에_100개의_주문() throws Exception {
-        // given
-        final int PRODUCT_STOCK = 130;
-        final int THREAD_COUNT = 100;
-        final int EXPECTED = PRODUCT_STOCK - THREAD_COUNT; // 1030 - 1000 = 30
-
-        ExecutorService executorService = Executors.newFixedThreadPool(30);
-        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
-
-        Account account = accountRepository.save(new Account(new AccountRegisterRequestDto("jae", "pw", "pw")));
-        Product product = productRepository.save(new Product("상품", 1000, "카테고리", "배송상태", PRODUCT_STOCK, account.getId()));
-
-        // when
-        for (int i = 0; i < THREAD_COUNT; i++) {
-            executorService.submit(() -> {
-                try {
-                    orderService.productOrderRedisson(product.getId(), account);
-                } finally {
-                    latch.countDown();
-                }
-            });
-        }
-        latch.await();
-
-        // then
-        Product findProduct = productRepository.findById(product.getId()).get();
-
-        assertThat(findProduct.getStock()).isEqualTo(EXPECTED);
-        assertThat(orderRepository.findAll().size()).isEqualTo(THREAD_COUNT);
-    }
+////    @Test
+//    @DisplayName("productOrderRedisson( Redisson ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")
+//    public void 단일_상품을_동시에_100개의_주문() throws Exception {
+//        // given
+//        final int PRODUCT_STOCK = 130;
+//        final int THREAD_COUNT = 100;
+//        final int EXPECTED = PRODUCT_STOCK - THREAD_COUNT; // 1030 - 1000 = 30
+//
+//        ExecutorService executorService = Executors.newFixedThreadPool(30);
+//        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+//
+//        Account account = accountRepository.save(new Account(new AccountRegisterRequestDto("jae", "pw", "pw")));
+//        Product product = productRepository.save(new Product("상품", 1000, "카테고리", "배송상태", PRODUCT_STOCK, account.getId()));
+//
+//        // when
+//        for (int i = 0; i < THREAD_COUNT; i++) {
+//            executorService.submit(() -> {
+//                try {
+//                    orderService.productOrderRedisson(product.getId(), account);
+//                } finally {
+//                    latch.countDown();
+//                }
+//            });
+//        }
+//        latch.await();
+//
+//        // then
+//        Product findProduct = productRepository.findById(product.getId()).get();
+//
+//        assertThat(findProduct.getStock()).isEqualTo(EXPECTED);
+//        assertThat(orderRepository.findAll().size()).isEqualTo(THREAD_COUNT);
+//    }
 
 //    @Test
     @DisplayName("productOrderWithPessimisticLock( 비관적 락 ) 메서드는 사용자와 상품으로 주문을 생성하고, 상품의 재고를 1개 감소한다.")

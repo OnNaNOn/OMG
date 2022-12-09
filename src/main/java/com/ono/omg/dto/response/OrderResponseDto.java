@@ -61,13 +61,4 @@ public class OrderResponseDto {
             this.imgUrl = product.getImgUrl();
         }
     }
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class cancelOrderResponseDto {
-        private Long productId;
-        private String productName;
-        private String orderStatus;
-    }
 }

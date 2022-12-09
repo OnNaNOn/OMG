@@ -68,48 +68,11 @@ public class UIController {
         return "main/mainPage";
     }
 
-    @GetMapping("/admin/management")
-    public String adminProductManagement(@PageableDefault(size = 10) Pageable pageable, Model model) {
-        model.addAttribute("nowPage", pageable.getPageNumber());
-        return "users/admin/managedProducts";
-    }
-
     //상세페이지
     @GetMapping("/products/detail/{productId}")
     public String detailProductPage(@PathVariable Long productId, Model model) {
         model.addAttribute("productId", productId);
         return "detail/detailProduct";
     }
-
-    // 마이 페이지
-    @GetMapping("/accounts/mypage")
-    public String accountMyPage(Model model) {
-        List<Product> products = productRepository.findAll();
-        List<RegistedProductResponseDto> responseDto = new ArrayList<>();
-
-        for (Product product : products) {
-            responseDto.add(new RegistedProductResponseDto(product));
-        }
-
-        model.addAttribute("products", responseDto);
-
-        return "users/mypage/accountPrivatePage";
-    }
-
-//    //리뷰 조회
-//    @GetMapping("/api/products/detail/{productId}")
-//    public String getReviewList(Model model){
-//        List<Review> reviews = reviewRepository.findAll();
-//        List<ReviewResponseDto> responseDto = new ArrayList<>();
-//
-//        for (Review review : reviews) {
-//            String username = accountRepository.findUsernameByAccountId(review.getId());
-//
-//            responseDto.add(new ReviewResponseDto(review.getProduct().getId(), username, review.getReviewContent(), review.getCreatedAt() ,review.getModifiedAt()));
-//        }
-//        model.addAttribute("reviews", responseDto);
-//
-//        return "product/detailProduct";
-//    }
 }
 

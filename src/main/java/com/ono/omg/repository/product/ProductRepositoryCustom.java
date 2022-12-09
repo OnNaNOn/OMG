@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
+//import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
 
 public interface ProductRepositoryCustom {
-    Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable);
+//    Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable);
 
     Page<SearchResponseDto> searchProduct(SearchRequestDto requestDto, Pageable pageable);
 

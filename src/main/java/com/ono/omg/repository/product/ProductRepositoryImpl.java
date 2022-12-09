@@ -172,7 +172,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         )
                 )
                 .from(product)
-                .where(gtProductId(productId), titleMatch(title))
+                .where(gtProductId(productId), titleEq(title)) // titleEq == 정확히 일치하는 것에 속도 빠름
                 .orderBy(product.id.desc())
                 .limit(pageSize)
                 .fetch();

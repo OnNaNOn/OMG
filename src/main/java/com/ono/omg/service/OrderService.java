@@ -14,19 +14,12 @@ import com.ono.omg.repository.order.OrderRepository;
 import com.ono.omg.repository.product.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static com.ono.omg.dto.response.OrderResponseDto.cancelOrderResponseDto;
 
 @Service
 @Slf4j
@@ -37,71 +30,53 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final AccountRepository accountRepository;
 
-    private final RedissonClient redissonClient;
+//    private final RedissonClient redissonClient;
 
-    Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    /**
-     * 주문하기 (Controller Lock - Service단에서 테스트 시 락 획득 실패로 동시성 문제 발생)
-     */
-    @Transactional
-    public createdOrdersResponseDto productOrder(Long productId, Account account) {
-        Product findProduct = validateProduct(productId);
-        Account findAccount = validateAccount(account.getId());
-
-        findProduct.decreaseStock(1);
-        // 상품에 대한 주문은 여러개도 발생할 수 있다..?
-        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice())));
-
-        return new createdOrdersResponseDto(
-                savedOrder.getId(), savedOrder.getTotalPrice(), account.getUsername(), findProduct
-        );
-    }
-
-    /**
-     * 주문하기 (Redis - Redisson)
-     */
-    public createdOrdersResponseDto productOrderRedisson(Long productId, Account account) {
-        RLock lock = redissonClient.getLock(productId.toString());
-
-        createdOrdersResponseDto responseDto;
-        try {
-            // 몇 초동안 점유할 것인지에 대한 설정
-            boolean available = lock.tryLock(30, 10, TimeUnit.SECONDS);
-
-            // 점유하지 못한 경우 >> 100 개 요청 >> 41개
-            // 942 >> 45개
-            if(!available) {
-                System.out.println("lock 획득 실패");
-                throw new RuntimeException("락 획득 실패");
-            }
-
-            // lock 획득 성공
-            responseDto = createOrderWithRedisson(productId, account.getId());
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } finally {
-            // 락 해제
-            lock.unlock();
-        }
-        return responseDto;
-    }
-
-    @Transactional
-    protected createdOrdersResponseDto createOrderWithRedisson(Long productId, Long accountId) {
-        Product findProduct = validateProduct(productId);
-        Account findAccount = validateAccount(accountId);
-
-        findProduct.decreaseStock(1);
-        productRepository.save(findProduct);
-        System.out.println("findProduct.getStock() = " + findProduct.getStock());
-        // 상품에 대한 주문은 여러개도 발생할 수 있다..?
-        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice())));
-
-        return new createdOrdersResponseDto(
-                savedOrder.getId(), savedOrder.getTotalPrice(), findAccount.getUsername(), findProduct
-        );
-    }
+//    /**
+//     * 주문하기 (Redis - Redisson)
+//     */
+//    public createdOrdersResponseDto productOrderRedisson(Long productId, Account account) {
+//        RLock lock = redissonClient.getLock(productId.toString());
+//
+//        createdOrdersResponseDto responseDto;
+//        try {
+//            // 몇 초동안 점유할 것인지에 대한 설정
+//            boolean available = lock.tryLock(30, 10, TimeUnit.SECONDS);
+//
+//            // 점유하지 못한 경우 >> 100 개 요청 >> 41개
+//            // 942 >> 45개
+//            if(!available) {
+//                System.out.println("lock 획득 실패");
+//                throw new RuntimeException("락 획득 실패");
+//            }
+//
+//            // lock 획득 성공
+//            responseDto = createOrderWithRedisson(productId, account.getId());
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+//            // 락 해제
+//            lock.unlock();
+//        }
+//        return responseDto;
+//    }
+//
+//    @Transactional
+//    protected createdOrdersResponseDto createOrderWithRedisson(Long productId, Long accountId) {
+//        Product findProduct = validateProduct(productId);
+//        Account findAccount = validateAccount(accountId);
+//
+//        findProduct.decreaseStock(1);
+//        productRepository.save(findProduct);
+//        System.out.println("findProduct.getStock() = " + findProduct.getStock());
+//        // 상품에 대한 주문은 여러개도 발생할 수 있다..?
+//        Order savedOrder = orderRepository.save(new Order(findAccount, findProduct, getTotalOrderPrice(findProduct.getPrice())));
+//
+//        return new createdOrdersResponseDto(
+//                savedOrder.getId(), savedOrder.getTotalPrice(), findAccount.getUsername(), findProduct
+//        );
+//    }
 
     /**
      * 주문하기 (@Lock - 비관적 락)
@@ -127,12 +102,12 @@ public class OrderService {
         return findAccount;
     }
 
-    private Product validateProduct(Long productId) {
-        Product findProduct = productRepository.findById(productId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
-        );
-        return findProduct;
-    }
+//    private Product validateProduct(Long productId) {
+//        Product findProduct = productRepository.findById(productId).orElseThrow(
+//                () -> new CustomCommonException(ErrorCode.NOT_FOUND_PRODUCT)
+//        );
+//        return findProduct;
+//    }
 
     /**
      * 주문에 상품이 여러개일 경우를 대비해 별도의 메서드로 분리
@@ -147,43 +122,6 @@ public class OrderService {
         return findOrders;
     }
 
-    @Transactional
-    public cancelOrderResponseDto cancel(Long orderId, Account account) {
-        Order findOrder = orderRepository.findById(orderId).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.ORDER_NOT_FOUND)
-        );
-
-        Account findAccount = accountRepository.findById(account.getId()).orElseThrow(
-                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-        );
-
-        if(isSameAccount(findOrder, findAccount)) {
-            throw new CustomCommonException(ErrorCode.INVALID_USER);
-        }
-
-        /**
-         * SJ:
-         * 우리 서비스만의 [주문 취소] 정책이 필요함
-         * 예를 들어, 주문 취소를 했을 경우 재고 관리에 창고재고 라는 필드를 만들어서
-         * 해당 값은 증가 시키고 사용자에게 보여지는 상품 재고는 유지를 한다던지와 같은
-         *
-         * 더불어 재고 관리 페이지에 [주문 취소]와 [판매 유무] 버튼이 필요함
-         */
-
-        /**
-         * 주문 취소로 변경
-         */
-        findOrder.orderCancel();
-
-        Long productId = findOrder.getProduct().getId();
-        String productName = findOrder.getProduct().getTitle();
-        String orderStatus = findOrder.getOrderType().getStatus();
-
-        return new cancelOrderResponseDto(productId, productName, orderStatus);
-
-
-    }
-
     /**
      * 상품 검색
      * */
@@ -191,28 +129,4 @@ public class OrderService {
     public Page<SearchResponseDto> searchOrders(SearchRequestDto requestDto, Pageable pageable) {
         return productRepository.searchProduct(requestDto, pageable);
     }
-
-
-//    /**
-//     * 주문내역 조회
-//     * */
-//    public List<MyPageResponseDto> getOrderList(UserDetailsImpl userDetails) {
-//        Long accountId = userDetails.getAccount().getId();
-//        accountRepository.findById(accountId).orElseThrow(
-//                () -> new CustomCommonException(ErrorCode.USER_NOT_FOUND)
-//        );
-//
-//        List<Order> orders = orderRepository.findorderListByOrderId(accountId);
-//        List<MyPageResponseDto> responseDtoList = orders.stream()
-//                .map((o)-> new MyPageResponseDto(o.getProduct().getImgUrl(), o.getProduct().getTitle()))
-//                .collect(Collectors.toList());
-//
-//        return responseDtoList;
-//    }
-
-
-    private boolean isSameAccount(Order findOrder, Account findAccount) {
-        return !findOrder.getAccount().getId().equals(findAccount.getId());
-    }
-
 }

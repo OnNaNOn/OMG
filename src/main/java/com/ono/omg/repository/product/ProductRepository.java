@@ -20,14 +20,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, Product
     @Query("select p from Product p where p.id = :id")
     Product findByIdWithPessimisticLock(@Param("id") Long id);
 
-    Optional<Product> findBySellerId(Long id);
-
-    @Query("select p from Product p where p.isDeleted='N'")
-    Optional<Product> findProduct(Long id);
-
     @Query("select p from Product p where p.id =:productId")
     Product detailProduct(@Param("productId") Long productId);
-
-    @Query("select p from Product p where p.sellerId =:accountId")
-    List<Product> findRegisterProductList(Pageable pageable, @Param("accountId") Long accountId);
 }

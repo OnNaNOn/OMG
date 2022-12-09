@@ -91,21 +91,4 @@ class ProductTest {
         }
     }
 
-    @Nested
-    @DisplayName("Delete 메서드는")
-    class Delete {
-
-        @Test
-        @DisplayName("등록된 상품을 삭제한다. 단, 값을 지우는 것이 아닌 YN 필드를 변경한다.")
-        public void 상품_삭제() throws Exception {
-            // given
-            Product product = new Product("computer", 1000000, "컴퓨터", "초고속 배송", 100, 2L);
-
-            // when
-            product.isDeleted();
-
-            // then
-            assertThat(product.getIsDeleted()).isEqualTo("Y");
-        }
-    }
 }

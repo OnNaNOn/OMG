@@ -60,30 +60,23 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 
-    // restdocs
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-
     // mockito
     testImplementation 'org.mockito:mockito-inline:4.8.0'
 
     // swagger
     implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
-    // redisson
-    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
+//    // redisson
+//    implementation 'org.redisson:redisson-spring-boot-starter:3.18.0'
 
     // querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 
-    // aop
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
-
     // p6spy
 //    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
     //Actuator
-//	implementation 'org.springframework.boot:spring-boot-starter-actuator'
     compile("org.springframework.boot:spring-boot-starter-actuator")
     // Promethus
     implementation 'io.micrometer:micrometer-registry-prometheus'

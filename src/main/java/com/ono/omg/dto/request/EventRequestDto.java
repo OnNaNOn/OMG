@@ -21,12 +21,6 @@ public class EventRequestDto {
         private Integer productPrice;
         private Integer productStock;
         private LocalDateTime startDate;
-
-        public void setStartDate(Date startDate) {
-            this.startDate = startDate.toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-        }
     }
 
 }

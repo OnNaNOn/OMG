@@ -28,12 +28,6 @@ public class EventController {
     // 이벤트 상품 주문하기
     private final EventService eventService;
 
-    //동시성 제어주문 Redis > Redisson
-//    @PostMapping("/event/{eventId}/confirm")
-    public ResponseEntity<ResponseDto<EventOrderResponseDto>> eventOrder(@PathVariable Long eventId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return new ResponseEntity<>(ResponseDto.success(eventService.eventOrder(eventId, userDetails.getAccount())), HttpStatus.OK);
-    }
-
     @GetMapping("/event")
     public ResponseDto<List<AllEventResponse>> findEvents() {
         return ResponseDto.success(eventService.searchEvent());

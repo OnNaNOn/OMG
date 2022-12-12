@@ -138,18 +138,60 @@ SSG몰 고객 1인당 월 평균 결제횟수 : **2회**
 <div markdown="1">
 
 ### 해결 방법 수집
-### 1. `synchronized`
+### 1. synchronized
 
-- `@Transactional` 이 있다면 완전한 해결을 하지 못함
-    - `@Transational` 은 사용하려는 클래스를 wrapping한 클래스를 생성하게 됨
-    - wrapping한 클래스에서 메소드 사용시 메소드 사용 전후로 **startTransaction**과 **endTransaction**을 실행함
-    - 메소드 자체에는 `synchronized`를 통해 한개의 쓰레드만 접근가능하더라도 **해당 메소드 종료 후와 endTransaction 사이**에 다시 동시에 여러 쓰레드가 접근 가능
-- 하나의 프로세스 안에서만 보장됨
-    - 여러 서버에서 동시에 데이터 접근시 해결 불가
+- synchronized를 사용하는 이유는 하나의 객체에 동시에 접근해 처리하는 것을 막기 위해 사용된다. 
+다시 말해, synchronized 키워드가 붙은 메서드 블럭은 하나의 스레드만 접근할 수 있도록 하여 스레드의 불규칙적인 자원 공유(Race Condition)를 막기 위해 사용한다.
 
-**→ 실제 운영 환경은 여러 서버를 사용하므로 해당 해결 방식 미사용**
+그러나, `synchronized`와 `Transactional`을 함께 사용한다면 원하는 대로 동작하지 않을 수도 있다. 
+그 이유는 @Transactional은 프록시 객체를 생성하기 위해 AOP로 동작되기 때문이다.
 
-### 2. Mysql
+```
+TransactionStatus status = transactionManager.getTransaction(..);
+
+try {
+	target.logic(); // public synchronized void decrease 메서드 수행
+    // logic 수행 이후 트랜잭션 종료 전에 다른 쓰레드가 decrease에 접근!
+    transactionManager.commit(status);
+} catch (Exception e) {
+	transactionManager.rollback(status);
+    throw new IllegalStateException(e); 
+}
+```
+
+`Transaction`과 `synchronized`를 동시에 적용하게 될 경우 한 쓰레드가 `synchronized`가 붙은 메서드를 호출하여 수행한 이후, 트랜잭션이 종료되기 전에 다른 쓰레드가 `synchronized`가 붙은 메서드에 접근을 하여 커밋되지 않는 데이터에 접근하게 되기 때문에 원하는 결과를 얻을 수 없다.
+
+뿐만 아니라, 서버가 여러 대 있다고 가정한다면 synchronized의 사용만으로는 **각 서버마다 요청하는 쓰레드에 대해 정합성이 맞지 않는 문제를 해결할 수 없다.**
+
+그렇다고 해서 `Transactional`을 사용하지 않는다면, 재고는 감소되었지만 주문을 생성하는 과정에서 에러가 발생하게 되면 감소시킨 상품에 대해 재고를 채워놔야 하는 문제점이 생기게 된다. 그래서 주문 처리의 로직이 정상적으로 처리가 되면 `Commit`을 시켜주고, 처리 중 에러가 발생하게 되면 자동으로 `Rollback`을 시켜주는 `Transaction`을 붙여주어야 한다. 
+
+해당 문제는 데이터베이스의 락을 통해 `Race Condition`문제를 해결해야한다.
+
+### 2. Redis
+Redis는 Single Thread 기반이기도 하고, 락 정보가 간단한 휘발성 데이터에 가깝기 때문에 가장 좋은 선택지이다. 
+
+또한, Redis에서 분산 락을 구현한 알고리즘으로 redlock이라는 것을 제공하는데 자바에서는 redlock의 구현체로 **Lettuce**와 **redisson**를 제공한다.
+
+Redis의 분산 락 구현체인 두 Redis Client는 **Netty를 사용하여 non-blocking I/O 로 동작**된다.
+
+### 1. `Lettuce`
+
+Lettuce는 기본적으로 락 기능을 제공하고 있지 않기 때문에 락을 잡기 위해 `setnx`명령어를 이용해서 사용자가 직접 스핀 락 형태(Polling 방식)로 구현해야 하는 단점이 존재하는데, 이로인해 락을 잡지 못하면 끊임없이 루프를 돌며 재시도를 하게 되고, 이는 레디스에 부하를 줄 수 있다고 판단했다.
+
+또한, `setnx`명령어는 `expire time`을 지정할 수 없기 때문에 락을 잡고 있는 서버가 다운 되었을 경우 락을 해제하지 못하는 문제점(**DeadLock 발생 가능성**)을 가지고 있다.
+
+### 2. `Redisson`
+
+Redisson은 여러 독립된 프로세스에서 하나의 자원을 공유해야 할 때, 데이터에 결함이 발생하지 않도록 하기 위해서 **분산 락을 제공**해준다. 
+
+**Redisson은 락을 잡는 방식이 스핀락 방식이 아니고, `expire time`도 적용할 수 있다**는 특징을 갖는다. 
+
+또한, Redisson은 **pub/sub 방식을 사용**하여 락이 해제될 때마다 subscribe하는 클라이언트들에게 "이제 락 획득을 시도해도 좋다"는 알림을 주는 구조라 스핀락보다 훨씬 적은 부담을 준다.
+
+**그러나 Redis의 락 방식을 도입하지 않은 이유는 pub/sub을 통한 lock 획득 시도 과정에서 발생하는 네트워크 지연으로 인해 비관적 락에 비해 속도가 늦었고, 현재 Redis를 도입하지 않았을 뿐더러 Redisson 도입만을 위해 Redis를 적용해야 한다는 점에서 오버 엔지니어링, 러닝 커브 등을 고려했을 때 효율적이지 못하다고 판단되어 비관적 락 처리하도록 구현함.**
+
+### 3. Mysql
+MySQL에서 제공하는 Lock의 종류는 크게 Optimistic Lock, Pessimistic Lock이 존재한다.
 
 ### 1. `Pessimistic Lock`
 
@@ -167,27 +209,6 @@ SSG몰 고객 1인당 월 평균 결제횟수 : **2회**
 
 **→ [문제 정의] 에서의 상황은 충돌이 빈번한 기능이기에, 충돌감지 기능이 주를 이루는 Optimistic Lock 해결 방식 미사용**
 
-### 3. Redis
-
-### 1. `Lettuce`
-
-- **스핀락** 방식으로 반복적으로 lock을 점유할 수 있는지 확인
-    - redis 서버에 부하를 줄 수 있음
-- `setnx` 명령어를 통해서 lock의 점유 여부를 확인하고 획득할 수 있음
-- 세션 관리가 필요 없음
-
-**→ 락 획득 실패 시, 바로 재진입하여 락 획득을 시도하는 스핀락 방식의 특성으로 인해, 레디스에 계속해서 요청을 보낼 것임. 
-그로 인해 부담을 줄 수 있으므로 Lettuce 해결 방식 미사용**
-
-### 2. `Redisson`
-
-- in-memory db 형태이므로, 속도면에서 더욱 빨라질 것으로 예상
-- pub-sub 기반으로 Lock 구현 제공
-- 쓰레드가 lock을 점유하고 있다가 돌려주면 그것을 락을 획득하고자하는 다른 쓰레드에게 알려줌
-- 스핀락 형태가 아닌 lock 해제 되었다는 정보를 획득했을때 lock 점유를 시도함으로 redis 부하가 적음
-- lock 관련 클래스를 제공해줌으로 따로 repository를 구현할 필요 없음
-
-**→ Lettuce와 동일한 역할을 하나, 보다 더 안정적으로 동시성 제어를 할 수 있기에 Redisson을 해결 방법에 추가**
 
 ## **[결과 관찰]**
 
@@ -227,7 +248,75 @@ SSG몰 고객 1인당 월 평균 결제횟수 : **2회**
 <div markdown="1">
 
 ### 진행단계
+<details>
+<summary> 1. QueryDSL </summary>
+<div markdown="1">
 
+* 적용 계기
+
+향후 필터 또는 정렬 조건이 추가될 것을 고려하여 동적 쿼리 작성을 위해 QueryDSL 도입
+
+- **문제점**
+
+QueryDSL만으로는 필터나 정렬 조건에 대한 처리율과 카운트 쿼리에 대한 처리율이 상당히 저조했음 (**수치는 추후 기입 예정**)
+</div>
+</details>
+
+<details>
+<summary>2. Offset 방식 & MySQL Full Text Search</summary>
+<div markdown="1">
+
+* 적용 계기
+
+기존 QueryDSL로 작성한 쿼리만으로는 동적 쿼리에 대한 조건에 대해서 빠른 응답을 받을 수 없었고 이에 대한 해결책으로 MySQL의 Full Text Search를 도입하게 됨
+
+- **결과 분석**
+    - **개선된 부분**
+        - 동일한 키워드로 QueryDSL과 비교했을 때 약 N%의 성능 개선이 이루어졌다.
+    - **추가 개선이 필요한 부분**
+        - 상품 1,700만개 기준으로 검색에 대한 응답 시간은 빠르나, 페이지네이션 또는 카운트 쿼리에 대해서는 지연율이 발생함을 발견함
+</div>
+</details>
+
+<details>
+<summary>3. Offset 방식 & MySQL Full Text Search & Covering Index</summary>
+<div markdown="1">
+
+* 적용 계기
+
+기존에 가지던 페이지네이션과 카운트 쿼리에 대한 응답율이 저조함을 확인함에 따라 개선이 필요했고 이를 개선할 수 있는 커버링 인덱스를 도입
+    
+- **결과 분석**
+    - 개선된 부분
+        - 카운트 쿼리의 도입으로 Offset 방식이 가지는 단점에 대해서는 성능 향상이 이루어짐
+    - 추가 개선이 필요한 부분
+        - 전체 카운트 쿼리에 대해서 Offset 방식이 가지는 구조적인 문제로 인해 성능 저하를 발생한다는 사실을 알게 됨
+    
+- **Offset이 성능 저하를 발생시키는 이유**
+    
+    : offset을 사용하게 되면 offset + limit만큼의 데이터를 읽은 후 offset만큼의 데이터를 버림
+    
+    ⇒ 마지막 페이지로 갈수록 읽어야하는 데이터 수가 비약적으로 증가
+</div>
+</details>
+
+<details>
+<summary>4. No Offset 방식 </summary>
+<div markdown="1">
+
+* 적용 계기
+
+커버링 인덱싱으로 Offset 방식이 가지는 문제는 해결이 되었으나 카운트 쿼리에 대한 문제나 정렬에 대한 문제는 해결되지 않음
+
+- 결과 분석
+    - 개선된 부분
+        - 기존 Offset 방식이 가지던 정렬, 카운트 쿼리에 대한 문제가 해결됨에 따라 최대 N%의 성능 향상이 이루어짐
+    
+    NoOffset 방식의 경우 페이징버튼이 아닌 ‘more(더보기)’ 버튼을 사용해야 하기 때문에 순차적인 페이지 이동만 가능하다는 것이 단점이긴 하나 사용자 경험을 고려했을 때 순차적인 페이지 이동이 이루어지더라도 빠른 응답을 받는 것이 적절하다고 생각되어 도입하게 됨
+</div>
+</details>
+
+* > 결과
 
 </div>
 </details>

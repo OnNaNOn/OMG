@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.List;
 
 
 @ActiveProfiles("test")
@@ -20,17 +19,25 @@ class ProductRepositoryTest extends RepositoryTest {
     @Autowired
     JPAQueryFactory queryFactory;
 
-////    @Test
-//    @DisplayName("findAllProductStock 는 재고가 있는 모든 상품에 대해 조회한다.")
-//    public void findAllProductStock() throws Exception {
-//        // given
+    @Test
+    @DisplayName("findAllProductStock 는 재고가 있는 모든 상품에 대해 조회한다.")
+    public void findAllProductStock() throws Exception {
+        // given
 //        productRepository.deleteAll();
-//        findAllProductHasStock();
-//
-//        PageRequest pageable = PageRequest.ofSize(5);
-//        Page<AllProductManagementResponseDto> products1 = productRepository.findAllProductStock(pageable);
-//        AllProductManagementResponseDto findIndexZeroProduct = products1.getContent().get(0);
-//
+        long start = System.currentTimeMillis();
+        // given
+        String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
+
+        Pageable pageable = PageRequest.of(150000, 15);
+
+        // when
+        productRepository.findAllProductStock(keyword, pageable);
+
+        // then
+        System.out.println("소요시간:"+(System.currentTimeMillis()-start)+"ms");
+
+//        MainPageResponseDto findIndexZeroProduct = findProducts.getContent().get(0);
+
 //        // when
 //        productRepository.findById(findIndexZeroProduct.getProductId()).ifPresent(
 //                product -> {
@@ -43,7 +50,7 @@ class ProductRepositoryTest extends RepositoryTest {
 //        // then
 //        assertThat(products1.getTotalElements()).isEqualTo(3);
 //        assertThat(products2.getTotalElements()).isEqualTo(2);
-//    }
+    }
 
 ////    @Test
 //    @DisplayName("searchByProductNameButNull 메서드는 상품명에 대해 검색한다. 단, 일치하는 값은 없다.")
@@ -137,14 +144,14 @@ class ProductRepositoryTest extends RepositoryTest {
     }
 
     @Test
-    @DisplayName("951ms:: searchProductUsedFullTextSearchAndNoOffset")
-    public void searchProductUsedFullTextSearchAndNoOffset() throws Exception {
+    @DisplayName("118ms:: searchProductUsedNoOffset")
+    public void searchProductUsedNoOffset() throws Exception {
         long start = System.currentTimeMillis();
         // given
         String keyword = "스크"; // 스크의 검색 대상은 마 '스크', 아이 '스크' 림, 데 '스크' 탑
 
         // when
-        List<SearchResponseDto> results = productRepository.searchProductUsedFullTextSearchAndNoOffset(2035L, keyword, 10);
+        productRepository.searchProductUsedNoOffset(200006L, keyword, 15);
 
         // then
         System.out.println("소요시간:"+(System.currentTimeMillis()-start)+"ms");

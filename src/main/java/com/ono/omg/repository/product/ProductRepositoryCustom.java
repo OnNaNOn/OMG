@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-//import static com.ono.omg.dto.response.ProductResponseDto.AllProductManagementResponseDto;
+import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 
 public interface ProductRepositoryCustom {
-//    Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable);
+    Page<MainPageResponseDto> findAllProductStock(String title, Pageable pageable);
 
     Page<SearchResponseDto> searchProduct(SearchRequestDto requestDto, Pageable pageable);
 
@@ -18,5 +18,5 @@ public interface ProductRepositoryCustom {
 
     Page<SearchResponseDto> searchProductUsedFullTextSearchAndCoveringIndex(String title, Pageable pageable);
 
-    List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long productId, String title, Integer pageSize);
+    List<SearchResponseDto> searchProductUsedNoOffset(Long productId, String title, Integer pageSize);
 }

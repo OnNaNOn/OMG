@@ -42,7 +42,6 @@ public class ProductResponseDto {
     @Getter
     @NoArgsConstructor
     @ToString
-    @AllArgsConstructor
     public static class MainPageResponseDto {
         private Long productId;
         private String title;
@@ -50,6 +49,16 @@ public class ProductResponseDto {
         private String category;
         private String delivery;
         private Integer stock;
+
+        @QueryProjection
+        public MainPageResponseDto(Long productId, String title, Integer price, String category, String delivery, Integer stock) {
+            this.productId = productId;
+            this.title = title;
+            this.price = price;
+            this.category = category;
+            this.delivery = delivery;
+            this.stock = stock;
+        }
     }
 
     /**

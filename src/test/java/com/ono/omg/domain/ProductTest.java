@@ -1,11 +1,16 @@
 package com.ono.omg.domain;
 
+import com.ono.omg.dto.request.AccountRequestDto;
 import com.ono.omg.dto.request.ProductReqDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -63,5 +68,34 @@ class ProductTest {
             assertThat(product.getStock()).isEqualTo(0);
             assertThat(product.getIsSale()).isEqualTo("N");
         }
+    }
+
+    @Test
+    @DisplayName("not_used_lock")
+    public void not_used_lock() throws Exception {
+        final int PRODUCT_STOCK = 1000;
+        final int THREAD_COUNT = 1000;
+        final int EXPECTED = PRODUCT_STOCK - THREAD_COUNT; // 100 - 100 = 0
+
+        Product product = new Product("항해", 1000, "카테고리", "배송상태", PRODUCT_STOCK, 1L);
+
+        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        CountDownLatch latch = new CountDownLatch(THREAD_COUNT);
+
+        // when
+        for (int i = 0; i < THREAD_COUNT; i++) {
+            executorService.submit(() -> {
+                try {
+                    product.decreaseStock(1);
+                } finally {
+                    System.out.println("[총 스레드 개수] = " + latch.getCount() + ", [작업 스레드 이름] = " + Thread.currentThread().getName());
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        // then
+        assertThat(product.getStock()).isEqualTo(EXPECTED);
     }
 }

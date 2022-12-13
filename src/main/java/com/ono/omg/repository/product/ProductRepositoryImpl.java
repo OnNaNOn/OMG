@@ -1,15 +1,19 @@
 package com.ono.omg.repository.product;
 
+import com.ono.omg.domain.Product;
 import com.ono.omg.dto.request.SearchRequestDto;
+import com.ono.omg.dto.response.QProductResponseDto_MainPageResponseDto;
 import com.ono.omg.dto.response.QSearchResponseDto;
 import com.ono.omg.dto.response.SearchResponseDto;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberTemplate;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -17,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.ono.omg.domain.QProduct.product;
+import static com.ono.omg.dto.response.ProductResponseDto.MainPageResponseDto;
 
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
@@ -26,30 +31,32 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
         this.queryFactory = queryFactory;
     }
 
-//    /**
-//     * findAllProductStock:: 성능 개선 없이 단순 QueryDSL 만 사용
-//     * ㄴ 현재 관리자 페이지에 쓰이고 있음
-//     */
-//    @Override
-//    public Page<AllProductManagementResponseDto> findAllProductStock(Pageable pageable) {
-//        List<AllProductManagementResponseDto> results = queryFactory
-//                .select(new QProductResponseDto_AllProductManagementResponseDto(
-//                        product.id,
-//                        product.title,
-//                        product.price,
-//                        product.stock,
-//                        product.isSale
-//                ))
-//                .from(product)
-//                .where(product.isSale.eq("Y"))
-//                .offset(pageable.getOffset())
-//                .limit(pageable.getPageSize())
-//                .fetch();
-//
-//        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
-//
-//        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
-//    }
+    /**
+     * findAllProductStock:: 성능 개선 없이 단순 QueryDSL 만 사용
+     * ㄴ 현재 관리자 페이지에 쓰이고 있음
+     */
+    @Override
+    public Page<MainPageResponseDto> findAllProductStock(String title, Pageable pageable) {
+        List<MainPageResponseDto> results = queryFactory
+                .select(new QProductResponseDto_MainPageResponseDto(
+                        product.id,
+                        product.title,
+                        product.price,
+                        product.category,
+                        product.delivery,
+                        product.stock
+                ))
+                .from(product)
+                .where(titleEq(title))
+                .orderBy(product.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Product> countQuery = queryFactory.selectFrom(product);
+
+        return PageableExecutionUtils.getPage(results, pageable, () -> countQuery.fetchCount());
+    }
 
     /**
      * 상품검색
@@ -156,7 +163,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
      * @return
      */
     @Override
-    public List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long productId, String title, Integer pageSize) {
+    public List<SearchResponseDto> searchProductUsedNoOffset(Long productId, String title, Integer pageSize) {
         return queryFactory
                 .select(new QSearchResponseDto(
                                 product.id,
@@ -168,7 +175,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
                         )
                 )
                 .from(product)
-                .where(gtProductId(productId), titleEq(title)) // titleEq == 정확히 일치하는 것에 속도 빠름
+                .where(gtProductId(productId), product.title.like("%" + title + "%")) // titleEq == 정확히 일치하는 것에 속도 빠름
                 .orderBy(product.id.desc())
                 .limit(pageSize)
                 .fetch();
@@ -194,4 +201,6 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
     private BooleanExpression titleEq(String productTitle) {
         return StringUtils.hasText(productTitle) ? product.title.eq(productTitle) : null;
     }
+
+
 }

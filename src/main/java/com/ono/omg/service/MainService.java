@@ -22,7 +22,7 @@ public class MainService {
     }
 
     public List<SearchResponseDto> searchProductUsedFullTextSearchAndNoOffset(Long start, String title, int pageSize) {
-        return productRepository.searchProductUsedFullTextSearchAndNoOffset(start, title, pageSize);
+        return productRepository.searchProductUsedNoOffset(start, title, pageSize);
     }
 
     public MainPageApiResponseDto home(String title, Integer page) {

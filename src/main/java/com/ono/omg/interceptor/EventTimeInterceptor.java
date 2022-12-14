@@ -59,7 +59,8 @@ public class EventTimeInterceptor implements HandlerInterceptor {
             ResponseDto<Object> fail = ResponseDto.fail(
                     400,
                     HttpStatus.BAD_REQUEST,
-                    "이벤트 시작일은 " + start.replace('T', ' ') + "시입니다."
+                        "이벤트 기간이 아닙니다."
+//                    "이벤트 시작일은 " + start.replace('T', ' ') + "시입니다."
             );
             String responseDto = objectMapper.writeValueAsString(fail);
             response.getWriter().write(responseDto);

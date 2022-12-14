@@ -43,8 +43,8 @@ jobs:
       run: |
         mkdir -p ./src/main/resources
         cd ./src/main/resources       
-        touch ./application.yml
-        echo "${{ secrets.APPLI }}" > ./application.yml
+        touch ./omg.yml
+        echo "${{ secrets.APPLI }}" > ./omg.yml
       shell: bash
         
 

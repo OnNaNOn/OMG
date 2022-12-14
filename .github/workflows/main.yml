@@ -36,6 +36,7 @@ jobs:
         distribution: 'temurin'
         java-version: '11'
 
+
 # create application.yml
     - name: make application.yml
 #       if: contains(github.ref, 'leedev') # branch가 leedev 일 때, 나머지는 위와 동일

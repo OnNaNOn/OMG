@@ -40,18 +40,10 @@ public class UIController {
 
     @GetMapping("/omg/search")
     public String mainPage(@RequestParam(name = "q", required = false) String query, Model model) {
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(URI.create("/"));
-//        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-
-        if(!StringUtils.hasText(query)) {
-            return "redirect:/omg";
-        }
         model.addAttribute("query", query);
         return "main/mainPage";
     }
 
-    //상세페이지
     @GetMapping("/products/detail/{productId}")
     public String detailProductPage(@PathVariable Long productId, Model model) {
         model.addAttribute("productId", productId);

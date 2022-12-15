@@ -1,6 +1,7 @@
 package com.ono.omg.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ono.omg.dto.common.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,16 +21,24 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
         String accessToken = jwtUtil.getHeaderToken(request, "Access");
         String refreshToken = jwtUtil.getHeaderToken(request, "Refresh");
 
         if(accessToken != null) {
             if(!jwtUtil.tokenValidation(accessToken)){
-                log.info("====== JwtAuthFilter.doFilterInternal.accessToken.tokenValidation == false =====");
-                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
+                response.setContentType("application/json; charset=UTF-8");
+                response.setStatus(401);
+
+                ResponseDto<Object> fail = ResponseDto.fail(401,HttpStatus.UNAUTHORIZED,"로그인이 필요합니다.");
+                String responseDto = objectMapper.writeValueAsString(fail);
+                response.getWriter().write(responseDto);
+//                log.info("====== JwtAuthFilter.doFilterInternal.accessToken.tokenValidation == false =====");
+//                jwtExceptionHandler(response, "AccessToken Expired", HttpStatus.UNAUTHORIZED);
                 return;
             }
             setAuthentication(jwtUtil.getUsernameFromToken(accessToken));

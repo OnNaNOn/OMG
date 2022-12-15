@@ -148,25 +148,27 @@
         });
     }
 
+    function logout() {
+        let token = localStorage.getItem("Authorization");
+
+        if(token == null) {
+            alert("로그인을 하지 않은 사용자 입니다.")
+            return;
+        }
+        localStorage.removeItem("Authorization");
+        alert("로그아웃이 완료되었습니다.");
+    }
 </script>
 
 <input type="hidden" id="last" value="0">
 <input type="hidden" id="givenQuery" th:value="${query}">
 
 <div class="container">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" onclick="location.href='/omg'" class="btn btn-primary" style="margin-right: 30px">HOME
-        </button>
-        <button type="button" class="btn btn-primary">로그인</button>
-        <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
-        <button type="button" onclick="location.href='/accounts/mypage'" class="btn btn-primary"
-                style="margin-left: 30px">마이페이지
-        </button>
+    <div style="float: right">
+        <button type="button" onclick="location.href='/accounts/login'" class="btn btn-primary">로그인</button>
+        <button type="button" onclick="logout()" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
     </div>
-</div>
-
-<div class="container">
-    <div align="center" style="margin-bottom: 20px">
+    <div align="center" style="margin-bottom: 20px; margin-left: 150px">
         <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 

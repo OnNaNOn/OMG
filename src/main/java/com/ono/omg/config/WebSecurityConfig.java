@@ -1,5 +1,6 @@
 package com.ono.omg.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ono.omg.security.jwt.AuthenticationEntryPointException;
 import com.ono.omg.security.jwt.JwtAuthFilter;
 import com.ono.omg.security.jwt.JwtUtil;
@@ -102,7 +103,7 @@ public class WebSecurityConfig {
                 .antMatchers("/endPoint2").permitAll()
 
                 .anyRequest().authenticated()
-                .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .and().addFilterBefore(new JwtAuthFilter(jwtUtil, new ObjectMapper()), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

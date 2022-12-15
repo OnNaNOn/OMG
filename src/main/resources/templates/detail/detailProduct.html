@@ -102,7 +102,7 @@
             });
         }
 
-        // //상품 주문
+        // 상품 주문
         function orderProduct(id) {
             let token = localStorage.getItem("Authorization");
             console.log("token = " + token)
@@ -129,92 +129,31 @@
             });
         }
 
-        //
-        // //리뷰 작성
-        // function createReview(id) {
-        //     let pid = id;
-        //     var data = {
-        //         "reviewContent": $("#review").val(),
-        //     }
-        //     // alert("pid   " + pid + "reviewContent   " + $("#review").val());
-        //
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/api/" + pid + "/reviews",
-        //         headers: {'Content-Type': 'application/json'},
-        //         data: JSON.stringify(data),
-        //         success: function (response) {
-        //             alert("리뷰를 작성하였습니다.");
-        //             location.reload();
-        //         },
-        //         error: function (xhr, status, error) {
-        //             let response = JSON.parse(xhr.responseText);
-        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-        //             alert(response.error.message);
-        //         }
-        //     });
-        // }
-        //
-        // //리뷰 수정
-        // function updateReview(id) {
-        //     let rId = id;
-        //
-        //     var data = {
-        //         "reviewContent": $("#review").val(),
-        //     }
-        //
-        //     $.ajax({
-        //         type: "PATCH",
-        //         url: "/api/reviews/" + rId,
-        //         headers: {'Content-Type': 'application/json'},
-        //         data: JSON.stringify(data),
-        //         success: function (response) {
-        //             alert("리뷰를 수정하였습니다.");
-        //             location.reload();
-        //         },
-        //         error: function (xhr, status, error) {
-        //             let response = JSON.parse(xhr.responseText);
-        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-        //             alert(response.error.message);
-        //         }
-        //     });
-        // }
-        //
-        // //리뷰 삭제
-        // function deleteReview(id) {
-        //     let rId = id;
-        //
-        //     $.ajax({
-        //         type: "DELETE",
-        //         url: "/api/reviews/" + rId,
-        //         headers: {'Content-Type': 'application/json'},
-        //         // data: JSON.stringify(data),
-        //         success: function (response) {
-        //             alert("리뷰를 삭제하였습니다.");
-        //             location.reload();
-        //         },
-        //         error: function (xhr, status, error) {
-        //             let response = JSON.parse(xhr.responseText);
-        //             // alert(response + " " + xhr.responseText + " " + response.success+ " " + response.data + " "+ response.status);
-        //             alert(response.error.message);
-        //         }
-        //     });
-        // }
+        function logout() {
+            let token = localStorage.getItem("Authorization");
 
+            if(token == null) {
+                alert("로그인을 하지 않은 사용자 입니다.")
+                return;
+            }
+            localStorage.removeItem("Authorization");
+            alert("로그아웃이 완료되었습니다.");
+        }
+        
     </script>
 
 <body>
 
+
 <input type="hidden" id="pId" th:value="${productId}">
 
 <div class="container">
-    <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" onclick="location.href='/omg'" class="btn btn-primary"
-                style="margin-right: 30px">HOME
-        </button>
-        <button type="button" class="btn btn-primary">로그인</button>
-        <button type="button" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
-        <button type="button" class="btn btn-primary" style="margin-left: 30px">마이페이지</button>
+    <div style="float: right">
+        <button type="button" onclick="location.href='/accounts/login'" class="btn btn-primary">로그인</button>
+        <button type="button" onclick="logout()" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
+    </div>
+    <div align="center" style="margin-bottom: 20px; margin-left: 150px">
+        <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 
     <div class="container">

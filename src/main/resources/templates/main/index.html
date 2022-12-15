@@ -124,6 +124,17 @@
             });
         }
 
+        function logout() {
+            let token = localStorage.getItem("Authorization");
+
+            if(token == null) {
+                alert("로그인을 하지 않은 사용자 입니다.")
+                return;
+            }
+            localStorage.removeItem("Authorization");
+            alert("로그아웃이 완료되었습니다.");
+        }
+
     </script>
 </head>
 
@@ -132,7 +143,11 @@
 
 <body>
 <div class="container">
-    <div align="center" style="margin-bottom: 20px">
+    <div style="float: right">
+        <button type="button" onclick="location.href='/accounts/login'" class="btn btn-primary">로그인</button>
+        <button type="button" onclick="logout()" class="btn btn-primary" style="margin-left: 1px">로그아웃</button>
+    </div>
+    <div align="center" style="margin-bottom: 20px; margin-left: 150px">
         <h1><a href="/omg">ONO.COM</a></h1>
     </div>
 

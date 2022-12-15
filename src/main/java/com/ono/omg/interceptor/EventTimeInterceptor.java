@@ -3,6 +3,8 @@ package com.ono.omg.interceptor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ono.omg.domain.Event;
 import com.ono.omg.dto.common.ResponseDto;
+import com.ono.omg.exception.CustomCommonException;
+import com.ono.omg.exception.ErrorCode;
 import com.ono.omg.repository.event.EventRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,49 +29,41 @@ public class EventTimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
-//        log.info(requestURI);
-//        log.info("========== START ==========");
 
         if (!requestURI.contains("confirm")) {
             return true;
         }
 
         Long productId = Long.valueOf(requestURI.split("/")[3]);
-        log.info("productId = {}", productId);
-
 
         Optional<Event> findEvent = eventRepository.findByProductId(productId);
 
         if(findEvent.isEmpty()) {
             return true;
         }
-
         Event event = findEvent.get();
 
-        String start = event.getStartedAt().toString().substring(0, 13);
-        String now = LocalDateTime.now().toString().substring(0, 13);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = event.getStartedAt();
+        LocalDateTime end = event.getEndedAt();
 
-        System.out.println("start = " + start);
-        System.out.println("now = " + now);
+        if(now.isBefore(start) || now.isAfter(end)) {
+            log.info("[NO] is not event time = {}", now);
 
-        if (now.compareTo(start) != 1) {
             response.setContentType("application/json; charset=UTF-8");
             response.setStatus(400);
 
             ResponseDto<Object> fail = ResponseDto.fail(
                     400,
                     HttpStatus.BAD_REQUEST,
-                        "이벤트 기간이 아닙니다."
-//                    "이벤트 시작일은 " + start.replace('T', ' ') + "시입니다."
+                    "이벤트의 기간이 아닙니다. 이벤트 시간을 확인해주세요."
             );
             String responseDto = objectMapper.writeValueAsString(fail);
             response.getWriter().write(responseDto);
 
-            log.info("XXXX Event time is FALSE XXXX");
-
             return false;
         }
-        log.info("OOOO Event time is TRUE OOOO");
+        log.info("[OK] is event time");
         return true;
     }
 
